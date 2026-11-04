@@ -1,0 +1,14 @@
+{
+  "source_manifest_sha256": "a6a93f621e2f2031b78695708553d677ca8ec1b1aac7af47aa8b7cc1cbe7df7c",
+  "model": "BAAI/bge-base-en-v1.5",
+  "revision": "a5beb1e3e68b9ab74eb54cfd186867f64f240e1a",
+  "max_tokens_with_special_tokens": 512,
+  "overlap": 0,
+  "text_format": "upstream convert_to_text with title",
+  "algorithm": "offset windows; shrink end until retokenized chunk fits",
+  "tokenizer_library": "5.22.1",
+  "chunk_version": "be5f3384d4166f18",
+  "document_count": 5000,
+  "chunk_count": 15139,
+  "chunks_sha256": "e0baecd1cd80a430799ad6f73d224058e49c7ceda4769787fc6064e8eb8baee7"
+}
