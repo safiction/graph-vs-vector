@@ -4,18 +4,17 @@ import json
 import random
 import sys
 from collections import Counter, defaultdict
-from pathlib import Path
-from config import DATASET_ROOT, OUTPUT_ROOT, MANIFEST_ROOT, RANDOM_SEED, QUESTION_CATEGORIES, QUESTIONS_BASE, TOTAL_QUESTIONS, DEV_COUNTS
+from config import DATASET_ROOT, OUTPUT_ROOT, MANIFEST_ROOT, RANDOM_SEED, QUESTION_CATEGORIES, QUESTIONS_BY_TYPES_CNT, TOTAL_QUESTIONS, DEV_COUNTS
 
 
 def main():
-    if sum(QUESTIONS_BASE.values()) != TOTAL_QUESTIONS:
-        raise ValueError(f'Category allocation sums to {sum(QUESTIONS_BASE.values())}, expected {TOTAL_QUESTIONS}; resolve config first')
+    if sum(QUESTIONS_BY_TYPES_CNT.values()) != TOTAL_QUESTIONS:
+        raise ValueError(f'Category allocation sums to {sum(QUESTIONS_BY_TYPES_CNT.values())}, expected {TOTAL_QUESTIONS}; resolve config first')
     type_by_category = {category: kind for kind, cats in QUESTION_CATEGORIES.items() for category in cats}
     if len(type_by_category) != sum(map(len, QUESTION_CATEGORIES.values())):
         raise ValueError('Every category must belong to only one project type')
     totals = Counter()
-    for category, count in QUESTIONS_BASE.items():
+    for category, count in QUESTIONS_BY_TYPES_CNT.items():
         totals[type_by_category[category]] += count
     if set(totals) != set(QUESTION_CATEGORIES) or any(n != 50 for n in totals.values()):
         raise ValueError(f'Expected 50 per project type: {dict(totals)}')
@@ -31,7 +30,7 @@ def main():
         by_category[row['question_type']].append(row)
     rng = random.Random(RANDOM_SEED)
     selected, remaining = [], []
-    for category, count in sorted(QUESTIONS_BASE.items()):
+    for category, count in sorted(QUESTIONS_BY_TYPES_CNT.items()):
         pool = sorted(by_category[category], key=lambda q: q['question_id'])
         if count > len(pool):
             raise ValueError(f'Not enough {category} questions')
@@ -75,7 +74,7 @@ def main():
                 'python_version': sys.version.split()[0],
                 'sampling_method': 'sort IDs by category, seeded shuffle, take configured counts; balance folds within categories',
                 'output_sha256': {path.name: hashlib.sha256(content).hexdigest() for path, content in zip(targets[:3], payloads)},
-                'category_allocation': QUESTIONS_BASE,
+                'category_allocation': QUESTIONS_BY_TYPES_CNT,
                 'development_counts': DEV_COUNTS, 'folds': {k: sorted(x['question_id'] for x in v) for k, v in folds.items()},
                 'development_ids': sorted(x['question_id'] for x in development)}
     if targets[3].exists():

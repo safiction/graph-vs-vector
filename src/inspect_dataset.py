@@ -25,11 +25,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--dataset', type=Path, default=DATASET_ROOT)
     parser.add_argument('--output', type=Path, default=OUTPUT_ROOT / 'audit')
-    parser.add_argument('--progress-interval', type=float, default=5.0,
-                        help='Seconds between progress updates (default: 5)')
     args = parser.parse_args()
-    if args.progress_interval <= 0:
-        parser.error('--progress-interval must be positive')
     root = args.dataset / 'generated_data' / 'sources'
     if not root.is_dir():
         raise FileNotFoundError(f'Source directory not found: {root}')
@@ -47,7 +43,7 @@ def main():
     for path in root.rglob('*.json'):
         paths.append(path)
         now = time.monotonic()
-        if now - last_update >= args.progress_interval:
+        if now - last_update >= 120.0:
             print(f'Finding source files: {len(paths):,} found so far', flush=True)
             last_update = now
     total = len(paths)
@@ -76,7 +72,7 @@ def main():
         except (OSError, UnicodeError, json.JSONDecodeError, KeyError, TypeError, ValueError) as exc:
             issues.append({'issue': 'invalid_document', 'path': relative, 'detail': str(exc)})
         now = time.monotonic()
-        if now - last_update >= args.progress_interval or processed == total:
+        if now - last_update >= 120.0 or processed == total:
             elapsed = now - started
             rate = processed / elapsed if elapsed else 0
             remaining = (total - processed) / rate if rate else 0

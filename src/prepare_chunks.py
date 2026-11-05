@@ -1,4 +1,4 @@
-"""Chunk an explicitly selected corpus with the agreed BGE tokenizer."""
+"""Chunk an explicitly selected corpus with the BGE tokenizer."""
 import argparse
 import hashlib
 import json
@@ -15,7 +15,7 @@ def main():
     if not BGE_MODEL or not BGE_REVISION:
         raise ValueError('Choose and configure BGE_MODEL and immutable BGE_REVISION first')
     if CHUNK_OVERLAP != 0:
-        raise ValueError('Only the agreed no-overlap chunking is implemented')
+        raise ValueError('Only no-overlap chunking is implemented')
     try:
         from transformers import AutoTokenizer
     except ImportError as exc:

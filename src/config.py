@@ -23,7 +23,7 @@ QUESTION_CATEGORIES = {
 
 TOTAL_QUESTIONS = 200
 
-QUESTIONS_BASE = {'basic':50,
+QUESTIONS_BY_TYPES_CNT = {'basic':50,
                   'intra_document_reasoning':25,
                   'project_related':25,
                   'completeness': 20,
