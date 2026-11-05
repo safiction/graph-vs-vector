@@ -1,0 +1,95 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\begin{document}
+
+\title{D1. GraphRAG vs Vector RAG, Refereed Properly}
+
+\author{\IEEEauthorblockN{Safina Mukhamedshina}
+\IEEEauthorblockA{s.mukhamedshina@innopolis.university}
+\and
+\IEEEauthorblockN{Karina Shaikhutdinova}
+\IEEEauthorblockA{k.shaikhutdinova@innopolis.university}
+\and
+\IEEEauthorblockN{Artem Mikhailin}
+\IEEEauthorblockA{a.mikhailin@innopolis.university}
+}
+
+\maketitle
+
+\section{Task / Project Idea}
+We implement GraphRAG and vector RAG over the same enterprise corpus and compare them per question type (single-fact, multi-hop, corpus-global, fuzzy). The deliverable is a \emph{routing table}: for each type, which retriever should answer it and by how much it wins.
+
+\section{Dataset}
+We use EnterpriseRAG-Bench~\cite{b1} (MIT license): ${\approx}500$k synthetic internal documents from 9 sources, includes deliberate noise (misfiled documents, conflicting near-duplicates) and internal codenames. Each of its 500 questions (10 categories) has a gold answer, a list of atomic \emph{answer facts} (1--46 per question) and, except for \emph{High Level} and \emph{Info Not Found}, 1--10 gold document IDs.
+
+\textbf{Question set.} We map categories onto the four Week~5 types and sample 200 questions, 50 per type, with a fixed seed (Table~\ref{tab:questions}); \emph{Miscellaneous} and \emph{Info Not Found} are not used.
+
+\begin{table}[t]
+\centering
+\caption{Question set. $|G|$: mean gold documents per question.}
+\label{tab:questions}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}l l r r r@{}}
+\toprule
+\textbf{Type} & \textbf{Category} & \textbf{Used/All} & $|G|$ & \textbf{\#Q} \\
+\midrule
+Single-fact   & Basic                    & 50/175 & 1   & 50 \\
+\midrule
+Multi-hop     & Intra-Document Reas.     & 25/40  & 1   & 50 \\
+              & Project Related$^{a}$    & 25/40  & 2.9 &    \\
+\midrule
+Corpus-global & Completeness             & 20/20  & 6.5 & 50 \\
+              & Project Related$^{a}$    & 15/40  & 6.5 &    \\
+              & High Level$^{b}$         & 10/10  & 0   &    \\
+              & Conflicting Info         & 5/20   & 2   &    \\
+\midrule
+Fuzzy         & Semantic                 & 30/125 & 1   & 50 \\
+              & Constrained              & 20/30  & 1.4 &    \\
+\midrule
+\textbf{Total} &                         &        &     & \textbf{200} \\
+\bottomrule
+\end{tabular}
+
+\vspace{2pt}
+\parbox{\columnwidth}{\footnotesize
+$^{a}$All 40 used, split disjointly: the 25 with the fewest gold documents (2--4) are multi-hop, the other 15 (4--9) corpus-global.
+$^{b}$No gold documents.}
+\end{table}
+
+\section{Method / Technique}
+Four retrievers: BM25, vector RAG with BGE embeddings, and GraphRAG, which extracts entities and relations from every chunk with an LLM, groups them into Leiden communities and summarises each. GraphRAG-\emph{local} links question entities to the graph and expands their neighbourhood; GraphRAG-\emph{global} combines community summaries. A rule-based router sends each question to the retriever the routing table assigns to its type.
+
+\section{Evaluation plan}
+\textbf{Setup.} All systems answer the 200 questions over the same index, with the same 512-token chunks, generator, prompt and context budget $B = 5 \times 512$ tokens, so only the retriever differs; BM25 is the baseline. Sample, prompts and judge are frozen before the first run.
+
+\textbf{Metric 1: supporting-fact coverage} (Lab~5): $\mathrm{Cov}(q) = |R_q \cap G_q| / |G_q|$, where $G_q$ are gold documents and $R_q$ are the source documents of the context (for GraphRAG, provenance of its entities, relations and summaries). We report mean Cov, full-coverage rate and mean $|R_q|$ (exposes coverage bought with broad, many-source summaries).
+
+\textbf{Metric 2: answer correctness.} A local LLM judge checks each gold answer fact against the answer; the score is the fraction of facts stated, and \emph{fully correct} means all. Two of us label 40 answers (10 per type); we report human--human and judge--human Cohen's $\kappa$ and grade manually any type with $\kappa < 0.6$.
+
+\textbf{Routing.} Each type is assigned the retriever with the highest mean correctness, using stratified 2-fold cross-validation. Routers use gold or zero-shot LLM-predicted types (with classification accuracy) and are compared with the best single retriever and a per-question oracle. \textbf{Cost:} indexing GPU-hours and tokens; per-query latency, LLM calls and tokens.
+
+\textbf{Statistics and ablations.} All metrics per type with 95\% bootstrap CIs (1{,}000 resamples over questions); differences via paired bootstrap, and a CI containing zero is a tie, routed to the cheaper retriever. Ablations: local expansion depth 1 vs 2; $k \in \{3,5,10\}$ chunks.
+
+\textbf{Success:} a per-type routing table with CIs, whichever retriever wins.
+
+\section{Main risk}
+\textbf{Graph construction over the full corpus.} LLM extraction over ${\approx}500$k documents dominates cost and exceeds free Colab; it runs on our own GPU: NVIDIA GeForce RTX 5080, 32GB VRAM.
+We run it first, timing extraction on a 5k-document slice. \emph{Fallback:} if the extrapolation exceeds budget, all systems use one fixed sub-corpus (gold documents of the 200 questions, their top BM25 neighbours, random documents from all sources).
+
+\begin{thebibliography}{00}
+\bibitem{b1} Y. Sun, J. Rahmfeld, C. Weaver, R. Desai, W. Huang, and M. H. Butler, ``EnterpriseRAG-Bench: A RAG benchmark for company internal knowledge,'' arXiv:2605.05253, 2026.
+
+\bibitem{b2} Onyx, ``EnterpriseRAG-Bench,'' GitHub repository. [Online]. Available: \url{https://github.com/onyx-dot-app/EnterpriseRAG-Bench}
+
+\end{thebibliography}
+
+\end{document}

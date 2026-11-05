@@ -1,0 +1,7 @@
+{
+  "qst_0413": {
+    "coverage": "N/A",
+    "reason": "Two different source documents share the gold ID dsid_6df52fdb96ae4edcb76464738bca3340, which appears twice in expected_doc_ids; document-level coverage cannot distinguish them.",
+    "correctness_evaluation": "retain"
+  }
+}

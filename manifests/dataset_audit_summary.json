@@ -1,0 +1,36 @@
+{
+  "question_count": 500,
+  "question_ids_unique": 500,
+  "question_types": {
+    "basic": 175,
+    "completeness": 20,
+    "conflicting_info": 20,
+    "constrained": 30,
+    "high_level": 10,
+    "info_not_found": 20,
+    "intra_document_reasoning": 40,
+    "miscellaneous": 20,
+    "project_related": 40,
+    "semantic": 125
+  },
+  "question_file_sha256": "d6a2a6358e9d42695b77d7fdc65504196382a3e005752e9f4b21e8e3a7108d41",
+  "indexed_documents": 511958,
+  "source_json_files": 511962,
+  "source_counts": {
+    "confluence": 5189,
+    "fireflies": 10173,
+    "github": 8052,
+    "gmail": 121390,
+    "google_drive": 25108,
+    "hubspot": 15017,
+    "jira": 6120,
+    "linear": 35308,
+    "slack": 285605
+  },
+  "unique_gold_ids": 722,
+  "issue_counts": {
+    "index_mismatch": 4,
+    "duplicate_document_id": 4
+  },
+  "exact_rendered_text_duplicate_groups": 1300
+}

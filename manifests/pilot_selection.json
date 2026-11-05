@@ -1,0 +1,17 @@
+{
+  "seed": 42,
+  "sample_size": 5000,
+  "method": "proportional source quotas, largest remainder; include development gold IDs then random sample",
+  "source_quotas": {
+    "linear": 345,
+    "hubspot": 147,
+    "confluence": 51,
+    "fireflies": 99,
+    "jira": 60,
+    "github": 79,
+    "google_drive": 245,
+    "slack": 2789,
+    "gmail": 1185
+  },
+  "development_gold_count": 15
+}
