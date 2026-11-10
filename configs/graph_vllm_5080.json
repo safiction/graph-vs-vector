@@ -1,0 +1,37 @@
+{
+  "backend": "vllm",
+  "version": "0.33.0",
+  "model_root": "/root/models/Qwen3.5-9B-FP8",
+  "served_model": "graph-qwen35-9b-fp8",
+  "host": "127.0.0.1",
+  "port": 8001,
+  "language_model_only": true,
+  "max_model_len": 8192,
+  "max_num_seqs": 16,
+  "max_num_batched_tokens": 4096,
+  "gpu_memory_utilization": 0.85,
+  "cpu_offload_gb": 0,
+  "kv_cache_dtype": "auto",
+  "enable_prefix_caching": true,
+  "max_cudagraph_capture_size": 16,
+  "enable_thinking": false,
+  "generation_config": "vllm",
+  "launcher_sha256": "eaf5cdb7d2237750316c0b2b8377a3cd8f1a7a5064730bfb4e9c502f2688d593",
+  "performance_mode": "throughput",
+  "omp_num_threads": 1,
+  "structured_outputs_config": {
+    "backend": "xgrammar"
+  },
+  "json_grammars": {
+    "309516bf35b93709be84ddf7957bd339a30e6b29312292c49ec230001c4833ac": {
+      "file": "graph_extraction.ebnf",
+      "sha256": "390fc1bbc07001aae45674cb6b29f44e0d99570def5dc913f7a449caeb7ee5f2",
+      "max_whitespace_count": 8
+    },
+    "badbcc139990c542f496452ea35be6d5508eed42f83df4959c96faa01a96b8e8": {
+      "file": "graph_summary.ebnf",
+      "sha256": "1c5003a7575f06965e38e63e6bd6e31dac96143bd987ffab58e8acc7a3313844",
+      "max_whitespace_count": 8
+    }
+  }
+}

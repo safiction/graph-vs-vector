@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "counts": {
+    "source_documents": 33,
+    "chunks": 33,
+    "entity_mentions": 214,
+    "relation_supports": 19,
+    "summary_claims": 182
+  },
+  "errors": [],
+  "index_sha256": "273cd1752d887491630aacdfa8013c68b796ae602f5b274a86f0692a0fbd200f",
+  "limitations": [
+    "Structural provenance checks do not establish semantic entailment of model predicates/claims.",
+    "Named-entity identity collisions require manual review."
+  ]
+}
