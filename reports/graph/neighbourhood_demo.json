@@ -1,0 +1,46 @@
+{
+  "question_id": "qst_0315",
+  "question": "What UI indicator did the team plan to show for tenants in escalation mode, and what default grace-window duration was chosen for the circuit-breaker?",
+  "linked_entities": [
+    {
+      "node_id": "ent_fdb06b59ddf1d4842af5",
+      "name": "grace-window",
+      "score": 1.2,
+      "method": "exact_normalized_alias"
+    }
+  ],
+  "expanded_nodes": {
+    "ent_fdb06b59ddf1d4842af5": 0,
+    "ent_deecd963aa38873461d9": 1
+  },
+  "latency_seconds": 0.0005018550000386313,
+  "settings": {
+    "depth": 1,
+    "max_nodes": 100,
+    "max_seeds": 5,
+    "k": 10
+  },
+  "corpus_scope": "pilot_sample",
+  "status": "retrieval_only_pending_shared_generator",
+  "expanded_node_names": {
+    "ent_fdb06b59ddf1d4842af5": "grace-window",
+    "ent_deecd963aa38873461d9": "retry storms"
+  },
+  "evidence": [
+    {
+      "chunk_id": "dsid_e6c0f4ec1f2d4937925ce9b9ef2c3057::be5f3384d4166f18::000000",
+      "source_document_id": "dsid_e6c0f4ec1f2d4937925ce9b9ef2c3057",
+      "text": "Hosted API: implement failure grace-window + customer fast-path to contain retry storms during escalations\n\nSummary: Multiple customers escalated after observing cascading 5xx/timeouts during transient upstream slowdowns. Symptoms included synchronized client retries, spike in outgoing RPC latency, and frontdoor connection pileup. This ticket implements a short 'grace-window' circuit policy and a per-tenant fast-path guard to reduce retry amplification and preserve capacity for prioritized customer bridges during live escalations.\n\nContext & impact: Over the last month several incident postmortems pointed to short-lived backend slowdowns that generated a wave of client retries. Our existing circuit-breakers tripped too quickly for some flows or too late for others; once tripped, fallbacks triggered heavy routing changes that increased tail latency and produced customer-visible 502/504 errors. Customers in P1 escalations need a temporary 'fast-path' that reduces their effective admission checks and prevents them from being swept up in tenant-wide backoffs while we remediate root causes.\n\nGoals: 1) reduce retry amplification during short upstream slowdowns, 2) provide an on-call-safe escape-hatch to steer specific customer traffic to a prioritized admission lane, 3) increase observability so SREs/SEs can make informed in-incident decisions without code changes.\n\nProposed approach: Implement a multi-part change: (A) Grace-window circuit-breaker semantics: instead of immediately increasing circuit score on the first N failures, apply a 10s sliding grace window that counts only sustained error rates above threshold before tripping. This permits transient spikes to recover without hard-routing changes. (B) Retry-suppression token: attach a short-lived header (X-RW-Retry-Suppress) for internal gateways to suppress client-side hedged retries when we detect amplification patterns. (C) Customer fast-path flagging: add an admission router flag that temporarily lowers queueing thresholds for flagged tenant IDs and routes them to a small warm pool reserved for escalations. (D) Observability/UI: Console endpoint with per-tenant 'escalation mode' marker and a dashboard panel showing grace-window triggers, suppressed retries, and fast-path occupancy.\n\nRoot cause hypothesis: client retry storms + synchronous admission policies amplified ",
+      "score": 0.27699829514510255,
+      "source_links": [
+        {
+          "chunk_id": "dsid_e6c0f4ec1f2d4937925ce9b9ef2c3057::be5f3384d4166f18::000000",
+          "source_document_id": "dsid_e6c0f4ec1f2d4937925ce9b9ef2c3057",
+          "source_path": "linear/engineering/ENG-417289-hosted-api-grace-window-and-customer-fastpath.json",
+          "source_uri": "file:///root/EnterpriseRAG-Bench/generated_data/sources/linear/engineering/ENG-417289-hosted-api-grace-window-and-customer-fastpath.json",
+          "source_sha256": "03b90c725a097dda072c7b5ca1989ef6609813a32b63deee1cffef65f3d9bab1"
+        }
+      ]
+    }
+  ]
+}

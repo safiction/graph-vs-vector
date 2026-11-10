@@ -1,0 +1,23 @@
+{
+  "code_sha256": {
+    "src/graph_rag/__init__.py": "14f398d4d521b4d4c1e16985a3c77e2ccc14e1ef52e20397608df4b4493a26a1",
+    "src/graph_rag/__main__.py": "e4a17b73669244a5a0bea15a434f3bc3a15ff5979cc43edef1baaf2ddc42f112",
+    "src/graph_rag/audit.py": "ecfa4152ad57133a1cbf9085b447b3b421d1cbc7242256cd55f62895e4b03605",
+    "src/graph_rag/common.py": "993fbb22b184c5139d00cdb8b9d3cacc405ad62262876d98f77fa0aff618cacf",
+    "src/graph_rag/cost.py": "b57670c37f4bcc830b0ac3d5f65c57556f3e3e987a8a29e4395c432d237e8159",
+    "src/graph_rag/extract.py": "96cb7ea1b69bc7e2c00a176fa554d5e73716c51b3e72cfd62d1aecb014f8d5e3",
+    "src/graph_rag/index.py": "667f1c5191b14a022efec573e7a0446d24fdb9b78ceadc30054ecd46c6fcb4ee",
+    "src/graph_rag/llm.py": "3f022d702a1052cee993189789d3cd5d4f7f611512fff4a47921512c9766a7da",
+    "src/graph_rag/prepare.py": "25d5ebdd298323e79002a3dcd700f0f8068b12249e5529b517c0b00820e3b5c7",
+    "src/graph_rag/retrieve.py": "647a8a168c631a21bbe8b0af5c980d9352cfc3d6d043d96d096406359b9ac410",
+    "src/graph_rag/routing.py": "b99ae41ad287bc161454ae8c8988f064e360f3148ce427183ea6359f44c6d8f2",
+    "src/graph_rag/run.py": "a8d444145288e13a29db4e9781045faae289392cdfd1be838c2854664b572972"
+  },
+  "requirements_sha256": "66e83043ce66836d18f3690d90d665faa0475c0fe1950f1ac66e05567e4c0efd",
+  "installed_environment_sha256": "460906d2dd0aa352aeeddfb802aa74dbcb141df8a8ec292a67d24f29530a23b4",
+  "hardware": "NVIDIA GeForce RTX 5080, 621.01, 16303 MiB, 360.00 W",
+  "chunks_sha256": "e0baecd1cd80a430799ad6f73d224058e49c7ceda4769787fc6064e8eb8baee7",
+  "pilot_sample_sha256": "7c1fe287eaf8566d570edd08fcd95ce889237b7c22fa614e8dcfb50097c93289",
+  "index_sha256": "273cd1752d887491630aacdfa8013c68b796ae602f5b274a86f0692a0fbd200f",
+  "test_count": 17
+}

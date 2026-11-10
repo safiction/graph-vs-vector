@@ -1,0 +1,150 @@
+{
+  "model": {
+    "model": "qwen3.6:35b",
+    "digest": "a7eb95c53bcf96b4bdd008d0fab4a5dac88047d9c1a7a9ab88ed453423fbd87c",
+    "server_version": "0.40.14"
+  },
+  "pilot_chunks_attempted": 33,
+  "random_cost_chunks": 18,
+  "actual": {
+    "seconds": 215.80166074899944,
+    "prompt_tokens": 19600,
+    "completion_tokens": 14667
+  },
+  "failed_chunks": 0,
+  "accepted_entities": 214,
+  "accepted_relations": 19,
+  "rejected_items": 141,
+  "strata": {
+    "confluence": {
+      "n": 2,
+      "population_chunks": 278,
+      "population_documents": 51,
+      "seconds_mean": 10.887341528999968,
+      "seconds_min": 6.7602963839999575,
+      "seconds_max": 15.01438667399998,
+      "prompt_tokens_mean": 575.5,
+      "completion_tokens_mean": 521
+    },
+    "fireflies": {
+      "n": 2,
+      "population_chunks": 610,
+      "population_documents": 99,
+      "seconds_mean": 7.695128424000018,
+      "seconds_min": 6.977200963000087,
+      "seconds_max": 8.413055884999949,
+      "prompt_tokens_mean": 674.5,
+      "completion_tokens_mean": 523
+    },
+    "github": {
+      "n": 2,
+      "population_chunks": 214,
+      "population_documents": 79,
+      "seconds_mean": 6.920924670499971,
+      "seconds_min": 6.767339536999998,
+      "seconds_max": 7.074509803999945,
+      "prompt_tokens_mean": 608.5,
+      "completion_tokens_mean": 517.5
+    },
+    "gmail": {
+      "n": 2,
+      "population_chunks": 4973,
+      "population_documents": 1185,
+      "seconds_mean": 6.7226910879999195,
+      "seconds_min": 6.027269499999875,
+      "seconds_max": 7.418112675999964,
+      "prompt_tokens_mean": 684.5,
+      "completion_tokens_mean": 490
+    },
+    "google_drive": {
+      "n": 2,
+      "population_chunks": 1019,
+      "population_documents": 245,
+      "seconds_mean": 3.2488263965000215,
+      "seconds_min": 0.8188409829999728,
+      "seconds_max": 5.67881181000007,
+      "prompt_tokens_mean": 405.5,
+      "completion_tokens_mean": 210.5
+    },
+    "hubspot": {
+      "n": 2,
+      "population_chunks": 286,
+      "population_documents": 147,
+      "seconds_mean": 5.089160977000006,
+      "seconds_min": 2.971723595999947,
+      "seconds_max": 7.206598358000065,
+      "prompt_tokens_mean": 362,
+      "completion_tokens_mean": 355
+    },
+    "jira": {
+      "n": 2,
+      "population_chunks": 192,
+      "population_documents": 60,
+      "seconds_mean": 5.663415986000018,
+      "seconds_min": 5.542319074000034,
+      "seconds_max": 5.784512898000003,
+      "prompt_tokens_mean": 633,
+      "completion_tokens_mean": 406
+    },
+    "linear": {
+      "n": 2,
+      "population_chunks": 991,
+      "population_documents": 345,
+      "seconds_mean": 6.622503506999919,
+      "seconds_min": 6.404584227999976,
+      "seconds_max": 6.840422785999863,
+      "prompt_tokens_mean": 643.5,
+      "completion_tokens_mean": 495.5
+    },
+    "slack": {
+      "n": 2,
+      "population_chunks": 6576,
+      "population_documents": 2789,
+      "seconds_mean": 5.3326583924999795,
+      "seconds_min": 3.7167452409998987,
+      "seconds_max": 6.94857154400006,
+      "prompt_tokens_mean": 427.5,
+      "completion_tokens_mean": 388.5
+    }
+  },
+  "pilot_corpus_projection": {
+    "estimated_chunks": 15139,
+    "extraction_wall_hours": 25.032672920860254,
+    "observed_min_max_sensitivity_hours": [
+      19.74832603158436,
+      30.317019810136145
+    ],
+    "prompt_tokens": 8192892.5,
+    "completion_tokens": 6451181.0
+  },
+  "budget_hours": null,
+  "budget_status": "not_provided",
+  "limitations": [
+    "Two random chunks per source is a small cost sample; sensitivity range is NOT a confidence interval.",
+    "Full corpus chunk counts are estimated from per-source pilot chunks/documents.",
+    "Elapsed inference wall time includes CPU offload and local server overhead; it is not isolated GPU time.",
+    "API billing is zero for local inference; electricity and hardware costs were not priced.",
+    "Full extraction estimate excludes corpus preparation, graph assembly, query generation and summary inference."
+  ],
+  "full_corpus_documents": 511958,
+  "full_index_sha256": "854cda12a43334a9b7c9ebbb4a069a089d52fd7033bc71d79bdbf54f708137fb",
+  "full_corpus_projection": {
+    "estimated_chunks": 1550253.215478589,
+    "extraction_wall_hours": 2563.18664318819,
+    "observed_min_max_sensitivity_hours": [
+      2022.1882177376651,
+      3104.185068638715
+    ],
+    "prompt_tokens": 838991231.5343223,
+    "completion_tokens": 660599490.4717716
+  },
+  "actual_summaries": {
+    "seconds": 39.151680328000566,
+    "prompt_tokens": 3988,
+    "completion_tokens": 2278
+  },
+  "summary_methods": {
+    "extractive_singleton": 160,
+    "local_model_synthesis": 17
+  }
+}

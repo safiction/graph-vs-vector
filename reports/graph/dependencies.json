@@ -1,0 +1,34 @@
+{
+  "state": "waiting_for_shared_inputs",
+  "pilot_complete": true,
+  "frozen_corpus_run_complete": false,
+  "preliminary_answers_saved": 0,
+  "router_fitted_on_real_development_scores": false,
+  "missing_inputs": [
+    "agreed indexing budget",
+    "frozen corpus and chunk manifest",
+    "shared answer-generator settings/token counter/adapter",
+    "preliminary 40-question selection",
+    "paired development scores for the participating retrievers"
+  ],
+  "checked_repositories": [
+    "/root/graph-vs-vector",
+    "/root/EnterpriseRAG-Bench"
+  ],
+  "available_components": [
+    "resumable graph extraction",
+    "entity linking and bounded neighbourhood retrieval",
+    "Leiden community summaries and global retrieval",
+    "source audit",
+    "measured cost projection",
+    "shared-generator adapter runner",
+    "development-only routing prototype implementation"
+  ],
+  "untouched_ownership": [
+    "corpus/question selection",
+    "BM25/vector baselines",
+    "shared generation implementation",
+    "correctness grading",
+    "project plan"
+  ]
+}
