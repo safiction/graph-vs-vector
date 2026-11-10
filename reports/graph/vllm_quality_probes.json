@@ -1,0 +1,607 @@
+{
+  "purpose": "Agent-authored extraction microbenchmark; no evaluated benchmark questions or grading labels",
+  "model": {
+    "model": "graph-qwen35-9b-fp8",
+    "backend": "vllm",
+    "server_version": "0.33.0",
+    "weights_manifest_sha256": "2c085f3f7304dc82104df81d2e6946fd5dfe82a6225aea04499e6923c03b7405",
+    "server_config_sha256": "0e04c34b4d5ca70cbfdc73f405973d69e7f791aa550413b84587e74b444fdcd2",
+    "sampling": {
+      "temperature": 0,
+      "top_p": 1,
+      "seed": 42,
+      "presence_penalty": 0,
+      "frequency_penalty": 0,
+      "repetition_penalty": 1,
+      "enable_thinking": false
+    }
+  },
+  "cases": [
+    {
+      "id": "ownership",
+      "text": "Redwood Inference owns control-plane functional compatibility. Customer infra owns cluster lifecycle.",
+      "facts": [
+        "Redwood Inference owns control-plane functional compatibility",
+        "Customer infra owns cluster lifecycle"
+      ],
+      "raw": "{\n  \"entities\": [\n    {\n      \"name\": \"Redwood Inference\",\n      \"type\": \"company\"\n    },\n    {\n      \"name\": \"control-plane functional compatibility\",\n      \"type\": \"technical concept\"\n    },\n    {\n      \"name\": \"Customer infra\",\n      \"type\": \"system\"\n    },\n    {\n      \"name\": \"cluster lifecycle\",\n      \"type\": \"technical concept\"\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"Redwood Inference\",\n      \"target\": \"control-plane functional compatibility\",\n      \"predicate\": \"owns\",\n      \"quote\": \"Redwood Inference owns control-plane functional compatibility\"\n    },\n    {\n      \"source\": \"Customer infra\",\n      \"target\": \"cluster lifecycle\",\n      \"predicate\": \"owns\",\n      \"quote\": \"Customer infra owns cluster lifecycle\"\n    }\n  ]\n}",
+      "metrics": {
+        "prompt_eval_count": 337,
+        "eval_count": 216,
+        "done_reason": "stop",
+        "wall_seconds": 4.7518413100006,
+        "usage": {
+          "prompt_tokens": 337,
+          "total_tokens": 553,
+          "completion_tokens": 216,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "backend": "vllm"
+      },
+      "fingerprint": "4c12282b4a11624fd9056c252251e07f85c055a5a6c85b2af0dc009ecea8fdd7",
+      "validated": {
+        "entities": [
+          {
+            "name": "Redwood Inference",
+            "type": "company"
+          },
+          {
+            "name": "control-plane functional compatibility",
+            "type": "technical concept"
+          },
+          {
+            "name": "Customer infra",
+            "type": "system"
+          },
+          {
+            "name": "cluster lifecycle",
+            "type": "technical concept"
+          }
+        ],
+        "relations": [
+          {
+            "source": "Redwood Inference",
+            "target": "control-plane functional compatibility",
+            "predicate": "owns",
+            "quote": "Redwood Inference owns control-plane functional compatibility"
+          },
+          {
+            "source": "Customer infra",
+            "target": "cluster lifecycle",
+            "predicate": "owns",
+            "quote": "Customer infra owns cluster lifecycle"
+          }
+        ],
+        "rejected": []
+      },
+      "status": "ok"
+    },
+    {
+      "id": "billing",
+      "text": "Billing Platform (owner: Finance Ops) implements proration calculations. RevRec Processor (owner: Finance Accounting) performs true-ups.",
+      "facts": [
+        "Finance Ops owns Billing Platform",
+        "Finance Accounting owns RevRec Processor"
+      ],
+      "raw": "{\n  \"entities\": [\n    {\n      \"name\": \"Billing Platform\",\n      \"type\": \"system\"\n    },\n    {\n      \"name\": \"Finance Ops\",\n      \"type\": \"organization\"\n    },\n    {\n      \"name\": \"RevRec Processor\",\n      \"type\": \"system\"\n    },\n    {\n      \"name\": \"Finance Accounting\",\n      \"type\": \"organization\"\n    },\n    {\n      \"name\": \"proration calculations\",\n      \"type\": \"function\"\n    },\n    {\n      \"name\": \"true-ups\",\n      \"type\": \"function\"\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"Billing Platform\",\n      \"target\": \"Finance Ops\",\n      \"predicate\": \"has owner\",\n      \"quote\": \"Billing Platform (owner: Finance Ops)\"\n    },\n    {\n      \"source\": \"Billing Platform\",\n      \"target\": \"proration calculations\",\n      \"predicate\": \"implements\",\n      \"quote\": \"Billing Platform ... implements proration calculations\"\n    },\n    {\n      \"source\": \"RevRec Processor\",\n      \"target\": \"Finance Accounting\",\n      \"predicate\": \"has owner\",\n      \"quote\": \"RevRec Processor (owner: Finance Accounting)\"\n    },\n    {\n      \"source\": \"RevRec Processor\",\n      \"target\": \"true-ups\",\n      \"predicate\": \"performs\",\n      \"quote\": \"RevRec Processor ... performs true-ups\"\n    }\n  ]\n}",
+      "metrics": {
+        "prompt_eval_count": 347,
+        "eval_count": 353,
+        "done_reason": "stop",
+        "wall_seconds": 7.414690567000434,
+        "usage": {
+          "prompt_tokens": 347,
+          "total_tokens": 700,
+          "completion_tokens": 353,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "backend": "vllm"
+      },
+      "fingerprint": "750d64927ecdf3f55ce58563bb3b2bcbcb0c273b42e36b8a3d2ae84e6a7f1f52",
+      "validated": {
+        "entities": [
+          {
+            "name": "Billing Platform",
+            "type": "system"
+          },
+          {
+            "name": "Finance Ops",
+            "type": "organization"
+          },
+          {
+            "name": "RevRec Processor",
+            "type": "system"
+          },
+          {
+            "name": "Finance Accounting",
+            "type": "organization"
+          },
+          {
+            "name": "proration calculations",
+            "type": "function"
+          },
+          {
+            "name": "true-ups",
+            "type": "function"
+          }
+        ],
+        "relations": [
+          {
+            "source": "Billing Platform",
+            "target": "Finance Ops",
+            "predicate": "has owner",
+            "quote": "Billing Platform (owner: Finance Ops)"
+          },
+          {
+            "source": "RevRec Processor",
+            "target": "Finance Accounting",
+            "predicate": "has owner",
+            "quote": "RevRec Processor (owner: Finance Accounting)"
+          }
+        ],
+        "rejected": [
+          {
+            "kind": "relation",
+            "item": {
+              "source": "Billing Platform",
+              "target": "proration calculations",
+              "predicate": "implements",
+              "quote": "Billing Platform ... implements proration calculations"
+            },
+            "reason": "unverifiable_support_or_endpoints"
+          },
+          {
+            "kind": "relation",
+            "item": {
+              "source": "RevRec Processor",
+              "target": "true-ups",
+              "predicate": "performs",
+              "quote": "RevRec Processor ... performs true-ups"
+            },
+            "reason": "unverifiable_support_or_endpoints"
+          }
+        ]
+      },
+      "status": "ok"
+    },
+    {
+      "id": "direction",
+      "text": "Alice Chen manages Bob Reed. Bob Reed reviews Project Cedar. Alice Chen does not manage Carol Wu.",
+      "facts": [
+        "Alice Chen manages Bob Reed",
+        "Bob Reed reviews Project Cedar",
+        "Alice Chen does not manage Carol Wu"
+      ],
+      "raw": "{\n  \"entities\": [\n    {\"name\": \"Alice Chen\", \"type\": \"person\"},\n    {\"name\": \"Bob Reed\", \"type\": \"person\"},\n    {\"name\": \"Carol Wu\", \"type\": \"person\"},\n    {\"name\": \"Project Cedar\", \"type\": \"project\"}\n  ],\n  \"relations\": [\n    {\n      \"source\": \"Alice Chen\",\n      \"target\": \"Bob Reed\",\n      \"predicate\": \"manages\",\n      \"quote\": \"Alice Chen manages Bob Reed\"\n    },\n    {\n      \"source\": \"Bob Reed\",\n      \"target\": \"Project Cedar\",\n      \"predicate\": \"reviews\",\n      \"quote\": \"Bob Reed reviews Project Cedar\"\n    },\n    {\n      \"source\": \"Alice Chen\",\n      \"target\": \"Carol Wu\",\n      \"predicate\": \"does not manage\",\n      \"quote\": \"Alice Chen does not manage Carol Wu\"\n    }\n  ]\n}",
+      "metrics": {
+        "prompt_eval_count": 341,
+        "eval_count": 219,
+        "done_reason": "stop",
+        "wall_seconds": 4.810259779000262,
+        "usage": {
+          "prompt_tokens": 341,
+          "total_tokens": 560,
+          "completion_tokens": 219,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "backend": "vllm"
+      },
+      "fingerprint": "1ff1daf9e5963b336378dba64620a3f95b74d344fc6f2f89578ccd9a3b5b2537",
+      "validated": {
+        "entities": [
+          {
+            "name": "Alice Chen",
+            "type": "person"
+          },
+          {
+            "name": "Bob Reed",
+            "type": "person"
+          },
+          {
+            "name": "Carol Wu",
+            "type": "person"
+          },
+          {
+            "name": "Project Cedar",
+            "type": "project"
+          }
+        ],
+        "relations": [
+          {
+            "source": "Alice Chen",
+            "target": "Bob Reed",
+            "predicate": "manages",
+            "quote": "Alice Chen manages Bob Reed"
+          },
+          {
+            "source": "Bob Reed",
+            "target": "Project Cedar",
+            "predicate": "reviews",
+            "quote": "Bob Reed reviews Project Cedar"
+          },
+          {
+            "source": "Alice Chen",
+            "target": "Carol Wu",
+            "predicate": "does not manage",
+            "quote": "Alice Chen does not manage Carol Wu"
+          }
+        ],
+        "rejected": []
+      },
+      "status": "ok"
+    },
+    {
+      "id": "proposal_status",
+      "text": "Priya Nair proposed Project Quartz. Legal rejected Project Quartz. The proposal has not been approved.",
+      "facts": [
+        "Priya Nair proposed Project Quartz",
+        "Legal rejected Project Quartz"
+      ],
+      "forbidden": [
+        "Legal approved Project Quartz"
+      ],
+      "raw": "{\n  \"entities\": [\n    {\n      \"name\": \"Priya Nair\",\n      \"type\": \"person\"\n    },\n    {\n      \"name\": \"Project Quartz\",\n      \"type\": \"project\"\n    },\n    {\n      \"name\": \"Legal\",\n      \"type\": \"organization\"\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"Priya Nair\",\n      \"target\": \"Project Quartz\",\n      \"predicate\": \"proposed\",\n      \"quote\": \"Priya Nair proposed Project Quartz\"\n    },\n    {\n      \"source\": \"Legal\",\n      \"target\": \"Project Quartz\",\n      \"predicate\": \"rejected\",\n      \"quote\": \"Legal rejected Project Quartz\"\n    }\n  ]\n}",
+      "metrics": {
+        "prompt_eval_count": 341,
+        "eval_count": 183,
+        "done_reason": "stop",
+        "wall_seconds": 4.088444250000066,
+        "usage": {
+          "prompt_tokens": 341,
+          "total_tokens": 524,
+          "completion_tokens": 183,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "backend": "vllm"
+      },
+      "fingerprint": "f2681d044f65527f0bd671855c35dccd759ef8a01946d671dd2097d43760e60b",
+      "validated": {
+        "entities": [
+          {
+            "name": "Priya Nair",
+            "type": "person"
+          },
+          {
+            "name": "Project Quartz",
+            "type": "project"
+          },
+          {
+            "name": "Legal",
+            "type": "organization"
+          }
+        ],
+        "relations": [
+          {
+            "source": "Priya Nair",
+            "target": "Project Quartz",
+            "predicate": "proposed",
+            "quote": "Priya Nair proposed Project Quartz"
+          },
+          {
+            "source": "Legal",
+            "target": "Project Quartz",
+            "predicate": "rejected",
+            "quote": "Legal rejected Project Quartz"
+          }
+        ],
+        "rejected": []
+      },
+      "status": "ok"
+    },
+    {
+      "id": "numbers",
+      "text": "Gateway Cedar enforces max_file_size of 10 MiB and max_total_request_size of 50 MiB. Gateway Birch uses a different configuration.",
+      "facts": [
+        "max_file_size is 10 MiB",
+        "max_total_request_size is 50 MiB"
+      ],
+      "forbidden": [
+        "max_file_size is 50 MiB",
+        "Gateway Birch has the same limits"
+      ],
+      "raw": "{\n  \"entities\": [\n    {\n      \"name\": \"Gateway Cedar\",\n      \"type\": \"system\"\n    },\n    {\n      \"name\": \"max_file_size\",\n      \"type\": \"configuration\"\n    },\n    {\n      \"name\": \"10 MiB\",\n      \"type\": \"value\"\n    },\n    {\n      \"name\": \"max_total_request_size\",\n      \"type\": \"configuration\"\n    },\n    {\n      \"name\": \"50 MiB\",\n      \"type\": \"value\"\n    },\n    {\n      \"name\": \"Gateway Birch\",\n      \"type\": \"system\"\n    },\n    {\n      \"name\": \"different configuration\",\n      \"type\": \"configuration\"\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"Gateway Cedar\",\n      \"target\": \"max_file_size\",\n      \"predicate\": \"enforces\",\n      \"quote\": \"Gateway Cedar enforces max_file_size of 10 MiB\"\n    },\n    {\n      \"source\": \"Gateway Cedar\",\n      \"target\": \"max_total_request_size\",\n      \"predicate\": \"enforces\",\n      \"quote\": \"Gateway Cedar enforces max_total_request_size of 50 MiB\"\n    },\n    {\n      \"source\": \"Gateway Birch\",\n      \"target\": \"different configuration\",\n      \"predicate\": \"uses\",\n      \"quote\": \"Gateway Birch uses a different configuration\"\n    }\n  ]\n}",
+      "metrics": {
+        "prompt_eval_count": 353,
+        "eval_count": 345,
+        "done_reason": "stop",
+        "wall_seconds": 7.2616385549999904,
+        "usage": {
+          "prompt_tokens": 353,
+          "total_tokens": 698,
+          "completion_tokens": 345,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "backend": "vllm"
+      },
+      "fingerprint": "93413f789a6509a6f253d6f12337352188bd782b45afc017003399dbb615a8a7",
+      "validated": {
+        "entities": [
+          {
+            "name": "Gateway Cedar",
+            "type": "system"
+          },
+          {
+            "name": "max_file_size",
+            "type": "configuration"
+          },
+          {
+            "name": "10 MiB",
+            "type": "value"
+          },
+          {
+            "name": "max_total_request_size",
+            "type": "configuration"
+          },
+          {
+            "name": "50 MiB",
+            "type": "value"
+          },
+          {
+            "name": "Gateway Birch",
+            "type": "system"
+          },
+          {
+            "name": "different configuration",
+            "type": "configuration"
+          }
+        ],
+        "relations": [
+          {
+            "source": "Gateway Cedar",
+            "target": "max_file_size",
+            "predicate": "enforces",
+            "quote": "Gateway Cedar enforces max_file_size of 10 MiB"
+          },
+          {
+            "source": "Gateway Birch",
+            "target": "different configuration",
+            "predicate": "uses",
+            "quote": "Gateway Birch uses a different configuration"
+          }
+        ],
+        "rejected": [
+          {
+            "kind": "relation",
+            "item": {
+              "source": "Gateway Cedar",
+              "target": "max_total_request_size",
+              "predicate": "enforces",
+              "quote": "Gateway Cedar enforces max_total_request_size of 50 MiB"
+            },
+            "reason": "unverifiable_support_or_endpoints"
+          }
+        ]
+      },
+      "status": "ok"
+    },
+    {
+      "id": "distinct_names",
+      "text": "Project Atlas belongs to Northwind Labs. Project Atlas-2 belongs to Contoso Research. Atlas and Atlas-2 are separate projects.",
+      "facts": [
+        "Project Atlas belongs to Northwind Labs",
+        "Project Atlas-2 belongs to Contoso Research"
+      ],
+      "forbidden": [
+        "Project Atlas belongs to Contoso Research",
+        "Project Atlas-2 belongs to Northwind Labs"
+      ],
+      "raw": "{\n  \"entities\": [\n    {\n      \"name\": \"Project Atlas\",\n      \"type\": \"project\"\n    },\n    {\n      \"name\": \"Northwind Labs\",\n      \"type\": \"company\"\n    },\n    {\n      \"name\": \"Project Atlas-2\",\n      \"type\": \"project\"\n    },\n    {\n      \"name\": \"Contoso Research\",\n      \"type\": \"company\"\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"Project Atlas\",\n      \"target\": \"Northwind Labs\",\n      \"predicate\": \"belongs to\",\n      \"quote\": \"Project Atlas belongs to Northwind Labs\"\n    },\n    {\n      \"source\": \"Project Atlas-2\",\n      \"target\": \"Contoso Research\",\n      \"predicate\": \"belongs to\",\n      \"quote\": \"Project Atlas-2 belongs to Contoso Research\"\n    },\n    {\n      \"source\": \"Project Atlas\",\n      \"target\": \"Project Atlas-2\",\n      \"predicate\": \"are separate projects\",\n      \"quote\": \"Atlas and Atlas-2 are separate projects\"\n    }\n  ]\n}",
+      "metrics": {
+        "prompt_eval_count": 348,
+        "eval_count": 269,
+        "done_reason": "stop",
+        "wall_seconds": 5.802951043999201,
+        "usage": {
+          "prompt_tokens": 348,
+          "total_tokens": 617,
+          "completion_tokens": 269,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "backend": "vllm"
+      },
+      "fingerprint": "757e00e7f3df5254cfc632279a0fcc24e9d7aa0edac274b41d775f44c3491ba3",
+      "validated": {
+        "entities": [
+          {
+            "name": "Project Atlas",
+            "type": "project"
+          },
+          {
+            "name": "Northwind Labs",
+            "type": "company"
+          },
+          {
+            "name": "Project Atlas-2",
+            "type": "project"
+          },
+          {
+            "name": "Contoso Research",
+            "type": "company"
+          }
+        ],
+        "relations": [
+          {
+            "source": "Project Atlas",
+            "target": "Northwind Labs",
+            "predicate": "belongs to",
+            "quote": "Project Atlas belongs to Northwind Labs"
+          },
+          {
+            "source": "Project Atlas-2",
+            "target": "Contoso Research",
+            "predicate": "belongs to",
+            "quote": "Project Atlas-2 belongs to Contoso Research"
+          }
+        ],
+        "rejected": [
+          {
+            "kind": "relation",
+            "item": {
+              "source": "Project Atlas",
+              "target": "Project Atlas-2",
+              "predicate": "are separate projects",
+              "quote": "Atlas and Atlas-2 are separate projects"
+            },
+            "reason": "unverifiable_support_or_endpoints"
+          }
+        ]
+      },
+      "status": "ok"
+    },
+    {
+      "id": "conditional",
+      "text": "If latency exceeds 500 ms, Gateway Cedar will notify SRE. No notification has been sent yet.",
+      "facts": [
+        "Gateway Cedar will notify SRE if latency exceeds 500 ms"
+      ],
+      "forbidden": [
+        "Gateway Cedar already notified SRE"
+      ],
+      "raw": "{\n  \"entities\": [\n    {\n      \"name\": \"latency\",\n      \"type\": \"metric\"\n    },\n    {\n      \"name\": \"500 ms\",\n      \"type\": \"threshold\"\n    },\n    {\n      \"name\": \"Gateway Cedar\",\n      \"type\": \"system\"\n    },\n    {\n      \"name\": \"SRE\",\n      \"type\": \"role\"\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"latency\",\n      \"target\": \"500 ms\",\n      \"predicate\": \"exceeds\",\n      \"quote\": \"If latency exceeds 500 ms\"\n    },\n    {\n      \"source\": \"Gateway Cedar\",\n      \"target\": \"SRE\",\n      \"predicate\": \"will notify\",\n      \"quote\": \"Gateway Cedar will notify SRE\"\n    },\n    {\n      \"source\": \"Gateway Cedar\",\n      \"target\": \"SRE\",\n      \"predicate\": \"has not sent notification to\",\n      \"quote\": \"No notification has been sent yet\"\n    }\n  ]\n}",
+      "metrics": {
+        "prompt_eval_count": 344,
+        "eval_count": 262,
+        "done_reason": "stop",
+        "wall_seconds": 5.667110933999538,
+        "usage": {
+          "prompt_tokens": 344,
+          "total_tokens": 606,
+          "completion_tokens": 262,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "backend": "vllm"
+      },
+      "fingerprint": "be80028a24fa302bfe2e3b233cdb221a951eef840747919f68f36e290744887d",
+      "validated": {
+        "entities": [
+          {
+            "name": "latency",
+            "type": "metric"
+          },
+          {
+            "name": "500 ms",
+            "type": "threshold"
+          },
+          {
+            "name": "Gateway Cedar",
+            "type": "system"
+          },
+          {
+            "name": "SRE",
+            "type": "role"
+          }
+        ],
+        "relations": [
+          {
+            "source": "Gateway Cedar",
+            "target": "SRE",
+            "predicate": "will notify (condition: If latency exceeds 500 ms)",
+            "quote": "If latency exceeds 500 ms, Gateway Cedar will notify SRE.",
+            "condition": "If latency exceeds 500 ms"
+          }
+        ],
+        "rejected": [
+          {
+            "kind": "relation",
+            "item": {
+              "source": "latency",
+              "target": "500 ms",
+              "predicate": "exceeds",
+              "quote": "If latency exceeds 500 ms"
+            },
+            "reason": "conditional_antecedent_is_not_an_observed_fact"
+          },
+          {
+            "kind": "relation",
+            "item": {
+              "source": "Gateway Cedar",
+              "target": "SRE",
+              "predicate": "has not sent notification to",
+              "quote": "No notification has been sent yet"
+            },
+            "reason": "unverifiable_support_or_endpoints"
+          }
+        ]
+      },
+      "status": "ok"
+    },
+    {
+      "id": "russian",
+      "text": "Команда Альфа обслуживает сервис Кедр. Команда Бета обслуживает сервис Берёза. Анна проверяет сервис Кедр.",
+      "facts": [
+        "Команда Альфа обслуживает сервис Кедр",
+        "Команда Бета обслуживает сервис Берёза",
+        "Анна проверяет сервис Кедр"
+      ],
+      "raw": "{\n  \"entities\": [\n    {\"name\": \"Команда Альфа\", \"type\": \"team\"},\n    {\"name\": \"сервис Кедр\", \"type\": \"service\"},\n    {\"name\": \"Команда Бета\", \"type\": \"team\"},\n    {\"name\": \"сервис Берёза\", \"type\": \"service\"},\n    {\"name\": \"Анна\", \"type\": \"person\"}\n  ],\n  \"relations\": [\n    {\n      \"source\": \"Команда Альфа\",\n      \"target\": \"сервис Кедр\",\n      \"predicate\": \"обслуживает\",\n      \"quote\": \"Команда Альфа обслуживает сервис Кедр\"\n    },\n    {\n      \"source\": \"Команда Бета\",\n      \"target\": \"сервис Берёза\",\n      \"predicate\": \"обслуживает\",\n      \"quote\": \"Команда Бета обслуживает сервис Берёза\"\n    },\n    {\n      \"source\": \"Анна\",\n      \"target\": \"сервис Кедр\",\n      \"predicate\": \"проверяет\",\n      \"quote\": \"Анна проверяет сервис Кедр\"\n    }\n  ]\n}",
+      "metrics": {
+        "prompt_eval_count": 349,
+        "eval_count": 268,
+        "done_reason": "stop",
+        "wall_seconds": 5.784327473000303,
+        "usage": {
+          "prompt_tokens": 349,
+          "total_tokens": 617,
+          "completion_tokens": 268,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "backend": "vllm"
+      },
+      "fingerprint": "8a0db8db85e98b7c1445efb9d4e44c7ceb472a618048d1be87c597a21b863001",
+      "validated": {
+        "entities": [
+          {
+            "name": "Команда Альфа",
+            "type": "team"
+          },
+          {
+            "name": "сервис Кедр",
+            "type": "service"
+          },
+          {
+            "name": "Команда Бета",
+            "type": "team"
+          },
+          {
+            "name": "сервис Берёза",
+            "type": "service"
+          },
+          {
+            "name": "Анна",
+            "type": "person"
+          }
+        ],
+        "relations": [
+          {
+            "source": "Команда Альфа",
+            "target": "сервис Кедр",
+            "predicate": "обслуживает",
+            "quote": "Команда Альфа обслуживает сервис Кедр"
+          },
+          {
+            "source": "Команда Бета",
+            "target": "сервис Берёза",
+            "predicate": "обслуживает",
+            "quote": "Команда Бета обслуживает сервис Берёза"
+          },
+          {
+            "source": "Анна",
+            "target": "сервис Кедр",
+            "predicate": "проверяет",
+            "quote": "Анна проверяет сервис Кедр"
+          }
+        ],
+        "rejected": []
+      },
+      "status": "ok"
+    }
+  ]
+}

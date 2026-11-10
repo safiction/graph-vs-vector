@@ -1,0 +1,175 @@
+{
+  "selection_metric": "completed chunks / measured batch wall seconds",
+  "sample_sha256": "10d62abc47d34c3d1e538cd802334b23153533f8347eb1b444a01081b285dbe4",
+  "selected_workers": 16,
+  "results": [
+    {
+      "workers": 1,
+      "elapsed_wall_seconds": 71.10005845600017,
+      "generated_tokens": 5920,
+      "completion_tokens_per_second": 83.2629413893317,
+      "chunks_per_second": 0.253164348818914,
+      "status": {
+        "selected_chunks": 18,
+        "completed_chunks": 18,
+        "error_chunks": 0,
+        "pending_chunks": 0,
+        "extraction_config_sha256": "e5812b5fd1458fb3fae553ad8eaf06c91893679f4a12809f4b8f6bc7b4faa08b",
+        "complete": true
+      },
+      "model": {
+        "model": "graph-qwen35-9b-fp8",
+        "backend": "vllm",
+        "server_version": "0.33.0",
+        "weights_manifest_sha256": "2c085f3f7304dc82104df81d2e6946fd5dfe82a6225aea04499e6923c03b7405",
+        "server_config_sha256": "320ef47e92be2cf4ac3e02d0ba1d909c20527ea41636cbe12c9cc45e645eab95",
+        "sampling": {
+          "temperature": 0,
+          "top_p": 1,
+          "seed": 42,
+          "presence_penalty": 0,
+          "frequency_penalty": 0,
+          "repetition_penalty": 1,
+          "enable_thinking": false
+        }
+      },
+      "accepted_entity_mentions": 111,
+      "accepted_relations": 16,
+      "rejected_items": 67,
+      "gpu": {
+        "errors": [],
+        "mean_gpu_utilization_percent": 98.46323529411765,
+        "peak_gpu_utilization_percent": 99.0,
+        "peak_memory_mib": 14900.0,
+        "mean_power_watts": 207.31441176470588
+      }
+    },
+    {
+      "workers": 4,
+      "elapsed_wall_seconds": 23.208173005999924,
+      "generated_tokens": 6276,
+      "completion_tokens_per_second": 270.4219758434879,
+      "chunks_per_second": 0.7755888408513038,
+      "status": {
+        "selected_chunks": 18,
+        "completed_chunks": 18,
+        "error_chunks": 0,
+        "pending_chunks": 0,
+        "extraction_config_sha256": "020215ed2b45cf60f0fe1164fa6a193b68d6617eb7ed350cb7834a2acfba7509",
+        "complete": true
+      },
+      "model": {
+        "model": "graph-qwen35-9b-fp8",
+        "backend": "vllm",
+        "server_version": "0.33.0",
+        "weights_manifest_sha256": "2c085f3f7304dc82104df81d2e6946fd5dfe82a6225aea04499e6923c03b7405",
+        "server_config_sha256": "320ef47e92be2cf4ac3e02d0ba1d909c20527ea41636cbe12c9cc45e645eab95",
+        "sampling": {
+          "temperature": 0,
+          "top_p": 1,
+          "seed": 42,
+          "presence_penalty": 0,
+          "frequency_penalty": 0,
+          "repetition_penalty": 1,
+          "enable_thinking": false
+        }
+      },
+      "accepted_entity_mentions": 117,
+      "accepted_relations": 20,
+      "rejected_items": 63,
+      "gpu": {
+        "errors": [],
+        "mean_gpu_utilization_percent": 98.62222222222222,
+        "peak_gpu_utilization_percent": 99.0,
+        "peak_memory_mib": 14992.0,
+        "mean_power_watts": 207.80644444444445
+      }
+    },
+    {
+      "workers": 8,
+      "elapsed_wall_seconds": 13.82976823800027,
+      "generated_tokens": 6085,
+      "completion_tokens_per_second": 439.9929120489634,
+      "chunks_per_second": 1.301540249282061,
+      "status": {
+        "selected_chunks": 18,
+        "completed_chunks": 18,
+        "error_chunks": 0,
+        "pending_chunks": 0,
+        "extraction_config_sha256": "42f5f532d5ac678ae39e6810e7cd7e217f5bedc911b85eca4460bf2117717135",
+        "complete": true
+      },
+      "model": {
+        "model": "graph-qwen35-9b-fp8",
+        "backend": "vllm",
+        "server_version": "0.33.0",
+        "weights_manifest_sha256": "2c085f3f7304dc82104df81d2e6946fd5dfe82a6225aea04499e6923c03b7405",
+        "server_config_sha256": "320ef47e92be2cf4ac3e02d0ba1d909c20527ea41636cbe12c9cc45e645eab95",
+        "sampling": {
+          "temperature": 0,
+          "top_p": 1,
+          "seed": 42,
+          "presence_penalty": 0,
+          "frequency_penalty": 0,
+          "repetition_penalty": 1,
+          "enable_thinking": false
+        }
+      },
+      "accepted_entity_mentions": 112,
+      "accepted_relations": 16,
+      "rejected_items": 64,
+      "gpu": {
+        "errors": [],
+        "mean_gpu_utilization_percent": 98.77777777777777,
+        "peak_gpu_utilization_percent": 99.0,
+        "peak_memory_mib": 15063.0,
+        "mean_power_watts": 211.9048148148148
+      }
+    },
+    {
+      "workers": 16,
+      "elapsed_wall_seconds": 9.779933238000012,
+      "generated_tokens": 6235,
+      "completion_tokens_per_second": 637.529914393879,
+      "chunks_per_second": 1.8405033615220245,
+      "status": {
+        "selected_chunks": 18,
+        "completed_chunks": 18,
+        "error_chunks": 0,
+        "pending_chunks": 0,
+        "extraction_config_sha256": "f2949710ada4638c6916f3630ab53c4b48691dd621fbbbdc0749e64ddf84cfe2",
+        "complete": true
+      },
+      "model": {
+        "model": "graph-qwen35-9b-fp8",
+        "backend": "vllm",
+        "server_version": "0.33.0",
+        "weights_manifest_sha256": "2c085f3f7304dc82104df81d2e6946fd5dfe82a6225aea04499e6923c03b7405",
+        "server_config_sha256": "320ef47e92be2cf4ac3e02d0ba1d909c20527ea41636cbe12c9cc45e645eab95",
+        "sampling": {
+          "temperature": 0,
+          "top_p": 1,
+          "seed": 42,
+          "presence_penalty": 0,
+          "frequency_penalty": 0,
+          "repetition_penalty": 1,
+          "enable_thinking": false
+        }
+      },
+      "accepted_entity_mentions": 113,
+      "accepted_relations": 13,
+      "rejected_items": 69,
+      "gpu": {
+        "errors": [],
+        "mean_gpu_utilization_percent": 98.78947368421052,
+        "peak_gpu_utilization_percent": 99.0,
+        "peak_memory_mib": 15171.0,
+        "mean_power_watts": 216.50578947368422
+      }
+    }
+  ],
+  "phase": "Initial fixed-prompt concurrency sweep before condition/whitespace quality fixes",
+  "limitations": [
+    "Not the final prompt/grammar; batch size changes can affect greedy outputs."
+  ]
+}

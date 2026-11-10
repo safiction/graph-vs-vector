@@ -1,0 +1,49 @@
+{
+  "purpose": "Agent-authored extraction microbenchmark; no evaluated benchmark questions or grading labels",
+  "cases": [
+    {
+      "id": "ownership",
+      "text": "Redwood Inference owns control-plane functional compatibility. Customer infra owns cluster lifecycle.",
+      "facts": ["Redwood Inference owns control-plane functional compatibility", "Customer infra owns cluster lifecycle"]
+    },
+    {
+      "id": "billing",
+      "text": "Billing Platform (owner: Finance Ops) implements proration calculations. RevRec Processor (owner: Finance Accounting) performs true-ups.",
+      "facts": ["Finance Ops owns Billing Platform", "Finance Accounting owns RevRec Processor"]
+    },
+    {
+      "id": "direction",
+      "text": "Alice Chen manages Bob Reed. Bob Reed reviews Project Cedar. Alice Chen does not manage Carol Wu.",
+      "facts": ["Alice Chen manages Bob Reed", "Bob Reed reviews Project Cedar", "Alice Chen does not manage Carol Wu"]
+    },
+    {
+      "id": "proposal_status",
+      "text": "Priya Nair proposed Project Quartz. Legal rejected Project Quartz. The proposal has not been approved.",
+      "facts": ["Priya Nair proposed Project Quartz", "Legal rejected Project Quartz"],
+      "forbidden": ["Legal approved Project Quartz"]
+    },
+    {
+      "id": "numbers",
+      "text": "Gateway Cedar enforces max_file_size of 10 MiB and max_total_request_size of 50 MiB. Gateway Birch uses a different configuration.",
+      "facts": ["max_file_size is 10 MiB", "max_total_request_size is 50 MiB"],
+      "forbidden": ["max_file_size is 50 MiB", "Gateway Birch has the same limits"]
+    },
+    {
+      "id": "distinct_names",
+      "text": "Project Atlas belongs to Northwind Labs. Project Atlas-2 belongs to Contoso Research. Atlas and Atlas-2 are separate projects.",
+      "facts": ["Project Atlas belongs to Northwind Labs", "Project Atlas-2 belongs to Contoso Research"],
+      "forbidden": ["Project Atlas belongs to Contoso Research", "Project Atlas-2 belongs to Northwind Labs"]
+    },
+    {
+      "id": "conditional",
+      "text": "If latency exceeds 500 ms, Gateway Cedar will notify SRE. No notification has been sent yet.",
+      "facts": ["Gateway Cedar will notify SRE if latency exceeds 500 ms"],
+      "forbidden": ["Gateway Cedar already notified SRE"]
+    },
+    {
+      "id": "russian",
+      "text": "Команда Альфа обслуживает сервис Кедр. Команда Бета обслуживает сервис Берёза. Анна проверяет сервис Кедр.",
+      "facts": ["Команда Альфа обслуживает сервис Кедр", "Команда Бета обслуживает сервис Берёза", "Анна проверяет сервис Кедр"]
+    }
+  ]
+}

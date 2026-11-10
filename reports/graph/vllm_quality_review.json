@@ -1,0 +1,54 @@
+{
+  "reviewer": "Codex agent semantic inspection; not independent human grading",
+  "purpose": "Development engineering probes used while improving the extraction prompt and source-condition guard; not a held-out accuracy evaluation",
+  "reference_facts": 17,
+  "reference_facts_supported_by_retained_relation_quotes": 16,
+  "retained_relations": 17,
+  "unsupported_retained_relations_found": 0,
+  "cases": [
+    {
+      "id": "ownership",
+      "reference_facts": 2,
+      "covered_reference_facts": 2
+    },
+    {
+      "id": "billing",
+      "reference_facts": 2,
+      "covered_reference_facts": 2
+    },
+    {
+      "id": "direction",
+      "reference_facts": 3,
+      "covered_reference_facts": 3
+    },
+    {
+      "id": "proposal_status",
+      "reference_facts": 2,
+      "covered_reference_facts": 2
+    },
+    {
+      "id": "numbers",
+      "reference_facts": 2,
+      "covered_reference_facts": 1
+    },
+    {
+      "id": "distinct_names",
+      "reference_facts": 2,
+      "covered_reference_facts": 2
+    },
+    {
+      "id": "conditional",
+      "reference_facts": 1,
+      "covered_reference_facts": 1
+    },
+    {
+      "id": "russian",
+      "reference_facts": 3,
+      "covered_reference_facts": 3
+    }
+  ],
+  "known_misses": [
+    "numbers: the 50 MiB total-request limit was named as an entity but its invented supporting quote was rejected, leaving this reference fact uncovered by retained relation quotations"
+  ],
+  "conditional_note": "The raw model dropped the if clause; source-based validation restores the exact leading condition to the consequence and rejects the antecedent as an observed fact. This guard only covers leading comma/semicolon-delimited clauses, not arbitrary semantic conditions."
+}

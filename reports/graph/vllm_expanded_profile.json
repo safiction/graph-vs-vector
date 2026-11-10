@@ -1,0 +1,41 @@
+{
+  "workers": 16,
+  "elapsed_wall_seconds": 121.82506298899989,
+  "generated_tokens": 79803,
+  "completion_tokens_per_second": 655.0622510838,
+  "chunks_per_second": 1.305150156288914,
+  "status": {
+    "selected_chunks": 159,
+    "completed_chunks": 159,
+    "error_chunks": 0,
+    "pending_chunks": 0,
+    "extraction_config_sha256": "45871df1edb2eecb32fbf944aaef1569c5339d92d755676e97a89b3076907b3b",
+    "complete": true
+  },
+  "model": {
+    "model": "graph-qwen35-9b-fp8",
+    "backend": "vllm",
+    "server_version": "0.33.0",
+    "weights_manifest_sha256": "2c085f3f7304dc82104df81d2e6946fd5dfe82a6225aea04499e6923c03b7405",
+    "server_config_sha256": "0e04c34b4d5ca70cbfdc73f405973d69e7f791aa550413b84587e74b444fdcd2",
+    "sampling": {
+      "temperature": 0,
+      "top_p": 1,
+      "seed": 42,
+      "presence_penalty": 0,
+      "frequency_penalty": 0,
+      "repetition_penalty": 1,
+      "enable_thinking": false
+    }
+  },
+  "accepted_entity_mentions": 1184,
+  "accepted_relations": 191,
+  "rejected_items": 679,
+  "gpu": {
+    "errors": [],
+    "mean_gpu_utilization_percent": 98.50214592274678,
+    "peak_gpu_utilization_percent": 100.0,
+    "peak_memory_mib": 15593.0,
+    "mean_power_watts": 171.07978540772532
+  }
+}

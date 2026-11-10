@@ -5,6 +5,12 @@ select/freeze a comparison corpus, select evaluation questions, implement the
 baselines, change the common answer prompt or grade correctness. The actual local
 pilot and remaining dependencies are recorded in [GRAPH_PILOT_REPORT.md](GRAPH_PILOT_REPORT.md).
 
+The current graph inference default is **local vLLM with Qwen3.5 9B FP8 and 16
+concurrent requests**. Use [GRAPH_5080_VLLM.md](GRAPH_5080_VLLM.md) for its separate
+server environment, launch commands and current measurements. The 35B commands
+below describe the original pilot; its exact code is commit `5e7aae6`. Checkpoints
+from that version must not be mixed with the updated prompt/backend.
+
 ## Local setup
 
 Run from the project root, in WSL/Linux on the PC with the RTX 5080. All inference
@@ -20,14 +26,14 @@ export PYTHONPATH=src
 python -m graph_rag --help
 ```
 
-The measured pilot used `qwen3.6:35b` with digest
+The original measured pilot used `qwen3.6:35b` with digest
 `a7eb95c53bcf96b4bdd008d0fab4a5dac88047d9c1a7a9ab88ed453423fbd87c`,
 Ollama `0.40.14`, Python `3.12.16` and igraph `0.11.9`. Its weight file is larger
 than the 5080's VRAM, so measured wall time includes the existing server's CPU
 offload. Hardware and the complete installed Python versions are saved in
 `data/graph/hardware.txt` and `data/graph/environment.freeze.txt`.
 
-## Reproduce the pilot
+## Original pilot workflow (commit 5e7aae6)
 
 The pilot is an extraction sample of the existing 5,000-document pilot, not a new
 frozen comparison corpus. It has two uniformly sampled chunks per source family
@@ -57,7 +63,9 @@ output directory before reproducing an interrupted preparation stage.
 
 Extraction and summaries checkpoint each completed call through an atomic rename.
 Re-run the same command to resume. `--retry-errors` explicitly retries saved
-failures while retaining earlier attempts and their costs. `--max-seconds` is a
+failures while retaining earlier attempts and their costs. Current commands also
+accept `--workers` for bounded parallel requests and record elapsed batch wall time
+separately from summed request latency. `--max-seconds` is a
 per-invocation wall-time bound checked between calls, not an agreed project budget;
 one in-flight request may finish after it. Run only one writer per output directory.
 New weights, prompts or input manifests require a separate extraction directory.

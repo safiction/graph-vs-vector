@@ -1,0 +1,172 @@
+{
+  "model": {
+    "model": "graph-qwen35-9b-fp8",
+    "backend": "vllm",
+    "server_version": "0.33.0",
+    "weights_manifest_sha256": "2c085f3f7304dc82104df81d2e6946fd5dfe82a6225aea04499e6923c03b7405",
+    "server_config_sha256": "0e04c34b4d5ca70cbfdc73f405973d69e7f791aa550413b84587e74b444fdcd2",
+    "sampling": {
+      "temperature": 0,
+      "top_p": 1,
+      "seed": 42,
+      "presence_penalty": 0,
+      "frequency_penalty": 0,
+      "repetition_penalty": 1,
+      "enable_thinking": false
+    }
+  },
+  "pilot_chunks_attempted": 159,
+  "random_cost_chunks": 144,
+  "actual": {
+    "seconds": 1847.3184008329963,
+    "prompt_tokens": 118235,
+    "completion_tokens": 79803,
+    "elapsed_wall_seconds": 121.68525404499997
+  },
+  "failed_chunks": 0,
+  "accepted_entities": 1184,
+  "accepted_relations": 191,
+  "rejected_items": 679,
+  "strata": {
+    "confluence": {
+      "n": 16,
+      "population_chunks": 278,
+      "population_documents": 51,
+      "seconds_mean": 12.50355110937511,
+      "seconds_min": 9.712069684999733,
+      "seconds_max": 15.279523060000429,
+      "prompt_tokens_mean": 774.125,
+      "completion_tokens_mean": 532.625
+    },
+    "fireflies": {
+      "n": 16,
+      "population_chunks": 610,
+      "population_documents": 99,
+      "seconds_mean": 11.434845808937439,
+      "seconds_min": 9.027949396999247,
+      "seconds_max": 13.675791677000234,
+      "prompt_tokens_mean": 789.875,
+      "completion_tokens_mean": 497.1875
+    },
+    "github": {
+      "n": 16,
+      "population_chunks": 214,
+      "population_documents": 79,
+      "seconds_mean": 12.16495299349981,
+      "seconds_min": 8.47507328699976,
+      "seconds_max": 14.963086121000742,
+      "prompt_tokens_mean": 713.4375,
+      "completion_tokens_mean": 524.5625
+    },
+    "gmail": {
+      "n": 16,
+      "population_chunks": 4973,
+      "population_documents": 1185,
+      "seconds_mean": 11.456055701937544,
+      "seconds_min": 5.754283612000108,
+      "seconds_max": 14.753876613000102,
+      "prompt_tokens_mean": 731.625,
+      "completion_tokens_mean": 495.25
+    },
+    "google_drive": {
+      "n": 16,
+      "population_chunks": 1019,
+      "population_documents": 245,
+      "seconds_mean": 10.073775430312367,
+      "seconds_min": 0.46372233599959145,
+      "seconds_max": 14.48250996600018,
+      "prompt_tokens_mean": 719.4375,
+      "completion_tokens_mean": 434
+    },
+    "hubspot": {
+      "n": 16,
+      "population_chunks": 286,
+      "population_documents": 147,
+      "seconds_mean": 11.129207714812537,
+      "seconds_min": 2.397633677000158,
+      "seconds_max": 14.412706393000008,
+      "prompt_tokens_mean": 635.0625,
+      "completion_tokens_mean": 483.375
+    },
+    "jira": {
+      "n": 16,
+      "population_chunks": 192,
+      "population_documents": 60,
+      "seconds_mean": 13.206620414750034,
+      "seconds_min": 9.14840697100044,
+      "seconds_max": 18.239405495000028,
+      "prompt_tokens_mean": 799,
+      "completion_tokens_mean": 579.8125
+    },
+    "linear": {
+      "n": 16,
+      "population_chunks": 991,
+      "population_documents": 345,
+      "seconds_mean": 11.242956487875063,
+      "seconds_min": 0.48091505599950324,
+      "seconds_max": 15.539464301999942,
+      "prompt_tokens_mean": 743.8125,
+      "completion_tokens_mean": 481.125
+    },
+    "slack": {
+      "n": 16,
+      "population_chunks": 6576,
+      "population_documents": 2789,
+      "seconds_mean": 10.545498264499884,
+      "seconds_min": 5.36491329600085,
+      "seconds_max": 13.053478829999221,
+      "prompt_tokens_mean": 736.0625,
+      "completion_tokens_mean": 457.125
+    }
+  },
+  "pilot_corpus_projection": {
+    "estimated_chunks": 15139,
+    "extraction_wall_hours": 3.046515820950561,
+    "observed_min_max_sensitivity_hours": [
+      1.4145445036280784,
+      3.893433231675747
+    ],
+    "prompt_tokens": 11133685.125,
+    "completion_tokens": 7201152.875,
+    "sum_request_latency_hours": 46.24952118183184
+  },
+  "budget_hours": null,
+  "budget_status": "not_provided",
+  "limitations": [
+    "16–16 random chunks per source; sensitivity range is NOT a confidence interval.",
+    "Full corpus chunk counts are estimated from per-source pilot chunks/documents.",
+    "Elapsed inference wall time includes client/server overhead and any configured offload; it is not isolated GPU kernel time.",
+    "API billing is zero for local inference; electricity and hardware costs were not priced.",
+    "Full extraction estimate excludes corpus preparation, graph assembly, query generation and summary inference.",
+    "Parallel wall-time projection is calibrated by measured overlapping request time / batch wall time; it is a small-batch scenario, not guaranteed steady-state throughput."
+  ],
+  "parallel_calibration": {
+    "workers": 16,
+    "measured_effective_parallelism": 15.181119646180354,
+    "sessions": 1,
+    "sum_request_seconds": 1847.3184008329963
+  },
+  "full_corpus_documents": 511958,
+  "full_index_sha256": "854cda12a43334a9b7c9ebbb4a069a089d52fd7033bc71d79bdbf54f708137fb",
+  "full_corpus_projection": {
+    "estimated_chunks": 1550253.215478589,
+    "extraction_wall_hours": 311.9577674778113,
+    "observed_min_max_sensitivity_hours": [
+      144.84236752344785,
+      398.67942776752386
+    ],
+    "prompt_tokens": 1140110009.981352,
+    "completion_tokens": 737386703.994191,
+    "sum_request_latency_hours": 4735.868192635963
+  },
+  "actual_summaries": {
+    "seconds": 671.5262078039923,
+    "prompt_tokens": 39762,
+    "completion_tokens": 29362,
+    "elapsed_wall_seconds": 54.2359938289992
+  },
+  "summary_methods": {
+    "extractive_singleton": 718,
+    "local_model_synthesis": 124
+  }
+}

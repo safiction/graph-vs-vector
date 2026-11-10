@@ -3,16 +3,20 @@ import json
 import sys
 import tempfile
 import unittest
+import threading
+from unittest.mock import patch
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
 from graph_rag.common import digest, file_digest, write_json, node_id, verified_source
 from graph_rag.extract import extract, validate_extraction
-from graph_rag.index import build_index
+from graph_rag.index import build_index, summarize, bind_summary_sources
 from graph_rag.retrieve import GraphLocalRetriever, GraphGlobalRetriever, pack_context
 from graph_rag.audit import audit
 from graph_rag.routing import train_router, route_question, SYSTEMS
 from graph_rag.run import run_preliminary
+from graph_rag.cost import measure_cost
+from graph_rag.llm import VLLMModel
 
 
 def jsonl(path, rows):
@@ -81,6 +85,133 @@ class GraphContracts(unittest.TestCase):
         self.assertTrue(status['complete'])
         self.assertEqual(self.model.calls, 3)
 
+    def test_parallel_extraction_overlaps_requests_and_resumes_each_checkpoint(self):
+        class ParallelModel(FakeModel):
+            active, peak = 0, 0
+            lock = threading.Lock()
+            two_started = threading.Event()
+
+            def chat(self, *args, **kwargs):
+                with self.lock:
+                    self.active += 1
+                    self.peak = max(self.peak, self.active)
+                    if self.active == 2:
+                        self.two_started.set()
+                if not self.two_started.wait(timeout=2):
+                    raise RuntimeError('Requests did not overlap')
+                try:
+                    return super().chat(*args, **kwargs)
+                finally:
+                    with self.lock:
+                        self.active -= 1
+
+        model, output = ParallelModel(), self.root / 'parallel'
+        result = extract(self.chunks, self.manifest, output, model, workers=2)
+        self.assertTrue(result['complete'])
+        self.assertEqual(model.peak, 2)
+        self.assertEqual(model.calls, 3)
+        extract(self.chunks, self.manifest, output, model, workers=2)
+        self.assertEqual(model.calls, 3)
+        self.assertEqual(len(list((output / 'sessions').glob('*.json'))), 1)
+
+    def test_parallel_cost_uses_elapsed_wall_time_instead_of_summed_latency(self):
+        sample = self.root / 'sample.json'
+        ids = [r['chunk_id'] for r in [json.loads(s) for s in self.chunks.read_text().splitlines()]]
+        write_json(sample, {'chunks_sha256': file_digest(self.chunks),
+                           'source_manifest_sha256': file_digest(self.manifest),
+                           'random_chunk_ids': ids, 'chunk_ids': ids, 'stratum_chunk_counts': {'github': 3}})
+        output = self.root / 'parallel-cost'
+        extract(self.chunks, self.manifest, output, self.model, sample=sample, workers=2)
+        for path in (output / 'records').glob('*.json'):
+            row = json.loads(path.read_text())
+            row['attempts'][0]['attempt_wall_seconds'] = 10
+            write_json(path, row)
+        path = next((output / 'sessions').glob('*.json'))
+        write_json(path, {'elapsed_wall_seconds': 15, 'sum_request_seconds': 30, 'workers': 2})
+        result = measure_cost(output, sample, self.manifest, self.root / 'cost.json')
+        self.assertEqual(result['actual']['seconds'], 30)
+        self.assertEqual(result['actual']['elapsed_wall_seconds'], 15)
+        self.assertAlmostEqual(result['pilot_corpus_projection']['extraction_wall_hours'] * 3600, 15)
+
+    def test_vllm_client_pins_local_model_and_enforces_structured_output(self):
+        weights, config = self.root / 'weights.json', self.root / 'server.json'
+        write_json(weights, {'local_model_root': '/fixture/model'})
+        write_json(config, {'max_model_len': 8192})
+        replies = [{'data': [{'id': 'fixture', 'root': '/fixture/model', 'max_model_len': 8192}]},
+                   {'version': 'fixture'}, {'choices': [{'finish_reason': 'stop', 'message': {'content': '{}'}}],
+                                           'usage': {'prompt_tokens': 7, 'completion_tokens': 2}}]
+        with patch.object(VLLMModel, 'request', side_effect=replies) as request:
+            model = VLLMModel('fixture', weight_manifest=weights, server_config=config)
+            _, metrics = model.chat('System', 'Only question text', {'type': 'object'})
+            payload = request.call_args.args[1]
+            self.assertEqual(payload['response_format']['json_schema']['schema'], {'type': 'object'})
+            self.assertFalse(payload['chat_template_kwargs']['enable_thinking'])
+            self.assertEqual(payload['presence_penalty'], 0)
+            self.assertEqual(metrics['eval_count'], 2)
+        with self.assertRaises(ValueError):
+            VLLMModel(endpoint='https://remote.example')
+
+    def test_vllm_client_rejects_a_different_live_checkpoint(self):
+        weights, config = self.root / 'weights.json', self.root / 'server.json'
+        write_json(weights, {'local_model_root': '/fixture/model'})
+        write_json(config, {'max_model_len': 8192})
+        with patch.object(VLLMModel, 'request', return_value={
+            'data': [{'id': 'fixture', 'root': '/wrong/model', 'max_model_len': 8192}]}):
+            with self.assertRaisesRegex(ValueError, 'Live vLLM model path'):
+                VLLMModel('fixture', weight_manifest=weights, server_config=config)
+
+    def test_vllm_uses_pinned_bounded_grammar_and_rejects_tampering(self):
+        schema = {'type': 'object'}
+        grammar = self.root / 'schema.ebnf'
+        grammar.write_text('root ::= "{}"\n')
+        weights, config = self.root / 'weights.json', self.root / 'server.json'
+        write_json(weights, {'local_model_root': '/fixture/model'})
+        write_json(config, {'max_model_len': 8192, 'json_grammars': {
+            digest(schema): {'file': grammar.name, 'sha256': file_digest(grammar)}}})
+        live = {'data': [{'id': 'fixture', 'root': '/fixture/model', 'max_model_len': 8192}]}
+        with patch.object(VLLMModel, 'request', side_effect=[live, {'version': 'fixture'}, {
+            'choices': [{'finish_reason': 'stop', 'message': {'content': '{}'}}], 'usage': {}}]) as request:
+            model = VLLMModel('fixture', weight_manifest=weights, server_config=config)
+            model.chat('system', 'input', schema)
+            self.assertEqual(request.call_args.args[1]['structured_outputs']['grammar'], grammar.read_text())
+            self.assertNotIn('response_format', request.call_args.args[1])
+        grammar.write_text('changed')
+        with patch.object(VLLMModel, 'request', return_value=live):
+            with self.assertRaisesRegex(ValueError, 'grammar checksum'):
+                VLLMModel('fixture', weight_manifest=weights, server_config=config)
+
+    def test_parallel_summaries_preserve_source_claims_and_resume(self):
+        class SummaryModel:
+            identity = {'model': 'summary-fixture'}
+            calls = 0
+
+            def chat(self, system, user, schema, max_tokens):
+                self.calls += 1
+                support = json.loads(user)[0]
+                return json.dumps({'title': 'Source facts', 'claims': [{
+                    'text': support['quote'], 'chunk_id': support['chunk_id'], 'quote': support['quote']}]}), {
+                        'done_reason': 'stop', 'prompt_eval_count': 10, 'eval_count': 10}
+
+        output, model = self.root / 'parallel-summaries', SummaryModel()
+        self.assertTrue(summarize(self.index_path, output, model, workers=2)['complete'])
+        calls = model.calls
+        self.assertTrue(summarize(self.index_path, output, model, workers=2)['complete'])
+        self.assertEqual(model.calls, calls)
+        self.assertTrue(audit(self.index_path, self.manifest, self.dataset, self.root / 'audit.json', output)['passed'])
+
+    def test_summary_citation_binding_requires_a_unique_verbatim_quote(self):
+        evidence = [{'chunk_id': 'correct', 'quote': 'Alpha supports Beta.'}]
+        claim = {'text': 'Alpha supports Beta.', 'chunk_id': 'mistyped-id', 'quote': 'Alpha supports Beta.'}
+        bound, corrections = bind_summary_sources([claim], evidence)
+        self.assertEqual(bound[0]['chunk_id'], 'correct')
+        self.assertEqual(bound[0]['text'], claim['text'])
+        self.assertEqual(corrections[0]['claimed_chunk_id'], 'mistyped-id')
+        self.assertEqual(claim['chunk_id'], 'mistyped-id')
+        with self.assertRaises(ValueError):
+            bind_summary_sources([claim], evidence + [{'chunk_id': 'also-possible', 'quote': claim['quote']}])
+        with self.assertRaises(ValueError):
+            bind_summary_sources([{**claim, 'quote': 'Invented text'}], evidence)
+
     def test_checkpoint_rejects_changed_corpus(self):
         with self.chunks.open('a') as stream:
             stream.write('\n')
@@ -96,6 +227,18 @@ class GraphContracts(unittest.TestCase):
         self.assertEqual(len(result['entities']), 2)
         self.assertEqual(result['relations'], [])
         self.assertEqual(len(result['rejected']), 3)
+
+    def test_conditional_rule_keeps_its_condition_and_rejects_antecedent_as_fact(self):
+        text = 'If latency exceeds 500 ms, Gateway Cedar will notify SRE. No notification has been sent yet.'
+        value = {'entities': [{'name': n, 'type': 'fixture'} for n in ('latency', '500 ms', 'Gateway Cedar', 'SRE')],
+                 'relations': [{'source': 'latency', 'target': '500 ms', 'predicate': 'exceeds', 'quote': 'If latency exceeds 500 ms'},
+                               {'source': 'Gateway Cedar', 'target': 'SRE', 'predicate': 'will notify', 'quote': 'Gateway Cedar will notify SRE'}]}
+        result = validate_extraction(value, text)
+        self.assertEqual(len(result['relations']), 1)
+        relation = result['relations'][0]
+        self.assertIn('condition: If latency exceeds 500 ms', relation['predicate'])
+        self.assertEqual(relation['quote'], 'If latency exceeds 500 ms, Gateway Cedar will notify SRE.')
+        self.assertIn(relation['quote'], text)
 
     def test_neighbourhood_depth_and_unknown_entities(self):
         one = GraphLocalRetriever(self.index_path, depth=1).retrieve_with_trace('Tell me about ALPHA')

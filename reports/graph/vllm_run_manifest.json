@@ -1,0 +1,43 @@
+{
+  "implementation_sha256": {
+    "configs/graph_extraction.ebnf": "390fc1bbc07001aae45674cb6b29f44e0d99570def5dc913f7a449caeb7ee5f2",
+    "configs/graph_summary.ebnf": "1c5003a7575f06965e38e63e6bd6e31dac96143bd987ffab58e8acc7a3313844",
+    "configs/graph_vllm_5080.json": "0e04c34b4d5ca70cbfdc73f405973d69e7f791aa550413b84587e74b444fdcd2",
+    "requirements-graph.txt": "66e83043ce66836d18f3690d90d665faa0475c0fe1950f1ac66e05567e4c0efd",
+    "requirements-vllm-graph.txt": "6596d747d1baa5a3e176de03cb9cb6299152da9c634ff365d9214863e7a3773e",
+    "scripts/benchmark_graph_5080.py": "10a1f320b427c7c6f73ba79148a5de350d8a014ef33f3fc49b5503afa3d041d9",
+    "scripts/build_graph_grammars.py": "ace314ad69338a395e979d55f45ede128aebdb05f22a55fbb73e1ee8e6347a90",
+    "scripts/serve_graph_vllm.sh": "eaf5cdb7d2237750316c0b2b8377a3cd8f1a7a5064730bfb4e9c502f2688d593",
+    "src/graph_rag/__init__.py": "14f398d4d521b4d4c1e16985a3c77e2ccc14e1ef52e20397608df4b4493a26a1",
+    "src/graph_rag/__main__.py": "cf350b88984259f3511f6c4764c540f843664371b9c3ff3ff25740895a62c5f3",
+    "src/graph_rag/audit.py": "ecfa4152ad57133a1cbf9085b447b3b421d1cbc7242256cd55f62895e4b03605",
+    "src/graph_rag/benchmark.py": "1c8a1c20bbf9ca06ebf00fdfe7ef2a19d7c4ac53e2f90608d086101911544522",
+    "src/graph_rag/common.py": "993fbb22b184c5139d00cdb8b9d3cacc405ad62262876d98f77fa0aff618cacf",
+    "src/graph_rag/cost.py": "b5aa42d6dd71defb19db301d75c2568a26bd8c9a15d9eba1ad1f4a5ab0542ca2",
+    "src/graph_rag/extract.py": "48020631052daac00d00d6122bb4078e2b1b4e5e4804d911a1b9c936bc2e425a",
+    "src/graph_rag/index.py": "b5628b2d80f59a742371bdae217e2c3f23e1c9d076c4c586673d680b7c3a3c89",
+    "src/graph_rag/llm.py": "b85a04db943139af6aa0268e32d7a77441cc68f4c756f51daaa26a0e5a4587f1",
+    "src/graph_rag/prepare.py": "25d5ebdd298323e79002a3dcd700f0f8068b12249e5529b517c0b00820e3b5c7",
+    "src/graph_rag/retrieve.py": "647a8a168c631a21bbe8b0af5c980d9352cfc3d6d043d96d096406359b9ac410",
+    "src/graph_rag/routing.py": "b99ae41ad287bc161454ae8c8988f064e360f3148ce427183ea6359f44c6d8f2",
+    "src/graph_rag/run.py": "a8d444145288e13a29db4e9781045faae289392cdfd1be838c2854664b572972",
+    "tests/test_graph_rag.py": "de225bc1a8c2f6974c70136bdc80fadfa871761b86bece51e6a866383ec0f751"
+  },
+  "weights_manifest_sha256": "2c085f3f7304dc82104df81d2e6946fd5dfe82a6225aea04499e6923c03b7405",
+  "server_config_sha256": "0e04c34b4d5ca70cbfdc73f405973d69e7f791aa550413b84587e74b444fdcd2",
+  "chunks_sha256": "e0baecd1cd80a430799ad6f73d224058e49c7ceda4769787fc6064e8eb8baee7",
+  "sample_sha256": "bd1821802e98155f16bfc950d88de9517bddcdeb14849f9a8c48e3469c0b04ae",
+  "extraction_config_sha256": "45871df1edb2eecb32fbf944aaef1569c5339d92d755676e97a89b3076907b3b",
+  "index_sha256": "d741d96514f1ae273ba975d3c2435a9e2a5aeac94351924b9cdd435692bb5bbd",
+  "summary_config_sha256": "c9fedc97b9746e84d6b1f992ed49482981d17c5251db3950e811b384ec3369e9",
+  "server_unit": "graph-rag-vllm.service",
+  "endpoint": "http://127.0.0.1:8001",
+  "tests_passed": 25,
+  "development_questions_per_system": 12,
+  "generated_preliminary_answers": 0,
+  "notes": [
+    "Expanded run required one summary citation correction after two recorded failed attempts.",
+    "All extraction/summary checkpoints and original responses remain under data/graph/.",
+    "This is a pilot sample, not a frozen-corpus evaluation."
+  ]
+}

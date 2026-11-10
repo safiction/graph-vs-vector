@@ -16,8 +16,11 @@ def main():
         return sub
 
     def local_model(sub):
-        sub.add_argument('--model', default='qwen3.6:35b')
-        sub.add_argument('--endpoint', default='http://127.0.0.1:11434')
+        sub.add_argument('--model')
+        sub.add_argument('--backend', choices=['ollama', 'vllm'], default='vllm')
+        sub.add_argument('--endpoint')
+        sub.add_argument('--weight-manifest', type=Path, default=Path('reports/graph/vllm_weights.json'))
+        sub.add_argument('--server-config', type=Path, default=Path('configs/graph_vllm_5080.json'))
 
     command('prepare', ['manifest', 'dataset', 'output', 'chunk_config'])
     sub = command('sample', ['chunks', 'manifest', 'questions_manifest', 'dataset', 'output'])
@@ -27,11 +30,13 @@ def main():
     sub.add_argument('--sample', type=Path)
     sub.add_argument('--max-seconds', type=float)
     sub.add_argument('--retry-errors', action='store_true')
+    sub.add_argument('--workers', type=int)
     local_model(sub)
     command('build', ['chunks', 'manifest', 'extraction', 'dataset', 'output'])
     sub = command('summarize', ['index', 'output'])
     sub.add_argument('--max-seconds', type=float)
     sub.add_argument('--retry-errors', action='store_true')
+    sub.add_argument('--workers', type=int)
     local_model(sub)
     sub = command('audit', ['index', 'manifest', 'dataset', 'output'])
     sub.add_argument('--summaries', type=Path)
@@ -65,8 +70,15 @@ def main():
         from .extract import select_sample
         result = select_sample(**args)
     elif action in ('extract', 'summarize'):
-        from .llm import LocalModel
-        model = LocalModel(args.pop('model'), args.pop('endpoint'))
+        from .llm import LocalModel, VLLMModel
+        backend, name, endpoint = args.pop('backend'), args.pop('model'), args.pop('endpoint')
+        weights, server_config = args.pop('weight_manifest'), args.pop('server_config')
+        if backend == 'vllm':
+            model = VLLMModel(name or 'graph-qwen35-9b-fp8', endpoint or 'http://127.0.0.1:8001', weights, server_config)
+        else:
+            model = LocalModel(name or 'qwen3.6:35b', endpoint or 'http://127.0.0.1:11434')
+        if args['workers'] is None:
+            args['workers'] = 16 if backend == 'vllm' else 1
         if action == 'extract':
             from .extract import extract
             result = extract(**args, model=model)
