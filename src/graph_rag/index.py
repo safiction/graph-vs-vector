@@ -139,7 +139,7 @@ def bind_summary_sources(claims, evidence):
     return bound, corrections
 
 
-def summarize(index_path, output, model, max_seconds=None, retry_errors=False, workers=1):
+def summarize(index_path, output, model, max_seconds=None, retry_errors=False, workers=1, extractive_fallback=False):
     import time
     if not isinstance(workers, int) or workers < 1:
         raise ValueError('workers must be a positive integer')
@@ -149,6 +149,8 @@ def summarize(index_path, output, model, max_seconds=None, retry_errors=False, w
                 'schema': SUMMARY_SCHEMA, 'max_tokens': 900, 'max_evidence_items': 12,
                 'temperature': 0, 'seed': 42, 'think': False, 'workers': workers,
                 'singleton_policy': 'extractive source quotations; no model synthesis needed'}
+    if extractive_fallback:
+        settings['failure_policy'] = 'exact source excerpts after two failed synthesis attempts'
     config_path = output / 'summary_config.json'
     if config_path.exists() and json.loads(config_path.read_text()) != settings:
         raise ValueError('Summary checkpoint settings differ')
@@ -188,6 +190,12 @@ def summarize(index_path, output, model, max_seconds=None, retry_errors=False, w
             record.update(value, status='ok')
         except Exception as exc:
             record.update(status='error', error=f'{type(exc).__name__}: {exc}')
+            if extractive_fallback and len(record['attempts']) + 1 >= 2:
+                # Fallback changes abstraction level, never invents or repairs a fact.
+                record.update(status='ok', method='extractive_fallback',
+                    title='; '.join(index['nodes'][n]['name'] for n in community['node_ids'][:3]),
+                    claims=[{'text': e['quote'], 'chunk_id': e['chunk_id'], 'quote': e['quote']} for e in evidence[:4]],
+                    citation_corrections=[])
         attempt['attempt_wall_seconds'] = time.monotonic() - call_started
         record['attempts'].append(attempt)
         write_json(path, record)
@@ -224,6 +232,7 @@ def summarize(index_path, output, model, max_seconds=None, retry_errors=False, w
     result = {'index_sha256': file_digest(index_path), 'summary_config_sha256': file_digest(config_path),
               'communities': len(index['communities']), 'completed': sum(r['status'] == 'ok' for r in records),
               'errors': sum(r['status'] == 'error' for r in records)}
+    result['extractive_fallbacks'] = sum(r.get('method') == 'extractive_fallback' for r in records)
     result['complete'] = result['completed'] == result['communities']
     write_json(output / 'summary_status.json', result)
     return result

@@ -10,6 +10,10 @@ The vision encoder is skipped, CPU weight offload is zero, and the KV cache uses
 the model's BF16 dtype. This preset does not change the comparison answer model,
 baseline settings, shared chunking, question splits or corpus selection.
 
+A subsequent **2,000-document / 6,061-chunk indexing job** is described in
+[GRAPH_BOUNDED_RUN.md](GRAPH_BOUNDED_RUN.md); its live state is separate from the
+completed pilot measurements below.
+
 This is a tested local configuration, not a claim of the most accurate model
 among every model that could fit on a 5080. Source-link checks prove traceability;
 they do not replace independent semantic grading.

@@ -5,7 +5,6 @@
   "preliminary_answers_saved": 0,
   "router_fitted_on_real_development_scores": false,
   "missing_inputs": [
-    "agreed indexing budget",
     "frozen corpus and chunk manifest",
     "shared answer-generator settings/token counter/adapter",
     "preliminary 40-question selection",
@@ -30,5 +29,14 @@
     "shared generation implementation",
     "correctness grading",
     "project plan"
-  ]
+  ],
+  "budget_acceptance_check": "waived_by_user",
+  "bounded_indexing": {
+    "state": "in_progress",
+    "documents": 2000,
+    "chunks": 6061,
+    "unit": "graph-rag-index-2000.service",
+    "plan": "reports/graph/bounded_2000_plan.json",
+    "live_status": "data/graph/bounded_2000/progress.json"
+  }
 }
