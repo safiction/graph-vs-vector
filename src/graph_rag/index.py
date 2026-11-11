@@ -64,13 +64,16 @@ def build_index(chunks, manifest, extraction, dataset, output):
     partition = graph.community_leiden(objective_function='modularity', weights=list(pairs.values()),
                                        resolution=1.0, n_iterations=-1) if pairs else [[i] for i in range(len(names))]
     communities = []
-    for members in sorted([sorted(names[i] for i in group) for group in partition]):
+    groups = sorted([sorted(names[i] for i in group) for group in partition])
+    membership = {nid: group for group, members in enumerate(groups) for nid in members}
+    community_supports = defaultdict(list)
+    for edge in edges.values():
+        group = membership[edge['source']]
+        if membership[edge['target']] == group:
+            community_supports[group].extend(edge['supports'])
+    for group, members in enumerate(groups):
         cid = 'com_' + digest(members)[:20]
-        member_ids = set(members)
-        supports = []
-        for edge in edges.values():
-            if edge['source'] in member_ids and edge['target'] in member_ids:
-                supports.extend(edge['supports'])
+        supports = community_supports[group]
         # Isolated nodes still have a source-backed extractive synopsis.
         if not supports:
             for nid in members:
@@ -139,7 +142,7 @@ def bind_summary_sources(claims, evidence):
     return bound, corrections
 
 
-def summarize(index_path, output, model, max_seconds=None, retry_errors=False, workers=1):
+def summarize(index_path, output, model, max_seconds=None, retry_errors=False, workers=1, extractive_fallback=False):
     import time
     if not isinstance(workers, int) or workers < 1:
         raise ValueError('workers must be a positive integer')
@@ -149,6 +152,8 @@ def summarize(index_path, output, model, max_seconds=None, retry_errors=False, w
                 'schema': SUMMARY_SCHEMA, 'max_tokens': 900, 'max_evidence_items': 12,
                 'temperature': 0, 'seed': 42, 'think': False, 'workers': workers,
                 'singleton_policy': 'extractive source quotations; no model synthesis needed'}
+    if extractive_fallback:
+        settings['failure_policy'] = 'exact source excerpts after two failed synthesis attempts'
     config_path = output / 'summary_config.json'
     if config_path.exists() and json.loads(config_path.read_text()) != settings:
         raise ValueError('Summary checkpoint settings differ')
@@ -188,6 +193,12 @@ def summarize(index_path, output, model, max_seconds=None, retry_errors=False, w
             record.update(value, status='ok')
         except Exception as exc:
             record.update(status='error', error=f'{type(exc).__name__}: {exc}')
+            if extractive_fallback and len(record['attempts']) + 1 >= 2:
+                # Fallback changes abstraction level, never invents or repairs a fact.
+                record.update(status='ok', method='extractive_fallback',
+                    title='; '.join(index['nodes'][n]['name'] for n in community['node_ids'][:3]),
+                    claims=[{'text': e['quote'], 'chunk_id': e['chunk_id'], 'quote': e['quote']} for e in evidence[:4]],
+                    citation_corrections=[])
         attempt['attempt_wall_seconds'] = time.monotonic() - call_started
         record['attempts'].append(attempt)
         write_json(path, record)
@@ -224,6 +235,7 @@ def summarize(index_path, output, model, max_seconds=None, retry_errors=False, w
     result = {'index_sha256': file_digest(index_path), 'summary_config_sha256': file_digest(config_path),
               'communities': len(index['communities']), 'completed': sum(r['status'] == 'ok' for r in records),
               'errors': sum(r['status'] == 'error' for r in records)}
+    result['extractive_fallbacks'] = sum(r.get('method') == 'extractive_fallback' for r in records)
     result['complete'] = result['completed'] == result['communities']
     write_json(output / 'summary_status.json', result)
     return result

@@ -137,9 +137,11 @@ def validate_extraction(value, text):
     return {'entities': entities, 'relations': relations, 'rejected': rejected}
 
 
-def extract(chunks, manifest, output, model, sample=None, max_seconds=None, retry_errors=False, workers=1):
+def extract(chunks, manifest, output, model, sample=None, max_seconds=None, retry_errors=False, workers=1, max_tokens=1100):
     if not isinstance(workers, int) or workers < 1:
         raise ValueError('workers must be a positive integer')
+    if not isinstance(max_tokens, int) or max_tokens < 1:
+        raise ValueError('max_tokens must be a positive integer')
     output = Path(output)
     rows = read_jsonl(chunks)
     if len({c['chunk_id'] for c in rows}) != len(rows):
@@ -156,7 +158,7 @@ def extract(chunks, manifest, output, model, sample=None, max_seconds=None, retr
         rows = [r for r in rows if r['chunk_id'] in selected]
     settings = {'schema_version': 2, 'model': model.identity, 'chunks_sha256': chunk_hash,
                 'source_manifest_sha256': manifest_hash, 'sample_sha256': file_digest(sample) if sample else None,
-                'prompt': EXTRACTION_PROMPT, 'schema': EXTRACTION_SCHEMA, 'max_tokens': 1100,
+                'prompt': EXTRACTION_PROMPT, 'schema': EXTRACTION_SCHEMA, 'max_tokens': max_tokens,
                 'temperature': 0, 'seed': 42, 'think': False, 'workers': workers,
                 'source_condition_guard': 'leading if/unless/when/provided-that/если/когда clause, version 1'}
     config_path = output / 'extraction_config.json'
@@ -182,7 +184,7 @@ def extract(chunks, manifest, output, model, sample=None, max_seconds=None, retr
         attempt = {}
         call_started = time.monotonic()
         try:
-            raw, metrics = model.chat(EXTRACTION_PROMPT, chunk['text'], EXTRACTION_SCHEMA)
+            raw, metrics = model.chat(EXTRACTION_PROMPT, chunk['text'], EXTRACTION_SCHEMA, max_tokens=max_tokens)
             attempt.update({'raw': raw, 'metrics': metrics})
             if metrics['done_reason'] == 'length':
                 raise ValueError('Truncated extraction')
