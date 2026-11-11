@@ -1,0 +1,49 @@
+{
+  "purpose": "graph_bounded_corpus_candidate_not_global_comparison_freeze",
+  "document_count": 2000,
+  "chunk_count": 6061,
+  "seed": 42,
+  "selection_method": "source-proportional largest-remainder quotas; include development gold documents; seeded random sampling",
+  "source_document_counts": {
+    "confluence": 20,
+    "fireflies": 40,
+    "github": 32,
+    "gmail": 474,
+    "google_drive": 98,
+    "hubspot": 59,
+    "jira": 24,
+    "linear": 138,
+    "slack": 1115
+  },
+  "source_chunk_counts": {
+    "confluence": 110,
+    "fireflies": 245,
+    "github": 87,
+    "gmail": 2003,
+    "google_drive": 405,
+    "hubspot": 112,
+    "jira": 73,
+    "linear": 394,
+    "slack": 2632
+  },
+  "development_gold_documents_included": 15,
+  "manifest_sha256": "7ace5dc3013b696e08b9d74c8758898cff89fdbcd586a1e991ce3b0a851a3962",
+  "chunks_sha256": "97b8af348be0126b414d12f8f85e4553c2a6d93ee66ab0c5939ee2ac4700b872",
+  "document_ids_sha256": "b3be0bea237d1c0bfb5ba7ba907d181110ab2a0aabd2e44a37e3ad83953c692c",
+  "parent_manifest_sha256": "a6a93f621e2f2031b78695708553d677ca8ec1b1aac7af47aa8b7cc1cbe7df7c",
+  "parent_chunks_sha256": "e0baecd1cd80a430799ad6f73d224058e49c7ceda4769787fc6064e8eb8baee7",
+  "parent_chunk_version": "be5f3384d4166f18",
+  "chunk_policy": "all original chunks of every selected document, unchanged text, IDs and tokenization",
+  "estimated_extraction_hours": 1.2196741334740464,
+  "rough_summary_hours": 0.5742913322808598,
+  "rough_total_hours": 1.7939654657549062,
+  "estimation_limits": "Small-pilot extrapolation; community merging, retries and longer output caps can change duration.",
+  "workers": 16,
+  "extraction_max_tokens": 2048,
+  "summary_failure_policy": "exact extractive excerpts after two failed model synthesis attempts",
+  "paths": {
+    "output": "/root/graph-vs-vector/data/graph/bounded_2000",
+    "manifest": "/root/graph-vs-vector/data/graph/bounded_2000/inputs/corpus_manifest.jsonl",
+    "chunks": "/root/graph-vs-vector/data/graph/bounded_2000/inputs/chunks.jsonl"
+  }
+}

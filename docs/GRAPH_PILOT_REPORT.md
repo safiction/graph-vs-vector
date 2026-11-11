@@ -4,6 +4,9 @@ This is the **original 35B pilot**. The subsequent fully GPU-resident 9B FP8/vLL
 configuration, concurrency measurements and updated cost estimate are documented
 in [GRAPH_5080_VLLM.md](GRAPH_5080_VLLM.md). Original measurements are preserved here.
 
+The user has since waived the budget acceptance check and authorized a 2,000-document
+indexing run. Its selection and live status are described in [GRAPH_BOUNDED_RUN.md](GRAPH_BOUNDED_RUN.md).
+
 The graph-only pilot ran on the PC's RTX 5080 using its existing local Ollama
 model. Local/global retrieval implementations, source audits, cost projection,
 the shared-generator adapter and development-only routing code are available.
