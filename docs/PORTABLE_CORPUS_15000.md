@@ -124,3 +124,23 @@ systemd-run --unit=graph-rag-index-15000 --collect \
 This indexes all 45,142 supplied chunks, builds communities and summaries, audits
 source links, and runs retrieval on development queries. It does not generate
 evaluation answers or fit routing without the shared generation/scoring inputs.
+
+## Targeted recovery on 12 November
+
+Extraction stopped with 45,140 successes and two errors. Both failures were
+repeated model output cut off at 2,048 tokens, not a recorded memory failure.
+Identical deterministic retries could not fix them. The original successful
+checkpoints were retained.
+
+`scripts/recover_graph_extraction.py` retries only failed records under the same
+output lock, verifies source/model identity, backs up original records and logs
+per-attempt overrides. A repetition penalty and concise-output instruction
+recovered one chunk; `--source-quotes` recovered the other by constraining quote
+values to exact 1–3-line source spans with bounded whitespace. These are explicit
+exceptions to the primary extraction settings, not a homogeneous rerun.
+Both recovered records contain verified entities and zero accepted relations.
+Raw failed/recovery attempts remain in each checkpoint; backups and manifests
+are under `data/graph/corpus_15000/recovery/`.
+
+The original runner can then resume, refresh extraction status and proceed to
+graph assembly and summaries without re-extracting the successful chunks.
