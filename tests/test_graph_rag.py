@@ -85,6 +85,21 @@ class GraphContracts(unittest.TestCase):
         self.assertTrue(status['complete'])
         self.assertEqual(self.model.calls, 3)
 
+    def test_larger_output_cap_is_used_and_pinned_for_long_jobs(self):
+        class Model(FakeModel):
+            limits = []
+
+            def chat(self, system, user, schema, max_tokens):
+                self.limits.append(max_tokens)
+                return super().chat(system, user, schema, max_tokens=max_tokens)
+
+        model, output = Model(), self.root / 'larger-cap'
+        result = extract(self.chunks, self.manifest, output, model, max_tokens=2048)
+        self.assertTrue(result['complete'])
+        self.assertEqual(model.limits, [2048, 2048, 2048])
+        with self.assertRaises(ValueError):
+            extract(self.chunks, self.manifest, output, model, max_tokens=1100)
+
     def test_parallel_extraction_overlaps_requests_and_resumes_each_checkpoint(self):
         class ParallelModel(FakeModel):
             active, peak = 0, 0
@@ -211,6 +226,29 @@ class GraphContracts(unittest.TestCase):
             bind_summary_sources([claim], evidence + [{'chunk_id': 'also-possible', 'quote': claim['quote']}])
         with self.assertRaises(ValueError):
             bind_summary_sources([{**claim, 'quote': 'Invented text'}], evidence)
+
+    def test_failed_summaries_fall_back_to_exact_sources_after_two_attempts(self):
+        class InvalidSummaryModel:
+            identity = {'model': 'invalid-summary-fixture'}
+
+            def chat(self, system, user, schema, max_tokens):
+                return json.dumps({'title': 'Wrong', 'claims': [{
+                    'text': 'Unsupported claim', 'chunk_id': 'wrong', 'quote': 'Invented quotation'}]}), {
+                        'done_reason': 'stop', 'prompt_eval_count': 10, 'eval_count': 10}
+
+        output, model = self.root / 'summary-fallback', InvalidSummaryModel()
+        first = summarize(self.index_path, output, model, workers=2, extractive_fallback=True)
+        self.assertFalse(first['complete'])
+        self.assertEqual(first['extractive_fallbacks'], 0)
+        second = summarize(self.index_path, output, model, workers=2, retry_errors=True, extractive_fallback=True)
+        self.assertTrue(second['complete'])
+        self.assertEqual(second['extractive_fallbacks'], len(self.index['communities']))
+        for path in (output / 'records').glob('*.json'):
+            record = json.loads(path.read_text())
+            self.assertEqual(len(record['attempts']), 2)
+            self.assertEqual(record['method'], 'extractive_fallback')
+            self.assertTrue(all(c['text'] == c['quote'] for c in record['claims']))
+        self.assertTrue(audit(self.index_path, self.manifest, self.dataset, self.root / 'audit.json', output)['passed'])
 
     def test_checkpoint_rejects_changed_corpus(self):
         with self.chunks.open('a') as stream:

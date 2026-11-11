@@ -1,0 +1,50 @@
+{
+  "document_count": 15000,
+  "chunk_count": 45142,
+  "seed": 42,
+  "selection": "source-proportional largest remainder; all project question gold documents mandatory; overflow removed from largest available strata; seeded random remainder",
+  "source_document_counts": {
+    "confluence": 167,
+    "fireflies": 298,
+    "github": 236,
+    "gmail": 3557,
+    "google_drive": 736,
+    "hubspot": 440,
+    "jira": 179,
+    "linear": 1034,
+    "slack": 8353
+  },
+  "unconstrained_source_quotas": {
+    "confluence": 152,
+    "fireflies": 298,
+    "github": 236,
+    "gmail": 3557,
+    "google_drive": 736,
+    "hubspot": 440,
+    "jira": 179,
+    "linear": 1034,
+    "slack": 8368
+  },
+  "population_source_counts": {
+    "confluence": 5188,
+    "fireflies": 10173,
+    "github": 8052,
+    "gmail": 121390,
+    "google_drive": 25108,
+    "hubspot": 15016,
+    "jira": 6118,
+    "linear": 35308,
+    "slack": 285605
+  },
+  "population_documents": 511958,
+  "required_gold_documents": 423,
+  "upstream_index_sha256": "854cda12a43334a9b7c9ebbb4a069a089d52fd7033bc71d79bdbf54f708137fb",
+  "upstream_questions_sha256": "f9524b9157cd43aae36b99333a124738804306ea6d07f332d49faa6d3d147905",
+  "upstream_commit": "d36685e273713975ee20299bbf1ab64165575b3c",
+  "upstream_remote": "git@github.com:onyx-dot-app/EnterpriseRAG-Bench.git",
+  "question_selection": "Existing project fold_a (100), fold_b (100), development (12); no scores used. Evaluation gold IDs used only to ensure source inclusion, never for retrieval/routing.",
+  "status": "standalone 15k comparison candidate; existing shared project manifests unchanged",
+  "archive_sha256": "b824d51efc75e7750c1bc770c2f4d05923584b4fbb440589ac2c3c2eb52f2f52",
+  "archive_bytes": 89392181,
+  "verification": "All 15028 payload hashes passed; independent archive extraction passed; deliberate query corruption rejected"
+}
