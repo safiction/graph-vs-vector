@@ -92,7 +92,22 @@ Run settings/code hashes are pinned; do not change graph code mid-run.
 
 Progress: `data/graph/corpus_15000/progress.json`. Logs:
 `data/graph/corpus_15000/job.log` and `journalctl -u graph-rag-vllm`.
-Resume with the same service command and output directory:
+If both services were stopped, first start the model server:
+
+```sh
+systemd-run --unit=graph-rag-vllm --collect \
+  --property=WorkingDirectory=/root/graph-vs-vector \
+  --property=MemoryHigh=11G --property=MemoryMax=13G --property=MemorySwapMax=1G \
+  --property=KillMode=control-group \
+  /root/graph-vs-vector/scripts/serve_graph_vllm_bounded.sh
+```
+
+Wait for startup (usually a few minutes). `curl -f http://127.0.0.1:8001/health`
+must return successfully before starting the indexer. Use
+`journalctl -u graph-rag-vllm -n 20 --no-pager` to inspect startup.
+If either service is already active, do not launch a duplicate.
+
+Resume the indexer with the same service command and output directory:
 
 ```sh
 systemd-run --unit=graph-rag-index-15000 --collect \
