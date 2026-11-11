@@ -1,0 +1,28 @@
+{
+  "status_at_capture": {
+    "state": "running",
+    "started_at": "2026-11-11T10:17:24.671959+03:00",
+    "document_count": 15000,
+    "chunk_count": 45142,
+    "workers": 8,
+    "stage": "extraction",
+    "checkpointed_items": 43,
+    "elapsed_seconds": 40.00205004400004,
+    "updated_at": "2026-11-11T10:18:04.674010+03:00"
+  },
+  "server_profile": "configs/graph_vllm_5080_bounded.json",
+  "service_units": [
+    "graph-rag-vllm.service",
+    "graph-rag-index-15000.service"
+  ],
+  "limits_gib": {
+    "vllm_ram_high": 11,
+    "vllm_ram_max": 13,
+    "indexer_ram_high": 4,
+    "indexer_ram_max": 5,
+    "swap_max_per_service": 1
+  },
+  "previous_crash_cause": "not established from retained kernel journals",
+  "startup_probe": "0.78 GPU memory fraction rejected for insufficient KV cache at 8192 context; 0.82 initialized successfully",
+  "note": "Indexing in progress; no claim of completed extraction, summaries or audit."
+}
