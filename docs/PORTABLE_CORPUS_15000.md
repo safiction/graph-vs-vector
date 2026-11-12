@@ -92,7 +92,22 @@ Run settings/code hashes are pinned; do not change graph code mid-run.
 
 Progress: `data/graph/corpus_15000/progress.json`. Logs:
 `data/graph/corpus_15000/job.log` and `journalctl -u graph-rag-vllm`.
-Resume with the same service command and output directory:
+If both services were stopped, first start the model server:
+
+```sh
+systemd-run --unit=graph-rag-vllm --collect \
+  --property=WorkingDirectory=/root/graph-vs-vector \
+  --property=MemoryHigh=11G --property=MemoryMax=13G --property=MemorySwapMax=1G \
+  --property=KillMode=control-group \
+  /root/graph-vs-vector/scripts/serve_graph_vllm_bounded.sh
+```
+
+Wait for startup (usually a few minutes). `curl -f http://127.0.0.1:8001/health`
+must return successfully before starting the indexer. Use
+`journalctl -u graph-rag-vllm -n 20 --no-pager` to inspect startup.
+If either service is already active, do not launch a duplicate.
+
+Resume the indexer with the same service command and output directory:
 
 ```sh
 systemd-run --unit=graph-rag-index-15000 --collect \
@@ -109,3 +124,23 @@ systemd-run --unit=graph-rag-index-15000 --collect \
 This indexes all 45,142 supplied chunks, builds communities and summaries, audits
 source links, and runs retrieval on development queries. It does not generate
 evaluation answers or fit routing without the shared generation/scoring inputs.
+
+## Targeted recovery on 12 November
+
+Extraction stopped with 45,140 successes and two errors. Both failures were
+repeated model output cut off at 2,048 tokens, not a recorded memory failure.
+Identical deterministic retries could not fix them. The original successful
+checkpoints were retained.
+
+`scripts/recover_graph_extraction.py` retries only failed records under the same
+output lock, verifies source/model identity, backs up original records and logs
+per-attempt overrides. A repetition penalty and concise-output instruction
+recovered one chunk; `--source-quotes` recovered the other by constraining quote
+values to exact 1–3-line source spans with bounded whitespace. These are explicit
+exceptions to the primary extraction settings, not a homogeneous rerun.
+Both recovered records contain verified entities and zero accepted relations.
+Raw failed/recovery attempts remain in each checkpoint; backups and manifests
+are under `data/graph/corpus_15000/recovery/`.
+
+The original runner can then resume, refresh extraction status and proceed to
+graph assembly and summaries without re-extracting the successful chunks.

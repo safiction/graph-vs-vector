@@ -1,0 +1,53 @@
+{
+  "failure": "Two deterministic extraction responses repeated strings until the 2048-token cap; no recorded OOM for this failure",
+  "completed_before_recovery": 45140,
+  "total_chunks": 45142,
+  "successful_checkpoints_reextracted": 0,
+  "recovery_attempts": [
+    {
+      "manifest": "data/graph/corpus_15000/recovery/20261111T221203607328Z/manifest.json",
+      "script_sha256": "590b6124318d616ba87c02e525a215b066178c399e2e37ae5e613eea7fc1f1e0",
+      "profile": {
+        "repetition_penalty": 1.1,
+        "max_tokens": 2048,
+        "additional_instruction": "Use short exact entity names, not lists or sentences. Never repeat text to fill a field. Return at most 6 entities and 4 relations. Omit uncertain items. Close the JSON object."
+      },
+      "results": [
+        {
+          "chunk_id": "dsid_c0871e57ceb44fa38735753bdcee3d4c::9b709c39d70337ef::000002",
+          "status": "ok",
+          "entities": 5,
+          "relations": 0,
+          "record_sha256": "4f4f3c6d66ce4f878ab62eaafcb2f488f36901960a8a0b2b1ac96aaf49fb5016"
+        },
+        {
+          "chunk_id": "dsid_8f2f949e963a4e1c976cc39b6cbd9608::9b709c39d70337ef::000001",
+          "status": "error",
+          "entities": 0,
+          "relations": 0,
+          "record_sha256": "4da0ae866e84489667896b9d005fac42cc3ddc25e942f20a5caec054f053ecdb"
+        }
+      ]
+    },
+    {
+      "manifest": "data/graph/corpus_15000/recovery/20261111T221341885797Z/manifest.json",
+      "script_sha256": "461f287c172b28d3c3fc3777644e0bfc2a0881293e425aa2ed04ce436da14ece",
+      "profile": {
+        "repetition_penalty": 1.15,
+        "max_tokens": 2048,
+        "additional_instruction": "Use short exact entity names, not lists or sentences. Never repeat text to fill a field. Return at most 6 entities and 4 relations. Omit uncertain items. Close the JSON object.",
+        "source_quote_policy": "exact nonempty 1\u20133 consecutive source lines, stripped, max 650 chars"
+      },
+      "results": [
+        {
+          "chunk_id": "dsid_8f2f949e963a4e1c976cc39b6cbd9608::9b709c39d70337ef::000001",
+          "status": "ok",
+          "entities": 4,
+          "relations": 0,
+          "record_sha256": "5bd5a8918e5c3e4d7d5d756699d1faf619806880b8954ca554b026ab407b3dc7"
+        }
+      ]
+    }
+  ],
+  "note": "Recovery overrides are recorded per attempt. Both recovered chunks have verified entities and zero accepted relations. Pipeline resumed with original configuration."
+}
