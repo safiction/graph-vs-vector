@@ -1,0 +1,36 @@
+{
+  "status": "partially_recorded_open_decisions_remain",
+  "date": "12.11.2026",
+  "participants": [
+    "Safina",
+    "Karina",
+    "Artem"
+  ],
+  "question_protocol": "Preserve existing 12 development and 200 evaluation IDs in manifests/questions.json. The frozen 40-question preliminary set is a subset of evaluation, not development. Follow the documented development-only tuning/routing policy; no 52/160 reassignment. Corpus-global development coverage remains unresolved.",
+  "heldout_question_count": 200,
+  "corpus_global_development_plan": null,
+  "answer_model_revision": {
+    "model": "Qwen/Qwen2.5-3B-Instruct",
+    "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "backend": "ollama",
+    "served_model": "qwen2.5:3b",
+    "server_model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+    "server_version": "0.18.0",
+    "server_quantization": "Q4_K_M"
+  },
+  "prompt_and_decoding_config_path": "configs/baseline_15000.json -> generation_settings",
+  "context_token_budget": 2560,
+  "correctness_failure_and_na_policy": null,
+  "reviewer_1": "Safina",
+  "reviewer_2": "Karina",
+  "grading_due": "19.11.2026",
+  "judge_model_prompt_if_used": null,
+  "notes": "Existing participants, dates, held-out count and reviewer names were preserved as entered. Model/settings are recorded experiment facts, not a new team approval. Completed manual grading covers 24 baseline development answers (68 facts per reviewer), with four adjudicated disagreements and zero unresolved facts. No automated judge has been run. The rubric defines per-answer correctness, but the aggregate treatment of failed/N/A answers is not yet an agreed decision; that field remains null. Corpus-global development coverage remains unresolved. These results do not complete balanced four-type calibration or the four-system midway evaluation.",
+  "supporting_files": [
+    "docs/DETAILED_PROJECT_PLAN.md",
+    "docs/grading_rubric.md",
+    "configs/baseline_15000.json",
+    "data/packages/baseline_results_15000/configuration/comparison.json",
+    "data/evaluation/preliminary/baseline_development/scores_002/agreement.json"
+  ]
+}

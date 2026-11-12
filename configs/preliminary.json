@@ -1,0 +1,9 @@
+{
+  "package_root": "data/packages/graph_results_15000",
+  "baseline_package_root": "data/packages/baseline_results_15000",
+  "output_root": "data/evaluation/preliminary",
+  "selection_manifest": "manifests/questions.json",
+  "coverage_exclusions": "manifests/coverage_exclusions.json",
+  "protocol": "original_splits_preserved_no_heldout_tuning",
+  "seed": 42
+}

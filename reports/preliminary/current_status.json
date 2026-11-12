@@ -1,0 +1,37 @@
+{
+  "as_of": "2026-11-12",
+  "reviewed_main": "a5f0dcb",
+  "baseline_package_verified_files": 264,
+  "baseline_answer_counts": {
+    "development": 24,
+    "preliminary": 80
+  },
+  "baseline_preliminary_output_cap_hits": 8,
+  "graph_index_complete": true,
+  "graph_answers_available": 0,
+  "development_review_answers": 24,
+  "development_review_fact_rows_per_reviewer": 68,
+  "graph_execution_config": "configs/graph_delivery_15000.json",
+  "graph_preparation_passed": true,
+  "frozen_experiment_equal_to_baseline": true,
+  "graph_generation_started": false,
+  "raw_sources_normal_path_misses": 64,
+  "raw_sources_extended_path_misses": 0,
+  "original_question_splits_preserved": true,
+  "historical_report": "reports/preliminary/preparation_status.json",
+  "weekly_plan": "docs/DETAILED_PROJECT_PLAN.md",
+  "development_grading_complete": true,
+  "development_graded_answers": 24,
+  "development_graded_fact_rows_per_reviewer": 68,
+  "adjudicated_facts": 4,
+  "unresolved_facts": 0,
+  "human_human_agreement": {
+    "paired_binary_facts": 68,
+    "excluded_facts": 0,
+    "agreement": 0.9411764705882353,
+    "kappa": 0.8798586572438162
+  },
+  "judge_calibration_complete": false,
+  "grading_record": "reports/preliminary/development_grading.json",
+  "team_decisions": "reports/preliminary/team_decisions.json"
+}

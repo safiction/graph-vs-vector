@@ -1,0 +1,81 @@
+{
+  "status": "development_preparation_and_retrieval_diagnostics_only",
+  "package_config": "configs\\preliminary.json",
+  "package_commit": "0f77648a52a0aafac0262b8aa1ae5b1590f672a2",
+  "verified_key_file_hashes": {
+    "package.json": "beba885c60061d4909ef6a7c19cbc0da31cf207647f20b2fc0e007097ca2cd29",
+    "results/index.json": "c4d7a3e84f8ebc05aa6e3ed339dd7ac9954f0a2d17d528dcc82968f9f39a2987",
+    "results/source_audit.json": "c209ebd2da9f88eaf06f04377bcb504f22f3ccd9ee91fcfef479e07a90d7a542",
+    "results/extraction_status.json": "ebc15f9e5aecbb61e03344916970623020eaca640cafc085a9735a94d97128e9",
+    "results/summaries/summary_status.json": "7e95ee7dc49f2a851c30e784276756d2eef19c8b51d6aaa838e8311c20191290",
+    "corpus/bundle.json": "95f962b541584bb7b5dd6c9a46122683682f8017b75b67cd2cb3b1748e058e3d",
+    "corpus/document_ids.txt": "b0d9617ad8060afc76ee37a2a769e3dea20deaf5f9de6e860cd6b05b0f5910d7",
+    "corpus/corpus_manifest.jsonl": "828cf3ec712f6735ecdc7ea05e1cb4486c5f6ceae235b42338640366f2da1be1",
+    "corpus/chunks/chunks.jsonl": "c460c32a6ee1a491c827c5116684b9a253e6bb501ea3444571f58052d3c9e3c6",
+    "corpus/chunks/chunk_config.json": "708e8872db85840612e87648062050bf03fa668588dd15646fad42a1f5b86261",
+    "corpus/questions/development.queries.jsonl": "487b0498c8b5dcc0358492f1df6a3b4628015fee16b08502076428edadba1dc9",
+    "corpus/questions/development.labels.jsonl": "085121a7bb1171639523b3d1ca4e0d12716fa9b8019c4fa1b410b979784cae02",
+    "corpus/questions/fold_a.queries.jsonl": "88930cb71b7d8e45bb86d17bad2b268b5615eb3708667196410ca1e897747494",
+    "corpus/questions/fold_a.labels.jsonl": "4bd9c37c5a89532ff7a7ad85d4237582a68ceded8ca3c797c98448fa6f430d17",
+    "corpus/questions/fold_b.queries.jsonl": "b800e4a57528970ae6fbdd1a4720a81302caa031e1bfcc2d7243a8beda9c7f3a",
+    "corpus/questions/fold_b.labels.jsonl": "1be3edf3fd354b1b182bd92e3c673c27272e8791109269fa097f0ee6bbde39dc",
+    "results/development/graph-local.retrieval.jsonl": "0861ec142a49771465ad57ad8394bade01034112fda08bfa8f35d947d400ef79",
+    "results/development/graph-global.retrieval.jsonl": "43b6ff42bf31d52a108a3d909701030199e9068b02e406a9194c3542d72d6057"
+  },
+  "verification_scope": "key files only; saved structural audit not rerun; no semantic certification",
+  "source_document_count": 15000,
+  "extraction": {
+    "selected_chunks": 45142,
+    "completed_chunks": 45142,
+    "error_chunks": 0,
+    "pending_chunks": 0,
+    "extraction_config_sha256": "855170fe996c773bb29a49a1cf84e1ff31abcd46b4b4afa0e3b221324f1eb4da",
+    "complete": true
+  },
+  "summaries": {
+    "index_sha256": "c4d7a3e84f8ebc05aa6e3ed339dd7ac9954f0a2d17d528dcc82968f9f39a2987",
+    "summary_config_sha256": "4c1630e678e8937c3b3a64fb19352f2e9fe44970d03038c4915443b2f03140f7",
+    "communities": 102679,
+    "completed": 102679,
+    "errors": 0,
+    "extractive_fallbacks": 12,
+    "complete": true
+  },
+  "question_counts": {
+    "development": {
+      "single-fact": 4,
+      "fuzzy": 4,
+      "multi-hop": 4
+    },
+    "fold_a": {
+      "single-fact": 25,
+      "fuzzy": 25,
+      "multi-hop": 25,
+      "corpus-global": 25
+    },
+    "fold_b": {
+      "single-fact": 25,
+      "fuzzy": 25,
+      "multi-hop": 25,
+      "corpus-global": 25
+    }
+  },
+  "split_changed": false,
+  "generated_answers": 0,
+  "graded_answers": 0,
+  "blockers": [
+    "Shared generator and baseline predictions pending",
+    "Development has no corpus-global questions; protocol decision required",
+    "No T4 validation in this delivery"
+  ],
+  "retrieval_diagnostics": {
+    "graph-local": {
+      "questions": 12,
+      "mean_candidate_document_coverage": 0.125
+    },
+    "graph-global": {
+      "questions": 12,
+      "mean_candidate_document_coverage": 0.625
+    }
+  }
+}
