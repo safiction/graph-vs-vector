@@ -1,0 +1,41 @@
+{
+  "method": "Agent inspection of two development answers against cited supplied source text; not human grading or overall answer-correctness evaluation",
+  "examples": [
+    {
+      "retriever": "bm25",
+      "question_id": "qst_0025",
+      "question": "In the enterprise tenant cutover go-live runbook, what latency threshold triggers escalation based on the 95th percentile being too high, and how long does it need to be sustained?",
+      "answer": "Based on the information provided in the evidence, the latency threshold that triggers escalation based on the 95th percentile being too high and sustained for too long is 2000ms. This sustained period needs to be 10 minutes. The relevant evidence is [dsid_9c8cb10d65324c03a8ededbd98c1b058::9b709c39d70337ef::000000].",
+      "claim_checked": "Numeric latency threshold 2000 ms and sustained duration 10 minutes",
+      "source_quote": "Latency spike: P95 latency >2000ms for 10 minutes.",
+      "source_link": {
+        "chunk_id": "dsid_9c8cb10d65324c03a8ededbd98c1b058::9b709c39d70337ef::000000",
+        "source_document_id": "dsid_9c8cb10d65324c03a8ededbd98c1b058",
+        "source_path": "confluence/customer-success-and-support/support-process/go-live-protocols-cross-org-communications-escalation-2027.json",
+        "source_uri": "enterprise-rag://confluence/customer-success-and-support/support-process/go-live-protocols-cross-org-communications-escalation-2027.json",
+        "source_sha256": "cb921912d179b82ff4f8e6cbb92a5f44e598cbf9226709cb5c91fa613c87acba"
+      },
+      "context_tokens": 2156,
+      "prediction_file_sha256": "abc5ccf5f05f0b249b4a94c824c32b0c0cd2f52577ef242f77425b2be85f66ef",
+      "claim_supported_by_cited_text": true
+    },
+    {
+      "retriever": "vector",
+      "question_id": "qst_0123",
+      "question": "What was the requested proof-of-concept duration for the inbound content marketing company evaluating batching and caching for high-volume templated SEO article generation?",
+      "answer": "The requested proof-of-concept (POC) duration for the inbound content marketing company was 72 hours. This was stated in the evidence provided [dsid_b65f12db881f41dc9239fe044f4754dd::9b709c39d70337ef::000000].",
+      "claim_checked": "Requested proof-of-concept duration is 72 hours",
+      "source_quote": "Wants a short POC: 72h run",
+      "source_link": {
+        "chunk_id": "dsid_b65f12db881f41dc9239fe044f4754dd::9b709c39d70337ef::000000",
+        "source_document_id": "dsid_b65f12db881f41dc9239fe044f4754dd",
+        "source_path": "hubspot/company-fluentforge-mediaworks.json",
+        "source_uri": "enterprise-rag://hubspot/company-fluentforge-mediaworks.json",
+        "source_sha256": "f7ac3f0d75774226089e665f441eab9e08fae6e704b7e701b1b1de5ebbc69c6a"
+      },
+      "context_tokens": 2237,
+      "prediction_file_sha256": "ebcbbfa4124c8049b723e5d86ec192f2256c4ff2146e8a6a95cb7d797e7d48e5",
+      "claim_supported_by_cited_text": true
+    }
+  ]
+}
