@@ -1,0 +1,107 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+
+\begin{document}
+
+\title{D1. GraphRAG vs Vector RAG, Refereed Properly\\Midway Check --- 12 November 2026}
+
+\author{\IEEEauthorblockN{Safina Mukhamedshina}
+\IEEEauthorblockA{s.mukhamedshina@innopolis.university}
+\and
+\IEEEauthorblockN{Karina Shaikhutdinova}
+\IEEEauthorblockA{k.shaikhutdinova@innopolis.university}
+\and
+\IEEEauthorblockN{Artem Mikhailin}
+\IEEEauthorblockA{a.mikhailin@innopolis.university}
+}
+
+\maketitle
+
+\noindent\textbf{Repository:} \url{https://github.com/safiction/graph-vs-vector}
+
+\section{Implemented work}
+The four-system comparison uses one frozen EnterpriseRAG-Bench subset:
+15,000 documents and 45,142 shared chunks. BM25, BGE vector retrieval,
+GraphRAG-local/global and the shared answer generator are implemented.
+Full graph extraction and community summaries are complete, with a passing
+saved structural provenance audit; this does not certify semantic correctness.
+Corpus manifests, model settings and run logs support reproducibility;
+large data and indexes are distributed separately from Git.
+
+The baselines produced 24 development answers (12 per system) and 80
+preliminary answers (40 per system, ten questions per type). All calls
+succeeded, but eight preliminary answers reached the 384-token output cap.
+The generator is Qwen2.5 3B Q4\_K\_M with a shared 2,560-token context cap.
+Graph retrieval traces exist, but graph-generated answers are still missing.
+
+\section{Preliminary results}
+Table~\ref{tab:results} separates final-context document coverage on the
+40-question preliminary evaluation set from manually graded correctness on
+the separate development set. Correctness is the per-answer fraction of
+satisfied reference facts, averaged across answers.
+
+\begin{table}[ht]
+\centering
+\caption{Baseline results (\%). Coverage and correctness use different question sets.}
+\label{tab:results}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+& \multicolumn{2}{c}{Prelim. coverage} & \multicolumn{2}{c}{Dev. correctness} \\
+Type & BM25 & Vector & BM25 & Vector \\
+\midrule
+Single-fact   & 100.00 & 90.00 & 100.00 & 50.00 \\
+Multi-hop     & 80.00 & 67.50 & 65.00 & 65.83 \\
+Corpus-global & 68.75 & 52.08 & --- & --- \\
+Fuzzy         & 80.00 & 70.00 & 50.00 & 0.00 \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+\parbox{\columnwidth}{\footnotesize
+Coverage: ten questions per type, except corpus-global, where two lack
+gold document IDs and are N/A (eight applicable). Development correctness:
+four questions per available type per system; no corpus-global examples.}
+\end{table}
+
+Safina and Karina independently graded all 24 development answers,
+68 facts each. Initial fact-level agreement was 94.12\%, with Cohen's
+$\kappa=0.880$. Four disagreements were adjudicated; none remain unresolved.
+This is human--human agreement, not judge calibration. These small development
+results do not establish a final winner or a learned routing policy.
+Values trace to the baseline coverage exports and
+\path{reports/preliminary/development_grading.json}.
+
+\section{Blockers and immediate next steps}
+\begin{enumerate}
+\item \textbf{Graph answers (Artem/Karina):} run the completed graph through
+the shared generator with identical settings and question IDs. Missing:
+24 development and 80 preliminary answers. Only 80 of the planned 160
+four-system preliminary attempts are currently available.
+\item \textbf{Evaluation (Safina/team):} grade the remaining outputs, resolve
+corpus-global development coverage, and agree aggregate failure/N/A handling.
+No automated judge has been calibrated; balanced 40-answer, four-type
+calibration and the paired four-system results table remain incomplete.
+\item \textbf{Routing/compute (Artem/team):} fit routing only after paired
+development scores are available; demonstrate T4 feasibility and consolidate
+indexing costs, including recovery attempts. Full core runs, uncertainty
+intervals and final analysis remain outstanding.
+\end{enumerate}
+
+\section{Changes from the proposal}
+Following course feedback, we replaced full-corpus extraction with the fixed
+15k subset. Selection is source-proportional and includes question gold
+documents; this conditioning and possible changes to corpus-global answer
+completeness must be disclosed. Raw-source retrieval is reported separately from generated
+GraphRAG-global summaries.
+
+The target remains 200 evaluation questions, 50 per type. Project-related
+questions now belong only to multi-hop; the corpus-global allocation was
+adjusted accordingly. The revised protocol selects routing on development
+data before held-out evaluation, replacing the proposed two-fold routing
+cross-validation. The current 40 preliminary questions remain evaluation
+questions and must not be reused for tuning.
+
+\end{document}
