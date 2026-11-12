@@ -1,0 +1,13 @@
+{
+  "python": "3.13.4",
+  "run": 47,
+  "passed": 46,
+  "failures": 0,
+  "errors": 1,
+  "skipped": 0,
+  "error_causes": [
+    "ImportError: Unable to convert output to PyTorch tensors format, PyTorch is not installed."
+  ],
+  "scope": "Unit/regression tests; not a GPU inference or full clean-environment reproduction run",
+  "log": "data/evaluation/preliminary/repository_tests.log"
+}

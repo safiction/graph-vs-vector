@@ -1,5 +1,9 @@
 # BM25, vector RAG and shared generation on the 15k corpus
 
+## Local delivery integration — 12 November update
+
+The original paths/reproduction commands below describe Karina's recorded run. This checkout keeps immutable deliveries under `data/packages/`. See [Weekly project plan](DETAILED_PROJECT_PLAN.md). Use `configs/graph_delivery_15000.json` for graph-only generation against those packages with the same recorded generator settings and new outputs. Its preparation passed; inference remains pending. Do not run `all` merely to consume existing graph artifacts. The raw source missing on the original machine exists in the graph delivery here; ordinary Windows access still reports 64 overlong source paths as missing, all found through extended paths. These do not remove verified input chunks.
+
 The baselines consume all 45,142 existing chunks in `data/corpus_15000`,
 preserving all 15,000 document IDs. No re-chunking, exclusion or deduplication
 is applied. Large models, indexes and predictions stay in Git-ignored `data/`.
@@ -183,9 +187,9 @@ Saved predictions are the reference artifacts. GPU kernels and backend caches
 can vary generated wording even with a fixed seed and greedy decoding; changing
 hardware or backend calls for a separate experiment/output directory.
 
-The bundle currently lacks one raw source JSON; its verified chunks and rendered
+The original baseline-machine bundle lacked one raw source JSON; its verified chunks and rendered
 document are present. Baseline indexing uses all chunks. Full raw-source
-verification or a graph rebuild needs the missing original file. Its exact path
+verification or a graph rebuild there needs the missing original file. It is present in the graph delivery here. Its exact path
 is recorded in `corpus_audit.json`.
 
 ## Tests
