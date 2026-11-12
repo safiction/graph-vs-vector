@@ -1,0 +1,2 @@
+-r requirements-baselines.txt
+igraph==0.11.9

@@ -1,0 +1,13 @@
+{
+  "corpus": {
+    "chunks_sha256": "c460c32a6ee1a491c827c5116684b9a253e6bb501ea3444571f58052d3c9e3c6",
+    "source_manifest_sha256": "828cf3ec712f6735ecdc7ea05e1cb4486c5f6ceae235b42338640366f2da1be1",
+    "document_count": 15000,
+    "chunk_count": 45142,
+    "chunk_ids_sha256": "a771b85ffccd198f395807d830971a03c5171dae394f1698a20eeba761cbccef"
+  },
+  "document_ids_sha256": "b0d9617ad8060afc76ee37a2a769e3dea20deaf5f9de6e860cd6b05b0f5910d7",
+  "configuration_sha256": "aadd3e062ae2d79e5018c25dc03f9fdf392306337c064ce864550cb1aa3cd87f",
+  "preliminary_selection_sha256": "a98799c1ddeca3b85d63b97f4d212581c0fa3fac1a6bc28268f7b8a95d91672d",
+  "scope": "User-selected frozen 15k corpus; original 5k pilot manifests preserved"
+}
