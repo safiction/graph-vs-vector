@@ -8,7 +8,7 @@ The original baseline corpus, question IDs, generator, prompt and budgets are un
 ## Execution evidence
 - Same15,000 documents /45,142 chunks;136,470 graph nodes,43,147 relations and102,679 source-linked summaries, including12 extractive fallbacks.
 - Shared `baseline_rag`/`SharedGenerator`, Ollama0.18.0, Qwen2.5-3B Q4_K_M digest357c53fb…c9e4b; k10, context2560, full input4096, output384, seed42.
-- Actual RTX5080 hardware and successful GPU-resident shared-generator smoke are saved with the run. The graph model calls used GPU memory, not CPU Torch inference.
+- Actual [RTX5080 hardware receipt](../data/experiments/graph_local_15000/rtx5080_hardware.json) and successful [GPU-resident smoke](../data/experiments/graph_local_15000/rtx5080_smoke.json) are saved with the run. The graph model calls used GPU memory, not CPU Torch inference. Inference source is unchanged from `6b6455e`; the verified run executed at `404e3e2`.
 - All104 contexts and complete prompts were independently recounted: max context2558, max prompt2683; counts and pinned tokenizer/chat-template identities match. See [recount receipt](../reports/graph/retokenization_rtx5080.json).
 - Six preliminary graph answers reached the384-output cap (four local, two global). All are retained, as are the original eight capped baseline answers. No selective reruns.
 - Recorded split invocation elapsed:71.61s development and168.35s preliminary. Query components are exported separately; these are not historical indexing/GPU hours.
@@ -23,8 +23,10 @@ It contains original104 graph attempts with contexts, evidence/source links, sta
 - coordinator-only private keys/reference labels, which must not be sent to reviewers;
 -208 per-question baseline+graph measurements and separate index/query receipts, with a standalone261-file integrity verifier.
 
+The standalone development export remains at [graph_development_rtx5080_20261127](../data/grading/graph_development_rtx5080_20261127/export_status.json):24 answers,68 fact rows, blank labels.
+
 ## Separate measurements
-[Validated graph report](../reports/graph/completion.json), [paired summary](../reports/graph/paired_summary.csv), [per-question measurements](../reports/graph/paired_per_question.csv) and [measurement qualifications](../reports/graph/paired_measurements.json) keep coverage, correctness, context size, indexing and query cost separate. Baseline Windows and graph WSL/Python stacks differ; baseline physical GPU/warm state is not established, so raw latency differences are not a controlled architecture speedup.
+[Validated graph report](../reports/graph/completion.json) (`all_graph_attempts_saved=true`), [paired summary](../reports/graph/paired_summary.csv), [per-question measurements](../reports/graph/paired_per_question.csv) and [measurement qualifications](../reports/graph/paired_measurements.json) keep coverage, correctness, context size, indexing and query cost separate. Baseline Windows and graph WSL/Python stacks differ; baseline physical GPU/warm state is not established, so raw latency differences are not a controlled architecture speedup.
 
 Coverage is not correctness. Two preliminary questions per system have N/A document coverage, not automatically N/A correctness. Full historical extraction elapsed/GPU hours and electricity are unknown; summed overlapping requests are not elapsed time.
 

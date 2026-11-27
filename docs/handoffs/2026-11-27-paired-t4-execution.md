@@ -1,6 +1,6 @@
 # Handoff — completed paired graph execution on RTX5080
 
-The earlier T4 objective was explicitly replaced by the user. Current goal is `goal-17b53756-3b4d-47cc-a8e8-2a54f3972cf6`; read `get_goal` for live state. Do not resume the deleted old T4 goal or regenerate existing answers.
+The earlier T4 objective was explicitly replaced by the user. Current goal is `goal-17b53756-3b4d-47cc-a8e8-2a54f3972cf6` (rev2 active/armed at handoff); read `get_goal` for live state. Do not resume the deleted old T4 goal or regenerate existing answers.
 
 ## Verified outcome
 104 graph attempts saved on RTX5080:24 development +80 preliminary, all successful calls;6 capped outputs retained. Exact baseline frozen experiment/query parity and all104 independent context/full-prompt recounts pass. Correctness is ungraded, not zero. Shared src inference code remained unchanged from the baseline integration; actual execution source commit404e3e2.
@@ -24,4 +24,4 @@ Publish final reviewed integration branch, never main. Safina/team then perform 
 ## Historical failures and environment
 Kaggle inputs/notebooks remained private. Attempts stopped before model generation because of input packaging, zstd, then virtualenv/ensurepip; hardware-only T4 receipts do not validate model throughput/construction. They are not current delivery blockers. Old background IDs from before session restoration are not usable; the104 RTX run already completed, so never restart it to recover logs.
 
-All substantive code changes were reviewed in bounded Standards/Spec slices; source receipt pointers are in `.scratch/reviews/paired-preliminary-20261127.md`. The abandoned plain documentation delegation produced reads but no edits before its parent-turn interruption; Lead completed documentation directly. No credentials are included in this handoff.
+All substantive code changes were reviewed in bounded Standards/Spec slices; source receipt pointers are in `.scratch/reviews/paired-preliminary-20261127.md`. Lead completed the documentation update; a later verification pass checked the links and counts cited in this handoff. No credentials are included in this handoff.
