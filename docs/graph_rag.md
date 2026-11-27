@@ -1,5 +1,7 @@
 # Graph extraction, retrieval and development routing
 
+**27 November priority:** follow [Artem's paired preliminary status](ARTEM_STATUS.md) and the [accepted paired scope](specs/2026-11-27-paired-preliminary.md). The baseline delivery is now received and parity-verified. Produce only104 graph attempts (12 development +40 preliminary per system); learned routing and the full200 run are deferred. Setup/dependency statements below describe the historical pilot, not current blockers.
+
 This is Artem's graph component. It reads shared chunks and manifests and does not
 select/freeze a comparison corpus, select evaluation questions, implement the
 baselines, change the common answer prompt or grade correctness. The actual local

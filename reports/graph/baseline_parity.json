@@ -1,0 +1,22 @@
+{
+  "scope": "paired_12_development_40_preliminary_only",
+  "baseline_package": "data/packages/baseline_results_15000",
+  "uploaded_archive_sha256": "e19bfbc170a207a7271c241c84bd3a551e29009c9ba1a137306a1c0d4cf6b2e2",
+  "package_manifest_sha256": "7f7ad7956597b91565e1c7ee5c9bfbc046a9445ca9f35f04fe43e44517517672",
+  "verified_payload_hashes": 264,
+  "baseline_answers": {"development": 24, "preliminary": 80},
+  "baseline_successful_answers": 104,
+  "unique_question_ids": 52,
+  "output_limit_hits": 8,
+  "frozen_experiment_equal": true,
+  "development_query_bytes_equal": true,
+  "preliminary_query_bytes_equal": true,
+  "development_queries_sha256": "487b0498c8b5dcc0358492f1df6a3b4628015fee16b08502076428edadba1dc9",
+  "preliminary_queries_sha256": "7ca0f14f1db5fd3ca0d470723ac33b45a83955d3403340ccf3eefc926753a206",
+  "verification_commands": [
+    "python3 data/packages/baseline_results_15000/verify.py",
+    "assert baseline configuration/experiment.json == graph data/experiments/graph_local_15000/experiment.json; assert development and preliminary query files byte-identical"
+  ],
+  "correctness": "not_inferred_from_execution_success_or_coverage",
+  "baseline_rerun_required": false
+}

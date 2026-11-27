@@ -1,0 +1,511 @@
+{
+  "schema_version": 1,
+  "graph_artifacts_validated": true,
+  "scope": "paired_12_development_40_preliminary_only",
+  "all_graph_attempts_saved": false,
+  "artifacts": {
+    "config": {
+      "path": "/root/graph-vs-vector/configs/graph_local_15000.json",
+      "sha256": "e59e2d004e4d9f3a168527c84d86124151521b91298331a453ba7520f44dfe3a",
+      "bytes": 1816
+    },
+    "bundle": {
+      "path": "/root/graph-vs-vector/data/exports/corpus_15000/bundle.json",
+      "sha256": "95f962b541584bb7b5dd6c9a46122683682f8017b75b67cd2cb3b1748e058e3d",
+      "bytes": 1611
+    },
+    "chunk_config": {
+      "path": "/root/graph-vs-vector/data/exports/corpus_15000/chunks/chunk_config.json",
+      "sha256": "708e8872db85840612e87648062050bf03fa668588dd15646fad42a1f5b86261",
+      "bytes": 590
+    },
+    "chunks": {
+      "path": "/root/graph-vs-vector/data/exports/corpus_15000/chunks/chunks.jsonl",
+      "sha256": "c460c32a6ee1a491c827c5116684b9a253e6bb501ea3444571f58052d3c9e3c6",
+      "bytes": 82901565
+    },
+    "source_manifest": {
+      "path": "/root/graph-vs-vector/data/exports/corpus_15000/corpus_manifest.jsonl",
+      "sha256": "828cf3ec712f6735ecdc7ea05e1cb4486c5f6ceae235b42338640366f2da1be1",
+      "bytes": 3378734
+    },
+    "experiment": {
+      "path": "/root/graph-vs-vector/data/experiments/graph_local_15000/experiment.json",
+      "sha256": "3c6340bfa640523840e3962d217711afef428468b73bb4fdde63315836b095a6",
+      "bytes": 2825
+    },
+    "corpus_audit": {
+      "path": "/root/graph-vs-vector/data/experiments/graph_local_15000/corpus_audit.json",
+      "sha256": "2729212c8c31456a946ffb5d78bbb104a680a13547027424baf5f547c6ad1ea7",
+      "bytes": 507
+    },
+    "selection": {
+      "path": "/root/graph-vs-vector/data/experiments/graph_local_15000/questions/selection.json",
+      "sha256": "a98799c1ddeca3b85d63b97f4d212581c0fa3fac1a6bc28268f7b8a95d91672d",
+      "bytes": 1676
+    },
+    "extraction_config": {
+      "path": "/root/graph-vs-vector/data/graph/corpus_15000/extraction_config.json",
+      "sha256": "855170fe996c773bb29a49a1cf84e1ff31abcd46b4b4afa0e3b221324f1eb4da",
+      "bytes": 3705
+    },
+    "extraction_status": {
+      "path": "/root/graph-vs-vector/data/graph/corpus_15000/extraction_status.json",
+      "sha256": "ebc15f9e5aecbb61e03344916970623020eaca640cafc085a9735a94d97128e9",
+      "bytes": 222
+    },
+    "index": {
+      "path": "/root/graph-vs-vector/data/graph/corpus_15000/index.json",
+      "sha256": "c4d7a3e84f8ebc05aa6e3ed339dd7ac9954f0a2d17d528dcc82968f9f39a2987",
+      "bytes": 338590511
+    },
+    "index_cost": {
+      "path": "/root/graph-vs-vector/data/graph/corpus_15000/index.cost.json",
+      "sha256": "8ea22d2cce1b9013840cae6117d52390419ca4b6246feada8cbd09c0a03f3833",
+      "bytes": 126
+    },
+    "source_audit": {
+      "path": "/root/graph-vs-vector/data/graph/corpus_15000/source_audit.json",
+      "sha256": "c209ebd2da9f88eaf06f04377bcb504f22f3ccd9ee91fcfef479e07a90d7a542",
+      "bytes": 473
+    },
+    "summary_config": {
+      "path": "/root/graph-vs-vector/data/graph/corpus_15000/summaries/summary_config.json",
+      "sha256": "4c1630e678e8937c3b3a64fb19352f2e9fe44970d03038c4915443b2f03140f7",
+      "bytes": 2138
+    },
+    "summary_status": {
+      "path": "/root/graph-vs-vector/data/graph/corpus_15000/summaries/summary_status.json",
+      "sha256": "7e95ee7dc49f2a851c30e784276756d2eef19c8b51d6aaa838e8311c20191290",
+      "bytes": 297
+    },
+    "report_script": {
+      "path": "/root/graph-vs-vector/scripts/report_graph_delivery.py",
+      "sha256": "b6b4f177a554e2006ba13917b6170e2fddfa8a1e481473ecfa4ce34b7bd827ee",
+      "bytes": 31545
+    }
+  },
+  "corpus": {
+    "chunks_sha256": "c460c32a6ee1a491c827c5116684b9a253e6bb501ea3444571f58052d3c9e3c6",
+    "source_manifest_sha256": "828cf3ec712f6735ecdc7ea05e1cb4486c5f6ceae235b42338640366f2da1be1",
+    "document_count": 15000,
+    "chunk_count": 45142,
+    "chunk_ids_sha256": "a771b85ffccd198f395807d830971a03c5171dae394f1698a20eeba761cbccef"
+  },
+  "corpus_selection": {
+    "document_count": 15000,
+    "chunk_count": 45142,
+    "seed": 42,
+    "selection": "source-proportional largest remainder; all project question gold documents mandatory; overflow removed from largest available strata; seeded random remainder",
+    "source_document_counts": {
+      "confluence": 167,
+      "fireflies": 298,
+      "github": 236,
+      "gmail": 3557,
+      "google_drive": 736,
+      "hubspot": 440,
+      "jira": 179,
+      "linear": 1034,
+      "slack": 8353
+    },
+    "unconstrained_source_quotas": {
+      "confluence": 152,
+      "fireflies": 298,
+      "github": 236,
+      "gmail": 3557,
+      "google_drive": 736,
+      "hubspot": 440,
+      "jira": 179,
+      "linear": 1034,
+      "slack": 8368
+    },
+    "population_source_counts": {
+      "confluence": 5188,
+      "fireflies": 10173,
+      "github": 8052,
+      "gmail": 121390,
+      "google_drive": 25108,
+      "hubspot": 15016,
+      "jira": 6118,
+      "linear": 35308,
+      "slack": 285605
+    },
+    "population_documents": 511958,
+    "required_gold_documents": 423,
+    "upstream_index_sha256": "854cda12a43334a9b7c9ebbb4a069a089d52fd7033bc71d79bdbf54f708137fb",
+    "upstream_questions_sha256": "f9524b9157cd43aae36b99333a124738804306ea6d07f332d49faa6d3d147905",
+    "upstream_commit": "d36685e273713975ee20299bbf1ab64165575b3c",
+    "upstream_remote": "git@github.com:onyx-dot-app/EnterpriseRAG-Bench.git",
+    "question_selection": "Existing project fold_a (100), fold_b (100), development (12); no scores used. Evaluation gold IDs used only to ensure source inclusion, never for retrieval/routing.",
+    "status": "standalone 15k comparison candidate; existing shared project manifests unchanged"
+  },
+  "runs": {
+    "development": {
+      "status": "pending",
+      "present": false,
+      "expected_attempts": 24,
+      "saved_attempts": 0,
+      "questions": {
+        "path": "/root/graph-vs-vector/data/experiments/graph_local_15000/questions/development.queries.jsonl",
+        "sha256": "487b0498c8b5dcc0358492f1df6a3b4628015fee16b08502076428edadba1dc9",
+        "bytes": 2901
+      },
+      "required_for_current_scope": true
+    },
+    "preliminary": {
+      "status": "pending",
+      "present": false,
+      "expected_attempts": 80,
+      "saved_attempts": 0,
+      "questions": {
+        "path": "/root/graph-vs-vector/data/experiments/graph_local_15000/questions/preliminary.queries.jsonl",
+        "sha256": "7ca0f14f1db5fd3ca0d470723ac33b45a83955d3403340ccf3eefc926753a206",
+        "bytes": 9820
+      },
+      "required_for_current_scope": true
+    },
+    "fold_a": {
+      "status": "deferred_not_requested",
+      "present": false,
+      "expected_attempts": 200,
+      "saved_attempts": 0,
+      "questions": {
+        "path": "/root/graph-vs-vector/data/experiments/graph_local_15000/questions/fold_a.queries.jsonl",
+        "sha256": "88930cb71b7d8e45bb86d17bad2b268b5615eb3708667196410ca1e897747494",
+        "bytes": 22822
+      },
+      "required_for_current_scope": false
+    },
+    "fold_b": {
+      "status": "deferred_not_requested",
+      "present": false,
+      "expected_attempts": 200,
+      "saved_attempts": 0,
+      "questions": {
+        "path": "/root/graph-vs-vector/data/experiments/graph_local_15000/questions/fold_b.queries.jsonl",
+        "sha256": "b800e4a57528970ae6fbdd1a4720a81302caa031e1bfcc2d7243a8beda9c7f3a",
+        "bytes": 24283
+      },
+      "required_for_current_scope": false
+    }
+  },
+  "correctness": "pending_external_grading",
+  "routing": "deferred_until_paired_correctness",
+  "development_grading_handoff": {
+    "status": "pending_external_grading",
+    "prediction_exports": []
+  },
+  "external_blockers": [
+    "Independent grading of 160 preliminary and 24 graph development answers; resolve disagreements.",
+    "Team-agreed aggregate handling of failed and N/A attempts.",
+    "Actual Kaggle T4 run and measured receipts; 5080 artifacts are not T4 evidence."
+  ],
+  "preprocessing": {
+    "cost": {
+      "records": 147821,
+      "attempts": 147848,
+      "retry_attempts": 27,
+      "recovery_attempts": 3,
+      "model_calls": 54509,
+      "prompt_tokens": 36292624,
+      "completion_tokens": 23965281,
+      "attempts_without_token_metrics": 0,
+      "sum_attempt_wall_seconds": 351467.46193227696,
+      "sum_request_wall_seconds": 351462.71578106255,
+      "attempts_without_request_wall": 0
+    },
+    "index_wall_seconds": 15.94747903899406,
+    "historical_wall_seconds": null
+  },
+  "T4_validation": "unverified_no_actual_T4_measurements",
+  "gpu_hours": null,
+  "electricity_cost": null,
+  "limitations": [
+    "No GPU-hour or electricity inference from client latency, memory estimates or hardware labels.",
+    "Preliminary/core question duplicates are not independent observations; split costs remain separate.",
+    "Corpus includes question-conditioned sources; subset results do not establish benchmark non-contamination.",
+    "Tokens with missing usage are unknown, not free. Request/attempt sums are not concurrent wall time."
+  ],
+  "source_audit": {
+    "passed": true,
+    "counts": {
+      "source_documents": 15000,
+      "chunks": 45142,
+      "entity_mentions": 333248,
+      "relation_supports": 43765,
+      "summary_claims": 122568
+    },
+    "errors": [],
+    "index_sha256": "c4d7a3e84f8ebc05aa6e3ed339dd7ac9954f0a2d17d528dcc82968f9f39a2987",
+    "limitations": [
+      "Structural provenance checks do not establish semantic entailment of model predicates/claims.",
+      "Named-entity identity collisions require manual review."
+    ]
+  },
+  "index_cost": {
+    "wall_seconds": 15.94747903899406,
+    "model_calls": 0,
+    "nodes": 136470,
+    "relations": 43147,
+    "communities": 102679
+  },
+  "index_metadata": {
+    "schema_version": 1,
+    "corpus_scope": "all_supplied_chunks",
+    "chunks_sha256": "c460c32a6ee1a491c827c5116684b9a253e6bb501ea3444571f58052d3c9e3c6",
+    "source_manifest_sha256": "828cf3ec712f6735ecdc7ea05e1cb4486c5f6ceae235b42338640366f2da1be1",
+    "extraction_config_sha256": "855170fe996c773bb29a49a1cf84e1ff31abcd46b4b4afa0e3b221324f1eb4da",
+    "checkpoint_sha256": "5b55a2bf88265015a250c49a09cf69a59c05f8befd7520cf257c3ac82f99c0ac",
+    "total_corpus_chunks": 45142,
+    "indexed_chunks": 45142,
+    "seed": 42,
+    "community_algorithm": "Leiden modularity, resolution=1, until stable",
+    "igraph_version": "0.11.9"
+  },
+  "index_counts": {
+    "nodes": 136470,
+    "edges": 43147,
+    "chunks": 45142,
+    "communities": 102679
+  },
+  "extraction_status": {
+    "selected_chunks": 45142,
+    "completed_chunks": 45142,
+    "error_chunks": 0,
+    "pending_chunks": 0,
+    "extraction_config_sha256": "855170fe996c773bb29a49a1cf84e1ff31abcd46b4b4afa0e3b221324f1eb4da",
+    "complete": true
+  },
+  "summary_status": {
+    "index_sha256": "c4d7a3e84f8ebc05aa6e3ed339dd7ac9954f0a2d17d528dcc82968f9f39a2987",
+    "summary_config_sha256": "4c1630e678e8937c3b3a64fb19352f2e9fe44970d03038c4915443b2f03140f7",
+    "communities": 102679,
+    "completed": 102679,
+    "errors": 0,
+    "extractive_fallbacks": 12,
+    "complete": true
+  },
+  "extraction": {
+    "cost": {
+      "records": 45142,
+      "attempts": 45152,
+      "retry_attempts": 10,
+      "recovery_attempts": 3,
+      "model_calls": 45152,
+      "prompt_tokens": 33405352,
+      "completion_tokens": 21824209,
+      "attempts_without_token_metrics": 0,
+      "sum_attempt_wall_seconds": 306767.03664784506,
+      "sum_request_wall_seconds": 306763.38397506846,
+      "attempts_without_request_wall": 0
+    },
+    "counts": {
+      "entities": 333248,
+      "relations": 43765,
+      "rejected": 202103
+    },
+    "current_records_sha256": "5b55a2bf88265015a250c49a09cf69a59c05f8befd7520cf257c3ac82f99c0ac",
+    "model": {
+      "model": "graph-qwen35-9b-fp8",
+      "backend": "vllm",
+      "server_version": "0.33.0",
+      "weights_manifest_sha256": "2c085f3f7304dc82104df81d2e6946fd5dfe82a6225aea04499e6923c03b7405",
+      "server_config_sha256": "d0513c61cd38f826ecc88ee328b605f74b41196906c96ea65bf179520a345c49",
+      "sampling": {
+        "temperature": 0,
+        "top_p": 1,
+        "seed": 42,
+        "presence_penalty": 0,
+        "frequency_penalty": 0,
+        "repetition_penalty": 1,
+        "enable_thinking": false
+      }
+    },
+    "recovery_manifests": [
+      {
+        "artifact": {
+          "path": "/root/graph-vs-vector/data/graph/corpus_15000/recovery/20261111T221203607328Z/manifest.json",
+          "sha256": "f67c11b6bce41ceb17b129cd8c8a731caf1b4be7881d4e8f49ef08a5e3ed985c",
+          "bytes": 1847
+        },
+        "data": {
+          "primary_extraction_config_sha256": "855170fe996c773bb29a49a1cf84e1ff31abcd46b4b4afa0e3b221324f1eb4da",
+          "script_sha256": "590b6124318d616ba87c02e525a215b066178c399e2e37ae5e613eea7fc1f1e0",
+          "model": {
+            "model": "graph-qwen35-9b-fp8",
+            "backend": "vllm",
+            "server_version": "0.33.0",
+            "weights_manifest_sha256": "2c085f3f7304dc82104df81d2e6946fd5dfe82a6225aea04499e6923c03b7405",
+            "server_config_sha256": "d0513c61cd38f826ecc88ee328b605f74b41196906c96ea65bf179520a345c49",
+            "sampling": {
+              "temperature": 0,
+              "top_p": 1,
+              "seed": 42,
+              "presence_penalty": 0,
+              "frequency_penalty": 0,
+              "repetition_penalty": 1,
+              "enable_thinking": false
+            }
+          },
+          "profile": {
+            "repetition_penalty": 1.1,
+            "max_tokens": 2048,
+            "additional_instruction": "Use short exact entity names, not lists or sentences. Never repeat text to fill a field. Return at most 6 entities and 4 relations. Omit uncertain items. Close the JSON object."
+          },
+          "chunk_ids": [
+            "dsid_8f2f949e963a4e1c976cc39b6cbd9608::9b709c39d70337ef::000001",
+            "dsid_c0871e57ceb44fa38735753bdcee3d4c::9b709c39d70337ef::000002"
+          ],
+          "results": [
+            {
+              "chunk_id": "dsid_c0871e57ceb44fa38735753bdcee3d4c::9b709c39d70337ef::000002",
+              "status": "ok",
+              "entities": 5,
+              "relations": 0,
+              "record_sha256": "4f4f3c6d66ce4f878ab62eaafcb2f488f36901960a8a0b2b1ac96aaf49fb5016"
+            },
+            {
+              "chunk_id": "dsid_8f2f949e963a4e1c976cc39b6cbd9608::9b709c39d70337ef::000001",
+              "status": "error",
+              "entities": 0,
+              "relations": 0,
+              "record_sha256": "4da0ae866e84489667896b9d005fac42cc3ddc25e942f20a5caec054f053ecdb"
+            }
+          ],
+          "reason": "Targeted retry of repeated/truncated extraction; successful original records untouched. Primary configuration retained; per-attempt overrides explicit."
+        }
+      },
+      {
+        "artifact": {
+          "path": "/root/graph-vs-vector/data/graph/corpus_15000/recovery/20261111T221341885797Z/manifest.json",
+          "sha256": "d8632e8836efe03f1b82b83972082f37eba08335a6eb44ab52bb1214fd83ab21",
+          "bytes": 1622
+        },
+        "data": {
+          "primary_extraction_config_sha256": "855170fe996c773bb29a49a1cf84e1ff31abcd46b4b4afa0e3b221324f1eb4da",
+          "script_sha256": "461f287c172b28d3c3fc3777644e0bfc2a0881293e425aa2ed04ce436da14ece",
+          "model": {
+            "model": "graph-qwen35-9b-fp8",
+            "backend": "vllm",
+            "server_version": "0.33.0",
+            "weights_manifest_sha256": "2c085f3f7304dc82104df81d2e6946fd5dfe82a6225aea04499e6923c03b7405",
+            "server_config_sha256": "d0513c61cd38f826ecc88ee328b605f74b41196906c96ea65bf179520a345c49",
+            "sampling": {
+              "temperature": 0,
+              "top_p": 1,
+              "seed": 42,
+              "presence_penalty": 0,
+              "frequency_penalty": 0,
+              "repetition_penalty": 1,
+              "enable_thinking": false
+            }
+          },
+          "profile": {
+            "repetition_penalty": 1.15,
+            "max_tokens": 2048,
+            "additional_instruction": "Use short exact entity names, not lists or sentences. Never repeat text to fill a field. Return at most 6 entities and 4 relations. Omit uncertain items. Close the JSON object.",
+            "source_quote_policy": "exact nonempty 1–3 consecutive source lines, stripped, max 650 chars"
+          },
+          "chunk_ids": [
+            "dsid_8f2f949e963a4e1c976cc39b6cbd9608::9b709c39d70337ef::000001"
+          ],
+          "results": [
+            {
+              "chunk_id": "dsid_8f2f949e963a4e1c976cc39b6cbd9608::9b709c39d70337ef::000001",
+              "status": "ok",
+              "entities": 4,
+              "relations": 0,
+              "record_sha256": "5bd5a8918e5c3e4d7d5d756699d1faf619806880b8954ca554b026ab407b3dc7"
+            }
+          ],
+          "reason": "Targeted retry of repeated/truncated extraction; successful original records untouched. Primary configuration retained; per-attempt overrides explicit."
+        }
+      }
+    ],
+    "sessions": {
+      "count": 3,
+      "attempted_records": 4765,
+      "saved_session_wall_seconds": 5155.416596017007,
+      "saved_session_request_seconds": 40771.81624324288,
+      "artifacts": [
+        {
+          "path": "/root/graph-vs-vector/data/graph/corpus_15000/sessions/1794432665154140530.json",
+          "sha256": "98706a8f46f93cb4b8ccab8df1fb21e32ffcdd35e6653ea565c4437cb35fbfbd",
+          "bytes": 137
+        },
+        {
+          "path": "/root/graph-vs-vector/data/graph/corpus_15000/sessions/1794432709045852608.json",
+          "sha256": "61dec410d5f02ce3f610613ad99e16a9c21eaef75e3f47af78e446ac3c5adc87",
+          "bytes": 134
+        },
+        {
+          "path": "/root/graph-vs-vector/data/graph/corpus_15000/sessions/1794432751723063077.json",
+          "sha256": "10d74eece80c479aef08a1ccdb7e5ead7b07c3d0d208dd3988765eca2d1aa930",
+          "bytes": 132
+        }
+      ],
+      "matches_current_attempt_totals": false,
+      "historical_wall_complete": false,
+      "limitation": "Extraction was interrupted; saved sessions may cover fewer chunks than current records and omit recovery. Full historical wall time is unavailable."
+    }
+  },
+  "summaries": {
+    "cost": {
+      "records": 102679,
+      "attempts": 102696,
+      "retry_attempts": 17,
+      "recovery_attempts": 0,
+      "model_calls": 9357,
+      "prompt_tokens": 2887272,
+      "completion_tokens": 2141072,
+      "attempts_without_token_metrics": 0,
+      "sum_attempt_wall_seconds": 44700.42528443193,
+      "sum_request_wall_seconds": 44699.33180599408,
+      "attempts_without_request_wall": 0
+    },
+    "methods": {
+      "local_model_synthesis": 9328,
+      "extractive_singleton": 93339,
+      "extractive_fallback": 12
+    },
+    "claims": 122568,
+    "current_records_sha256_index_order": "dc37d9bec25a7510bf03e8305d105251874736308dfd7a809011524b398dde04",
+    "model": {
+      "model": "graph-qwen35-9b-fp8",
+      "backend": "vllm",
+      "server_version": "0.33.0",
+      "weights_manifest_sha256": "2c085f3f7304dc82104df81d2e6946fd5dfe82a6225aea04499e6923c03b7405",
+      "server_config_sha256": "d0513c61cd38f826ecc88ee328b605f74b41196906c96ea65bf179520a345c49",
+      "sampling": {
+        "temperature": 0,
+        "top_p": 1,
+        "seed": 42,
+        "presence_penalty": 0,
+        "frequency_penalty": 0,
+        "repetition_penalty": 1,
+        "enable_thinking": false
+      }
+    },
+    "sessions": {
+      "count": 2,
+      "attempted_records": 102696,
+      "saved_session_wall_seconds": 5599.748004948,
+      "saved_session_request_seconds": 44700.42528443193,
+      "artifacts": [
+        {
+          "path": "/root/graph-vs-vector/data/graph/corpus_15000/summaries/sessions/1794440860493654645.json",
+          "sha256": "962f8ce99c73726e36479dd1dcf3f1c146a84625dbd48a2a879188f4b1ee89f8",
+          "bytes": 143
+        },
+        {
+          "path": "/root/graph-vs-vector/data/graph/corpus_15000/summaries/sessions/1794440894399167972.json",
+          "sha256": "59fe1fad5be894d1171f717b7d15f47310044247be3a60527e1fe8055a0c8aa5",
+          "bytes": 138
+        }
+      ],
+      "matches_current_attempt_totals": true,
+      "historical_wall_complete": null,
+      "limitation": "Session counters have no attempt IDs; matching totals are a consistency check, not proof of full history."
+    }
+  }
+}
