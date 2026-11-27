@@ -56,7 +56,7 @@ class AssetTests(unittest.TestCase):
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
 
-    def manifest(self, assets, source=kgp.SOURCE_LABEL, schema_version=1):
+    def manifest(self, assets, source=kgp.SOURCE_LABEL, schema_version=2):
         return {'schema_version': schema_version, 'commit': 'a' * 40,
                 'assets': assets, 'source': source}
 
@@ -64,9 +64,22 @@ class AssetTests(unittest.TestCase):
         contents = {name: (name + '-content').encode() for name in kgp.ASSET_WHITELIST}
         assets = {}
         for name, data in contents.items():
-            (self.root / name).write_bytes(data)
+            (self.root / (name + '.bin')).write_bytes(data)
             assets[name] = {'sha256': sha256(data)}
         return self.manifest(assets), contents
+
+    def test_schema2_opaque_storage_preserves_archive_bytes_on_kaggle(self):
+        contents = {name: (name + '-opaque').encode() for name in kgp.ASSET_WHITELIST}
+        manifest = self.manifest({name: {'sha256': sha256(data)} for name, data in contents.items()}, schema_version=2)
+        for name, data in contents.items():
+            (self.root / (name + '.bin')).write_bytes(data)
+        try:
+            parsed = kgp.parse_manifest(manifest)
+            verified = kgp.verify_assets(self.root, parsed, sha256(contents['ollama-0.18.0.tar.zst']))
+        except ValueError as exc:
+            self.fail(f'Opaque version2 input archives rejected: {exc}')
+        self.assertEqual(len(verified['assets']), 6)
+        self.assertTrue(all(r['path'].endswith('.bin') for r in verified['assets']))
 
     def test_official_ollama_release_hash_is_pinned(self):
         self.assertEqual(
@@ -76,14 +89,14 @@ class AssetTests(unittest.TestCase):
     def test_parse_manifest_accepts_valid_input(self):
         manifest, contents = self.write_assets()
         parsed = kgp.parse_manifest(manifest)
-        self.assertEqual(parsed['schema_version'], 1)
+        self.assertEqual(parsed['schema_version'], 2)
         self.assertEqual(parsed['commit'], 'a' * 40)
         self.assertEqual(set(parsed['assets']), set(kgp.ASSET_WHITELIST))
 
     def test_parse_manifest_rejects_bad_schema(self):
         manifest, _ = self.write_assets()
         cases = [
-            dict(manifest, schema_version=2),
+            dict(manifest, schema_version=1),
             dict(manifest, commit='short'),
             dict(manifest, commit='g' * 40),
             dict(manifest, source='other'),
@@ -106,7 +119,7 @@ class AssetTests(unittest.TestCase):
 
     def test_verify_assets_rejects_tampered_asset(self):
         manifest, _ = self.write_assets()
-        (self.root / 'project_code.tar.gz').write_bytes(b'tampered')
+        (self.root / 'project_code.tar.gz.bin').write_bytes(b'tampered')
         with self.assertRaisesRegex(ValueError, 'digest mismatch'):
             kgp.verify_assets(self.root, kgp.parse_manifest(manifest))
 
@@ -116,7 +129,7 @@ class AssetTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'whitelist'):
             kgp.verify_assets(self.root, kgp.parse_manifest(extra))
         missing = {k: v for k, v in manifest['assets'].items() if k != 'graph_results_15000.zip'}
-        (self.root / 'graph_results_15000.zip').unlink()
+        (self.root / 'graph_results_15000.zip.bin').unlink()
         with self.assertRaises(ValueError):
             kgp.verify_assets(self.root, kgp.parse_manifest(self.manifest(missing)))
 

@@ -7,6 +7,7 @@ import re
 import shutil
 import subprocess
 import tarfile
+from kaggle_graph_preliminary import asset_file
 
 ROOT = Path(__file__).resolve().parents[1]
 OLLAMA_SHA256 = 'e364aedc9a991cbf36f704baa807a04f432d46e32265b783e7dec9ce0336af88'
@@ -78,18 +79,18 @@ def prepare_payload(output, baseline_archive, project_root=ROOT):
         if not path.resolve().is_relative_to(tokenizer.resolve()):
             raise ValueError('Tokenizer cache contains a link outside its repository')
     output.mkdir(parents=True)
-    code = package_code(root, output / 'project_code.tar.gz')
+    code = package_code(root, asset_file(output, 'project_code.tar.gz'))
     for name, (path, _) in supplied.items():
-        shutil.copy2(path, output / name)
-    with tarfile.open(output / 'ollama_models.tar.gz', 'w:gz', compresslevel=1) as tar:
+        shutil.copy2(path, asset_file(output, name))
+    with tarfile.open(asset_file(output, 'ollama_models.tar.gz'), 'w:gz', compresslevel=1) as tar:
         for path in model_files:
             tar.add(path, arcname=path.relative_to(models).as_posix(), recursive=False)
-    with tarfile.open(output / 'answer_tokenizer.tar.gz', 'w:gz') as tar:
+    with tarfile.open(asset_file(output, 'answer_tokenizer.tar.gz'), 'w:gz') as tar:
         tar.add(tokenizer, arcname=tokenizer.name)
-    assets = {p.name: {'sha256': sha256(p), 'bytes': p.stat().st_size} for p in sorted(output.iterdir())}
+    assets = {p.name.removesuffix('.bin'): {'sha256': sha256(p), 'bytes': p.stat().st_size} for p in sorted(output.iterdir())}
     commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
     dirty = bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=root, text=True).strip())
-    manifest = {'schema_version': 1, 'commit': commit, 'dirty': dirty, 'assets': assets,
+    manifest = {'schema_version': 2, 'commit': commit, 'dirty': dirty, 'assets': assets,
                 'source': 'EnterpriseRAG-Bench frozen 15k; mixed upstream licenses retained',
                 'privacy': 'private inputs and private kernel only', 'code_files': code['files']}
     (output / 'paired-inputs.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')

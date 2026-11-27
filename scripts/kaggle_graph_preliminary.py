@@ -117,7 +117,7 @@ def parse_manifest(raw):
     """Validate paired-inputs.json and return its normalized fields."""
     if not isinstance(raw, dict):
         raise ValueError('paired-inputs.json must be a JSON object')
-    if raw.get('schema_version') != 1:
+    if raw.get('schema_version') != 2:
         raise ValueError('unsupported paired-inputs schema_version')
     commit = raw.get('commit')
     if not isinstance(commit, str) or not re.fullmatch(r'[0-9a-f]{40}', commit):
@@ -135,7 +135,14 @@ def parse_manifest(raw):
         normalized[name] = {'sha256': sha}
     if raw.get('source') != SOURCE_LABEL:
         raise ValueError('paired-inputs source must match the frozen EnterpriseRAG-Bench label')
-    return {'schema_version': 1, 'commit': commit, 'assets': normalized, 'source': SOURCE_LABEL}
+    return {'schema_version': 2, 'commit': commit, 'assets': normalized, 'source': SOURCE_LABEL}
+
+
+def asset_file(assets_dir, name):
+    if name not in ASSET_WHITELIST:
+        raise ValueError(f'unknown asset: {name}')
+    # Kaggle expands recognized archives and drops symlinks; transport exact bytes opaquely.
+    return Path(assets_dir) / (name + '.bin')
 
 
 def verify_assets(assets_dir, manifest, ollama_release_sha256=OLLAMA_RELEASE_SHA256):
@@ -145,7 +152,7 @@ def verify_assets(assets_dir, manifest, ollama_release_sha256=OLLAMA_RELEASE_SHA
         raise ValueError('asset set must exactly match the whitelist')
     records = []
     for name in ASSET_WHITELIST:
-        path = Path(assets_dir) / name
+        path = asset_file(assets_dir, name)
         if not path.is_file():
             raise ValueError(f'missing asset: {name}')
         sha = file_digest(path)
@@ -370,7 +377,7 @@ def run_nvidia_smi():
 
 def extract_asset(workdir, filename, assets_dir):
     dest = asset_destination(workdir, filename)
-    source = Path(assets_dir) / filename
+    source = asset_file(assets_dir, filename)
     if filename.endswith('.zip'):
         extract_zip(source, dest)
     elif filename.endswith('.tar.zst'):

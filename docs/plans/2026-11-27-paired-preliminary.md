@@ -5,7 +5,7 @@ Authority: `docs/specs/2026-11-27-paired-preliminary.md` (user staff feedback, 2
 ## Architecture and constraints
 Reuse the existing complete graph and the merged shared generator. Produce only 24 development and 80 preliminary graph attempts, not the core folds. Keep identical baseline IDs, 15k/45142 corpus hashes, k=10, 2560 context tokens, exact prompt/model/digest/tokenizer/decoding. No learned-router training. Keep coverage/correctness/context-size/index-cost/query-cost separate. Preserve failures and do not invent a failure aggregation policy.
 
-Dependency summary: P1 → P2 → P3 → P4. Independent software tests/reporting can run while pinned dependencies download. Kaggle execution waits on user authentication; combined comparison waits on baseline package/grades, not on invented data.
+Dependency summary: P1 → P2 → P3 → P4. Software tests/reporting run independently of private T4 preparation. Authentication and baseline delivery are resolved; execution now waits on the real private T4 smoke/run, and the scored comparison waits on independent grading/failure-policy agreement, not invented data.
 
 ## P1 — verify parity and pinned runtime
 Files: `configs/graph_local_15000.json`, `requirements-graph-answers.txt`, append-only experiment log; local-only model/runtime assets. Public interface: `baseline_rag.corpus.prepare` and `SharedGenerator`.

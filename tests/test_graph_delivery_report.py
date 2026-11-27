@@ -79,7 +79,9 @@ class DeliveryReportTests(unittest.TestCase):
                                                'raw_bundle_complete': True, 'missing_raw_source_files': []})
         save(self.output / 'questions/selection.json',
              {'development_ids': self.questions['development'],
-              'preliminary_question_ids': self.questions['preliminary']})
+              'preliminary_question_ids': self.questions['preliminary'],
+               'input_sha256': {f'{split}.queries.jsonl': file_hash(self.output / 'questions' / f'{split}.queries.jsonl')
+                                for split in ('development', 'fold_a', 'fold_b')}})
         self.extraction_config = {key: self.corpus[key] for key in
                                   ('chunks_sha256', 'source_manifest_sha256')}
         self.extraction_config.update(sample_sha256=None, model={'model': 'extraction-fixture'})
@@ -365,6 +367,32 @@ class DeliveryReportTests(unittest.TestCase):
         report = self.report()
         self.assertEqual(report['runs']['development']['saved_attempts'], 24)
         self.assertEqual(report['runs']['development']['run_config'], config)
+
+    def test_partial_unrequested_core_directory_cannot_block_paired_report(self):
+        self.make_run('development')
+        self.make_run('preliminary')
+        (self.output / 'runs/fold_a').mkdir()
+        try:
+            report = self.report()
+        except Exception as exc:
+            self.fail(f'Unrequested core directory blocked paired reporting: {exc}')
+        self.assertTrue(report['all_graph_attempts_saved'])
+        self.assertEqual(report['runs']['fold_a']['status'], 'deferred_not_requested')
+        self.assertTrue(report['runs']['fold_a']['present'])
+        self.assertIn('warning', report['runs']['fold_a'])
+
+    def test_packing_cost_is_separate_from_retrieval_and_generation(self):
+        self.make_run()
+        report = self.report()
+        self.assertEqual(report['runs']['development']['cost'].get('sum_packing_seconds'), 46)
+
+    def test_missing_original_query_hash_cannot_claim_immutable_text(self):
+        path = self.output / 'questions/selection.json'
+        selection = json.loads(path.read_text())
+        selection['input_sha256'] = {}
+        save(path, selection)
+        with self.assertRaisesRegex(ValueError, 'question hash'):
+            self.report()
 
 
 if __name__ == '__main__':

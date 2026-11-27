@@ -170,6 +170,8 @@ def _sessions(root, count_key, cost, interrupted=False):
     result['matches_current_attempt_totals'] = (
         result['count'] > 0 and result['attempted_records'] == cost['attempts']
         and math.isclose(result['saved_session_request_seconds'], cost['sum_attempt_wall_seconds'], abs_tol=1e-5))
+    result['counter_semantics'] = ('attempted_records counts attempt invocations, not distinct chunks; '
+                                   'saved_session_request_seconds is attempt wall including validation, not HTTP-only time.')
     result['historical_wall_complete'] = False if interrupted else None
     result['limitation'] = (
         'Extraction was interrupted; saved sessions may cover fewer chunks than current records and omit recovery. '
@@ -191,7 +193,8 @@ def _questions(output, frozen, selection):
         _require(len(rows) == expected, f'Wrong {split} question count')
         questions[split], identities[split] = rows, _identity(path)
         recorded = selection.get('input_sha256', {}).get(path.name)
-        _require(recorded is None or recorded == identities[split]['sha256'], 'Frozen question hash changed')
+        _require((split == 'preliminary' and recorded is None) or recorded == identities[split]['sha256'],
+                 'Frozen question hash missing or changed')
     dev, pre, a, b = (set(questions[s]) for s in SPLITS)
     _require(dev == set(frozen['development_ids']) == set(selection['development_ids'])
              and pre == set(frozen['preliminary_question_ids']) == set(selection['preliminary_question_ids'])
@@ -227,7 +230,7 @@ def _run_report(config, frozen, split, questions, query_identity, chunks, artifa
         _require(not identity or key not in settings or identity.get(key) == settings[key], 'Generator model identity changed')
     totals = dict.fromkeys(('attempts', 'success', 'failed', 'prompt_tokens', 'completion_tokens',
                            'attempts_without_token_metrics', 'sum_total_query_seconds',
-                           'attempts_without_total_query_seconds', 'sum_retrieval_seconds', 'sum_generation_seconds'), 0)
+                           'attempts_without_total_query_seconds', 'sum_retrieval_seconds', 'sum_packing_seconds', 'sum_generation_seconds'), 0)
     systems, run_artifacts, fingerprint = {}, {}, hashlib.sha256()
     max_context, checked_links = 0, 0
     _require(set(summary['systems']) == set(SYSTEMS) and summary['split'] == split, 'Wrong saved systems/split')
@@ -288,7 +291,7 @@ def _run_report(config, frozen, split, questions, query_identity, chunks, artifa
                 cost[key] += value
                 if success:
                     successful_usage[key] += value
-            for field in ('total_query_seconds', 'retrieval_seconds', 'generation_seconds'):
+            for field in ('total_query_seconds', 'retrieval_seconds', 'packing_seconds', 'generation_seconds'):
                 cost['sum_' + field] += _number(row.get(field) or 0)
             cost['attempts_without_total_query_seconds'] += row.get('total_query_seconds') is None
             fingerprint.update(_canonical(row) + b'\n')
@@ -459,7 +462,12 @@ def build_report(config_path, extraction_path):
         recovery_manifests.append({'artifact': _identity(path), 'data': manifest})
     questions, query_identities = _questions(output, frozen, data['selection'])
     runs = {split: _run_report(config, frozen, split, questions[split], query_identities[split], chunks, artifacts)
-            for split in SPLITS}
+            for split in REQUIRED_SPLITS}
+    for split in (s for s in SPLITS if s not in REQUIRED_SPLITS):
+        present = (Path(config['output']) / 'runs' / split).exists()
+        runs[split] = {'status': 'deferred_not_requested', 'present': present,
+                       'expected_attempts': 2 * len(questions[split]), 'saved_attempts': None if present else 0,
+                       'warning': 'Optional core outputs are not validated or counted in this paired report.'}
     for split, run in runs.items():
         run['required_for_current_scope'] = split in REQUIRED_SPLITS
         if split not in REQUIRED_SPLITS and not run['present']:
@@ -484,7 +492,8 @@ def build_report(config_path, extraction_path):
             'limitations': ['No GPU-hour or electricity inference from client latency, memory estimates or hardware labels.',
                             'Preliminary/core question duplicates are not independent observations; split costs remain separate.',
                             'Corpus includes question-conditioned sources; subset results do not establish benchmark non-contamination.',
-                            'Tokens with missing usage are unknown, not free. Request/attempt sums are not concurrent wall time.'],
+                            'Tokens with missing usage are unknown, not free. Request/attempt sums are not concurrent wall time.',
+                            'Recovery attempts are a subset of retry attempts; do not add those counters.'],
             'source_audit': audit, 'index_cost': data['index_cost'], 'index_metadata': metadata,
             'index_counts': dict(counts), 'extraction_status': exstatus, 'summary_status': sstatus,
             'extraction': {'cost': extraction_cost, 'counts': dict(extraction_counts),
