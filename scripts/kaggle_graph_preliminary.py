@@ -249,10 +249,10 @@ def extract_tar_gz(tar_path, dest, allow_inroot_symlink=False):
             elif not (member.isfile() or member.isdir()):
                 raise ValueError(f'unsupported member type in {Path(tar_path).name}: {member.name}')
         for member in members:
-            try:
-                tf.extract(member, str(dest), filter='fully_trusted')
-            except TypeError:
-                tf.extract(member, str(dest))
+            safe_member(dest, member.name)
+            if member.issym():
+                safe_symlink_target(dest, member.name, member.linkname)
+            tf.extract(member, str(dest), filter='data')
 
 
 def extract_zst(tar_zst, dest):
@@ -452,12 +452,25 @@ def locate_baseline_reference(baseline_dir):
 
 
 def make_output_archive(workdir, output, experiment_dir, final_name, final_receipt):
+    if final_receipt.get('success') is False:
+        write_receipt(output, 'status.json', final_receipt)
     write_receipt(output, final_name, final_receipt)
     archive = Path(workdir) / 'paired_graph_output.tar.gz'
-    with tarfile.open(archive, 'w:gz') as tf:
-        tf.add(output, arcname='output')
-        if experiment_dir and Path(experiment_dir).exists():
-            tf.add(experiment_dir, arcname='experiment')
+    temporary = archive.with_suffix(archive.suffix + '.tmp')
+    try:
+        with tarfile.open(temporary, 'w:gz') as tf:
+            tf.add(output, arcname='output')
+            if experiment_dir and Path(experiment_dir).exists():
+                tf.add(experiment_dir, arcname='experiment')
+        temporary.replace(archive)
+    except Exception as exc:
+        if final_receipt.get('success') is not False:
+            raise
+        failed = {**final_receipt, 'archive_error': f'{type(exc).__name__}: {exc}'}
+        write_receipt(output, 'status.json', failed)
+        write_receipt(output, final_name, failed)
+        print(f'Failure archive could not be written: {exc}', file=sys.stderr)
+        return None
     return archive
 
 

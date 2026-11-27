@@ -222,12 +222,54 @@ class ExtractionTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             kgp.extract_tar_gz(sym, self.root / 'out4')
 
+    def test_inroot_symlink_chain_cannot_escape_during_extraction(self):
+        archive = self.root / 'chain.tar.gz'
+        with tarfile.open(archive, 'w:gz') as tar:
+            for name, target in [('a', '.'), ('a/b', '..')]:
+                info = tarfile.TarInfo(name)
+                info.type = tarfile.SYMTYPE
+                info.linkname = target
+                tar.addfile(info)
+            info = tarfile.TarInfo('a/b/escaped.txt')
+            info.size = 3
+            tar.addfile(info, io.BytesIO(b'bad'))
+        with self.assertRaises((ValueError, tarfile.FilterError)):
+            kgp.extract_tar_gz(archive, self.dest, allow_inroot_symlink=True)
+        self.assertFalse((self.root / 'escaped.txt').exists())
+
     def test_require_executable_gives_actionable_failure(self):
         with self.assertRaisesRegex(RuntimeError, 'zstd'):
             kgp.require_executable('definitely-not-a-real-zstd-binary', 'install zstd')
 
 
 class OutputArchiveTests(unittest.TestCase):
+    def test_failure_receipt_overrides_success_even_when_archive_cannot_be_written(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            work = Path(tmp)
+            output = work / 'output'
+            output.mkdir()
+            (output / 'status.json').write_text('{"success": true}')
+            with patch.object(kgp.tarfile, 'open', side_effect=OSError('disk full')):
+                kgp.make_output_archive(work, output, None, 'error.json',
+                                        {'success': False, 'error': 'original failure'})
+            self.assertFalse(json.loads((output / 'status.json').read_text())['success'])
+            self.assertEqual(json.loads((output / 'error.json').read_text())['error'], 'original failure')
+
+    def test_partial_archive_never_replaces_published_archive(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            work = Path(tmp)
+            output = work / 'output'
+            output.mkdir()
+            archive = work / 'paired_graph_output.tar.gz'
+            archive.write_bytes(b'previous complete archive')
+            def failed_write(path, *args, **kwargs):
+                Path(path).write_bytes(b'partial')
+                raise OSError('archive write failed')
+            with patch.object(kgp.tarfile, 'open', side_effect=failed_write):
+                with self.assertRaises(OSError):
+                    kgp.make_output_archive(work, output, None, 'status.json', {'success': True})
+            self.assertEqual(archive.read_bytes(), b'previous complete archive')
+
     def test_synthetic_model_boundary_rejects_empty_success_response(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
