@@ -36,7 +36,8 @@ ASSET_WHITELIST = (
 )
 OLLAMA_RELEASE_SHA256 = 'e364aedc9a991cbf36f704baa807a04f432d46e32265b783e7dec9ce0336af88'
 SOURCE_LABEL = 'EnterpriseRAG-Bench frozen 15k; mixed upstream licenses retained'
-DEFAULT_WORKDIR = '/kaggle/working/paired_graph'
+DEFAULT_WORKDIR = '/tmp/paired_graph'
+DEFAULT_OUTPUT_DIR = '/kaggle/working/paired_graph'
 DEFAULT_STAGE = 'smoke'
 STAGES = ('smoke', 'preliminary')
 OLLAMA_HOST = '127.0.0.1:11435'
@@ -163,6 +164,20 @@ def verify_assets(assets_dir, manifest, ollama_release_sha256=OLLAMA_RELEASE_SHA
     if ollama['sha256'] != ollama_release_sha256:
         raise ValueError('ollama-0.18.0.tar.zst digest differs from the official release hash')
     return {'assets': records, 'ollama_release_verified': True}
+
+
+def bootstrap_zstd(output):
+    started = time.perf_counter()
+    binary = shutil.which('zstd')
+    installed = binary is None
+    if installed:
+        apt = require_executable('apt-get', 'install zstd before unpacking the official runtime')
+        prefix = [] if os.geteuid() == 0 else [require_executable('sudo', 'zstd installation needs root'), '-n']
+        with (Path(output) / 'bootstrap.log').open('w', encoding='utf-8') as log:
+            for args in ([apt, 'update'], [apt, 'install', '-y', '--no-install-recommends', 'zstd']):
+                subprocess.run(prefix + args, stdout=log, stderr=subprocess.STDOUT, check=True, timeout=180)
+        binary = require_executable('zstd', 'package installation did not provide zstd')
+    return {'binary': binary, 'installed': installed, 'elapsed_seconds': time.perf_counter() - started}
 
 
 def parse_nvidia_smi(text):
@@ -488,7 +503,10 @@ def main(argv=None):
         print(f'Refusing to overwrite existing workdir: {workdir}', file=sys.stderr)
         return 2
     workdir.mkdir(parents=True)
-    output = workdir / 'output'
+    output = Path(args.output_dir).resolve()
+    if output.exists():
+        print(f'Refusing to overwrite existing output: {output}', file=sys.stderr)
+        return 2
     output.mkdir(parents=True)
     receipts = {'workdir': str(workdir), 'stage': args.stage}
     server = None
@@ -506,6 +524,7 @@ def main(argv=None):
                                                 'selected_gpu': gpu0, 'cuda_visible_devices': '0'})
 
         write_receipt(output, 'assets.json', verify_assets(dataset, manifest))
+        write_receipt(output, 'bootstrap.json', bootstrap_zstd(output))
 
         # Unpack project first so the delivered config can drive the remaining paths.
         extract_asset(workdir, 'project_code.tar.gz', dataset)
@@ -561,7 +580,7 @@ def main(argv=None):
             stop_ollama(server)
             server = None
 
-        make_output_archive(workdir, output, project / EXPERIMENT_OUTPUT, 'status.json',
+        make_output_archive(output.parent, output, project / EXPERIMENT_OUTPUT, 'status.json',
                             {**receipts, 'success': True, 'stage': args.stage,
                              'hardware_verified': 'NVIDIA T4',
                              'note': 'Query-time use of a prebuilt graph; not a T4 construction claim.'})
@@ -570,7 +589,7 @@ def main(argv=None):
     except Exception as exc:
         if server is not None:
             stop_ollama(server)
-        make_output_archive(workdir, output, workdir / 'project' / EXPERIMENT_OUTPUT, 'error.json',
+        make_output_archive(output.parent, output, workdir / 'project' / EXPERIMENT_OUTPUT, 'error.json',
                             {'success': False, 'stage': args.stage,
                              'error': f'{type(exc).__name__}: {exc}', 'receipts': receipts})
         print(f'FAILED: {type(exc).__name__}: {exc}', file=sys.stderr)
@@ -581,7 +600,8 @@ def parse_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--input-root', type=Path, default=None,
                         help='dataset directory containing paired-inputs.json (default: discover under /kaggle/input)')
-    parser.add_argument('--workdir', type=Path, default=Path(DEFAULT_WORKDIR))
+    parser.add_argument('--workdir', type=Path, default=Path(DEFAULT_WORKDIR), help='ephemeral scratch outside published outputs')
+    parser.add_argument('--output-dir', type=Path, default=Path(DEFAULT_OUTPUT_DIR), help='small published receipts directory')
     parser.add_argument('--stage', choices=STAGES, default=DEFAULT_STAGE)
     return parser.parse_args(argv)
 

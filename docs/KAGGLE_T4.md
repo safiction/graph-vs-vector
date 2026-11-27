@@ -20,7 +20,7 @@ kaggle datasets version -p data/kaggle/paired-t4-inputs-20261127-v3 \
   -m "Preserve schema2 opaque archive bytes" -t -r skip -q
 ```
 
-Kaggle may require phone verification/internet permission. Report that condition rather than bypassing it. Model/runtime assets are attached for offline availability; internet is enabled only for the new isolated Python environment installation. `OLLAMA_NO_CLOUD=1` disables remote model inference.
+Kaggle may require phone verification/internet permission. Report that condition rather than bypassing it. Model/runtime assets are attached for offline availability; internet is enabled for the isolated Python environment and, if absent, the `zstd` system unpacker (`apt-get update/install`, logged separately). `OLLAMA_NO_CLOUD=1` disables remote model inference.
 
 ## Smoke before the104 attempts
 
@@ -35,7 +35,7 @@ kaggle kernels output m1r0tvorxc/graph-vs-vector-t4-smoke-20261127 -p data/kaggl
 Inspect actual `hardware.json`, `ollama_server.json`, `smoke.json` and final `status.json`/`error.json`. The smoke uses synthetic evidence and is a diagnostic call, not one of the104 project attempts. Archive publication is atomic; a failed archive cannot overwrite a complete one or leave a contradictory success receipt.
 
 ## Paired preliminary run
-Only after a real successful T4 smoke:
+The preliminary stage itself runs and checks the actual T4 synthetic smoke before any project attempt. After a standalone smoke succeeds, or directly as one gated smoke→104-attempt job to avoid a second allocation queue:
 
 ```sh
 kaggle kernels push -p data/kaggle/t4-preliminary-kernel --accelerator NvidiaTeslaT4 -t 3600
@@ -47,7 +47,7 @@ The code runs `baseline_rag prepare`, asserts frozen experiment equality and byt
 
 Expected saved attempts: development24, preliminary80. Each attempt retains context, source links, status/error, tokens, timing and run identity. A nonzero runner exit/failure remains explicit; retrieve the artifacts and inspect saved attempt counts rather than inventing answers or blindly retrying. Do not enable `--retry-errors` on the original run, because that runner overwrites failed attempts and historical costs.
 
-The download contains `paired_graph_output.tar.gz` with receipts and the experiment. Local analysis may mount the immutable input artifacts elsewhere; reporting verifies their content hashes without rewriting original saved paths/configuration. Retain the original T4 receipts before packaging the human-grading handoff.
+Scratch/model/runtime/source files stay under `/tmp/paired_graph`; only small receipts under `/kaggle/working/paired_graph` and `/kaggle/working/paired_graph_output.tar.gz` are published. Download only the archive with `--file-pattern '^paired_graph_output\\.tar\\.gz$'`; do not bulk-copy the unpacked input cache. The archive contains receipts and the experiment. Local analysis may mount the immutable input artifacts elsewhere; reporting verifies their content hashes without rewriting original saved paths/configuration. Retain the original T4 receipts before packaging the human-grading handoff.
 
 ## Claims that remain separate
 T4 query-time use of a prebuilt graph is **not** T4 graph construction. Supporting-document coverage is **not** factual correctness. Setup/download/extraction time is separate from retrieval/generation query time. Summed overlapping request latency is not historical elapsed/GPU hours. Human correctness and failure/N/A aggregation remain Safina/team handoffs; no learned-router or full200 result is claimed.

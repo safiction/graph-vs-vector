@@ -255,6 +255,43 @@ class ExtractionTests(unittest.TestCase):
             kgp.require_executable('definitely-not-a-real-zstd-binary', 'install zstd')
 
 
+class BootstrapTests(unittest.TestCase):
+    def test_existing_zstd_needs_no_system_install(self):
+        with (
+            tempfile.TemporaryDirectory() as tmp,
+            patch.object(kgp.shutil, 'which', return_value='/usr/bin/zstd'),
+            patch.object(kgp.subprocess, 'run') as run,
+        ):
+            result = kgp.bootstrap_zstd(Path(tmp))
+            self.assertEqual(result.get('installed'), False)
+            run.assert_not_called()
+
+    def test_missing_zstd_is_installed_before_runtime_extraction(self):
+        with (
+            tempfile.TemporaryDirectory() as tmp,
+            patch.object(kgp.shutil, 'which', side_effect=[None, '/usr/bin/apt-get', '/usr/bin/zstd']),
+            patch.object(kgp.os, 'geteuid', return_value=0),
+            patch.object(kgp.subprocess, 'run') as run,
+        ):
+            result = kgp.bootstrap_zstd(Path(tmp))
+            self.assertEqual(result.get('installed'), True)
+            self.assertEqual(result['binary'], '/usr/bin/zstd')
+            self.assertEqual([call.args[0] for call in run.call_args_list], [
+                ['/usr/bin/apt-get', 'update'],
+                ['/usr/bin/apt-get', 'install', '-y', '--no-install-recommends', 'zstd']])
+            self.assertTrue(all(call.kwargs['check'] for call in run.call_args_list))
+
+    def test_install_failure_is_not_reported_as_ready(self):
+        with (
+            tempfile.TemporaryDirectory() as tmp,
+            patch.object(kgp.shutil, 'which', side_effect=[None, '/usr/bin/apt-get']),
+            patch.object(kgp.os, 'geteuid', return_value=0),
+            patch.object(kgp.subprocess, 'run', side_effect=kgp.subprocess.CalledProcessError(1, 'apt-get')),
+        ):
+            with self.assertRaises(kgp.subprocess.CalledProcessError):
+                kgp.bootstrap_zstd(Path(tmp))
+
+
 class OutputArchiveTests(unittest.TestCase):
     def test_failure_receipt_overrides_success_even_when_archive_cannot_be_written(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -312,6 +349,11 @@ class OutputArchiveTests(unittest.TestCase):
 
 
 class ConfigAndCommandTests(unittest.TestCase):
+    def test_only_receipts_are_published_not_unpacked_runtime_and_source(self):
+        args = kgp.parse_args([])
+        self.assertFalse(args.workdir.is_relative_to(Path('/kaggle/working')))
+        self.assertEqual(args.output_dir, Path('/kaggle/working/paired_graph'))
+
     DELIVERED = {
         'bundle': 'data/packages/graph_results_15000/corpus',
         'output': 'data/experiments/graph_delivery_15000',
