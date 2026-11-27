@@ -1,4 +1,4 @@
-# T4 validation handoff — not yet measured
+# Historical T4 validation — not a current delivery blocker
 
 No T4 is attached to the current host. Its only GPU is an RTX 5080. Neither a 16 GB memory estimate nor a successful 5080 run establishes T4 feasibility.
 
@@ -18,4 +18,4 @@ The [vLLM quantization documentation](https://github.com/vllm-project/vllm/blob/
 Use the existing shared runner with a T4-local configuration copied from `configs/graph_local_15000.json`; change only local artifact/output paths for query-time validation. Install CPU Torch if it is used only for tokenizer tensors; Ollama must still report actual GPU residency. Preserve the generator's pinned Ollama version and model digest. If that release cannot load on T4, retain the failed receipt and obtain a team-approved new common experiment rather than quietly swapping just the graph generator.
 
 ## Current status
-**PREPARING: Kaggle access is now authenticated.** The user authorized a private Kaggle T4 run; account-specific access succeeds for m1r0tvorxc and29.97 GPU hours remain. The private notebook must explicitly request `NvidiaTeslaT4`, check actual GPU names and use only GPU0. Smoke version1 failed before model inference/input discovery. The corrected private input revision2 is byte-preserving and smoke notebook version2 is queued. No successful T4 model call has been recorded yet. Prepared instructions and source compatibility documentation are not measured evidence; no T4 performance number is reported in the graph completion record.
+The user explicitly replaced the T4 requirement with RTX5080 execution. All104 graph attempts subsequently completed on RTX5080; see [current status](ARTEM_STATUS.md). Private Kaggle history is retained: initial input attachment/automatic expansion failure; corrected smoke then lacked zstd; after bootstrap, the preliminary job failed creating its virtual environment (`ensurepip`). A saved hardware receipt identifies two Tesla T4 cards/driver580.178.04, GPU0 selected, but no successful answer-model call occurred there. These are infrastructure failure receipts, not T4 model throughput/construction results. Do not restart this optional work as a blocker to the delivered RTX5080 packet.

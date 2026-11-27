@@ -1,49 +1,43 @@
 # Artem — paired preliminary delivery
 
-## Current scope
-Following the user's 27 November staff feedback: produce exactly **104 graph attempts** — graph-local/global on the same twelve development and forty preliminary questions as BM25/vector. Preserve the shared generator, prompt and context-token budget. **Do not train routing, run the 200-question core comparison or start optional ablations before paired correctness and team readiness review.**
+## Current result
+**104/104 graph attempts saved:24 development +80 preliminary;104 successful calls,0 technical failures.** The user explicitly switched execution from Kaggle T4 to **RTX5080**. These are RTX5080 results, not T4 measurements. Correctness remains ungraded.
 
-Authority: [accepted scope](specs/2026-11-27-paired-preliminary.md), [execution plan](plans/2026-11-27-paired-preliminary.md), [team handoffs](DETAILED_PROJECT_PLAN.md).
+The original baseline corpus, question IDs, generator, prompt and budgets are unchanged. Frozen experiment SHA256:`3c6340bfa640523840e3962d217711afef428468b73bb4fdde63315836b095a6`. Both query files are byte-identical to the supplied baseline. Its264 payload hashes and104 answers passed verification. No additional baseline delivery or rerun is required from Karina.
 
-## Verified inputs
-- User supplied the baseline result archive; all **264 SHA256 checks, 104 baseline answers and 52 question IDs** passed verification. Eight preliminary baseline answers hit the fixed 384-token output cap; retain these flags, do not silently rerun them.
-- The prepared graph frozen experiment equals the delivered baseline experiment exactly; development/preliminary query files are byte-identical. See [parity receipt](../reports/graph/baseline_parity.json).
-- Same 15,000 documents /45,142 chunks; no raw source missing here. Existing graph:136,470 nodes,43,147 relations,102,679 summaries, including12 extractive fallbacks. Fresh structural source audit passed. No re-extraction is necessary.
-- Index SHA256:`c4d7a3e84f8ebc05aa6e3ed339dd7ac9954f0a2d17d528dcc82968f9f39a2987`.
+## Execution evidence
+- Same15,000 documents /45,142 chunks;136,470 graph nodes,43,147 relations and102,679 source-linked summaries, including12 extractive fallbacks.
+- Shared `baseline_rag`/`SharedGenerator`, Ollama0.18.0, Qwen2.5-3B Q4_K_M digest357c53fb…c9e4b; k10, context2560, full input4096, output384, seed42.
+- Actual RTX5080 hardware and successful GPU-resident shared-generator smoke are saved with the run. The graph model calls used GPU memory, not CPU Torch inference.
+- All104 contexts and complete prompts were independently recounted: max context2558, max prompt2683; counts and pinned tokenizer/chat-template identities match. See [recount receipt](../reports/graph/retokenization_rtx5080.json).
+- Six preliminary graph answers reached the384-output cap (four local, two global). All are retained, as are the original eight capped baseline answers. No selective reruns.
+- Recorded split invocation elapsed:71.61s development and168.35s preliminary. Query components are exported separately; these are not historical indexing/GPU hours.
 
-## Execution state
-The graph answers have **not yet been generated**. The exact Ollama0.18.0 release and Qwen2.5:3b digest are verified locally for an offline private Kaggle payload. Kaggle authentication now works for account m1r0tvorxc; quota check showed29.97 GPU hours remaining. The input dataset and smoke notebook are private on Kaggle. Dataset revision1 was automatically expanded by Kaggle; revision2 preserves all six exact archives with opaque `.bin` names. The first smoke failed before model inference because the input source was not attached. Corrected smoke notebook version2 is queued for `NvidiaTeslaT4`; no successful T4 result is claimed. The standalone kernel checks actual hardware and preserves final success/error receipts inside its output archive.
+## Handoff ready
+The private/local deliverable is [paired_graph_rtx5080_20261127.zip](../data/exports/paired_graph_rtx5080_20261127.zip),8,542,620 bytes, SHA256 `dfb5b4a965628056e2667afbb287ce421378c8e2848159297237c39e2d267620`. It is outside Git and supplied as a downloadable file, not a public data release.
 
-The source-audit/cost report is [completion record](../reports/graph/completion.json); its answer-completion flags, not this heading, determine which attempts actually exist. Its routing field is deferred and the original folds are not required for this scope. [Experiment log](../experiments/001-graph-completion.md) is append-only.
+It contains original104 graph attempts with contexts, evidence/source links, statuses, timings and usage; unchanged baseline ZIP; frozen identities/hardware; and:
+- **160 preliminary answers** across all four retrievers, globally shuffled into blinded forms:1296 fact rows per reviewer;
+- **24 graph development answers**,68 fact rows per reviewer; existing baseline development grades are not repeated;
+- two independent human-review templates and a blank optional judge template; all labels remain null;
+- coordinator-only private keys/reference labels, which must not be sent to reviewers;
+-208 per-question baseline+graph measurements and separate index/query receipts, with a standalone261-file integrity verifier.
 
-## Reproduction / handoff
-From the project root, create the minimal graph-answer environment:
+## Separate measurements
+[Validated graph report](../reports/graph/completion.json), [paired summary](../reports/graph/paired_summary.csv), [per-question measurements](../reports/graph/paired_per_question.csv) and [measurement qualifications](../reports/graph/paired_measurements.json) keep coverage, correctness, context size, indexing and query cost separate. Baseline Windows and graph WSL/Python stacks differ; baseline physical GPU/warm state is not established, so raw latency differences are not a controlled architecture speedup.
+
+Coverage is not correctness. Two preliminary questions per system have N/A document coverage, not automatically N/A correctness. Full historical extraction elapsed/GPU hours and electricity are unknown; summed overlapping requests are not elapsed time.
+
+## Remaining team work
+Safina coordinates independent grading, disagreement adjudication and the failed/N/A aggregation policy. Karina has no graph integration blocker to fix and need not regenerate existing baselines. The team decides readiness after paired correctness; **core200, ablations and learned routing remain deferred**.
+
+## Reproduction
+Use a fresh output directory for any genuinely new run; do not overwrite this first-execution evidence or human forms. Shared environment/config: [requirements](../requirements-graph-answers.txt), [local config](../configs/graph_local_15000.json). Analysis commands:
 
 ```sh
-uv venv data/.venv-graph-answers --python 3.12
-uv pip install --python data/.venv-graph-answers/bin/python -r requirements-graph-answers.txt
-PYTHONPATH=src data/.venv-graph-answers/bin/python -m baseline_rag --config configs/graph_local_15000.json prepare
-```
-
-CPU Torch is used only for tokenizer tensors. The exact pinned Ollama server/model owns inference and the shared adapter requires actual GPU residency. This environment is not for rebuilding BGE embeddings. Kaggle hardware receipts must explicitly identify T4; using the existing graph on T4 does not demonstrate graph construction there. See [hardware acceptance](T4_VALIDATION.md).
-
-After the actual frozen T4 run, collect its saved development/preliminary runs, then export the human grading handoff and measured graph costs:
-
-```sh
-PYTHONPATH=src data/.venv-graph-answers/bin/python scripts/export_graph_development.py --config configs/graph_local_15000.json --output data/handoffs/graph_development_20261127
 PYTHONPATH=src data/.venv-graph-answers/bin/python scripts/report_graph_delivery.py --config configs/graph_local_15000.json --extraction data/graph/corpus_15000 --output reports/graph/completion.json
+python data/exports/paired_graph_rtx5080_20261127/verify_delivery.py
 PYTHONPATH=src data/.venv-graph-answers/bin/python -m unittest discover -s tests -v
 ```
 
-Use a T4-local configuration/output path for artifacts collected from Kaggle; do not merge them into a differently identified 5080 run. Never remove run_config files to force reuse. The shared runner command for the authorized experiment is `run --retrievers graph-local graph-global --splits development preliminary` only.
-
-## Separate measurements and responsibilities
-- **Artem:**104 graph attempts with actual context/provenance/status/tokens/timings; graph supporting-document coverage, context size, measured indexing/query costs; private T4 receipts and handoff.
-- **Safina:** agrees failure/N/A policy with the team, prepares full blinded grading batches, coordinates grading of all160 preliminary answers plus24 graph development answers, resolves disagreements and owns combined correctness/paired differences/uncertainty.
-- **Karina:** original baseline delivery is received and verified; no new baseline run is required. Support shared-generator integration if a concrete issue appears and independently grade the assigned batch.
-- **Whole team:** review failures/readiness before any full200 run. Corpus-global development coverage belongs to the later routing decision; it does not change this frozen preliminary sample.
-
-Coverage is not correctness; keep coverage, factual correctness, actual context size, indexing cost and query cost separate. Human labels remain blank until reviewers fill them. Failed/N/A answers remain explicit until the team agrees an aggregate policy. No accuracy winner, confidence interval or learned router is inferred from execution success.
-
-## Known limitations
-Historical extraction session walls cover only a fraction of interrupted work; all retained attempt/retry tokens and request latencies can be counted, but total historical elapsed/GPU hours cannot be reconstructed. Current answer runner retries overwrite failed attempt files, so preserve first-execution summaries and never claim unrecoverable prior costs. Structural provenance is not semantic entailment. Qwen2.5-3B uses its upstream Qwen research license; private model cache packaging is not relicensing it as MIT.
+Earlier private Kaggle attempts stopped before answer generation (input packaging, zstd, then virtualenv/ensurepip). They are preserved as failures, not T4 validation; see [historical T4 notes](T4_VALIDATION.md). The [experiment log](../experiments/001-graph-completion.md) remains append-only.

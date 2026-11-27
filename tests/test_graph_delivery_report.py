@@ -341,7 +341,8 @@ class DeliveryReportTests(unittest.TestCase):
         self.assertEqual(handoff.get('status'), 'pending_external_grading')
         self.assertEqual({item['path'] for item in handoff.get('prediction_exports', [])},
                          {str(root / f'{system}.predictions.jsonl') for system in ('graph-local', 'graph-global')})
-        self.assertEqual(len(report.get('external_blockers', [])), 3)
+        self.assertEqual(len(report.get('external_blockers', [])), 2)
+        self.assertFalse(any('T4' in item for item in report['external_blockers']))
         self.assertEqual(report['T4_validation'], 'unverified_no_actual_T4_measurements')
         self.assertIsNone(report['gpu_hours'])
         self.assertIsNone(report['electricity_cost'])

@@ -483,7 +483,7 @@ def build_report(config_path, extraction_path):
                                       if runs['development']['present'] else []},
             'external_blockers': ['Independent grading of 160 preliminary and 24 graph development answers; resolve disagreements.',
                                   'Team-agreed aggregate handling of failed and N/A attempts.',
-                                  'Actual Kaggle T4 run and measured receipts; 5080 artifacts are not T4 evidence.'],
+                                  ],
             'preprocessing': {'cost': {key: extraction_cost[key] + summary_cost[key] for key in extraction_cost},
                               'index_wall_seconds': _number(data['index_cost']['wall_seconds']),
                               'historical_wall_seconds': None},
