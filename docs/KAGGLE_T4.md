@@ -13,10 +13,11 @@ PYTHONPATH=src data/.venv-graph-answers/bin/python scripts/prepare_kaggle_t4.py 
 
 The executed payload version is recorded in its `paired-inputs.json`, including source commit/dirty marker, exact code files and all asset hashes. Metadata declares dataset license `other` to preserve mixed upstream terms; the dataset and both kernels remain private. Do not replace this with a public dataset for convenience.
 
-The dataset is `m1r0tvorxc/graph-vs-vector-paired-t4-inputs-20261127`. Server metadata confirms `isPrivate:true`. The first version was automatically expanded and must not be used for execution; upload the schema2 opaque revision with `kaggle datasets version`, preserving the failed version/logs. A new dataset upload is explicitly private by the CLI's default (no `--public` flag):
+The dataset is `m1r0tvorxc/graph-vs-vector-paired-t4-inputs-20261127`. Server metadata confirms `isPrivate:true`. The first version was automatically expanded and must not be used for execution; upload the schema2 opaque revision with `kaggle datasets version`, preserving the failed version/logs. The corrected local payload is `paired-t4-inputs-20261127-v3`, published as private dataset revision2. Revision creation keeps the existing private visibility; do not recreate the expanded v2 local payload:
 
 ```sh
-kaggle datasets create -p data/kaggle/paired-t4-inputs-20261127-v2 -t -r skip
+kaggle datasets version -p data/kaggle/paired-t4-inputs-20261127-v3 \
+  -m "Preserve schema2 opaque archive bytes" -t -r skip -q
 ```
 
 Kaggle may require phone verification/internet permission. Report that condition rather than bypassing it. Model/runtime assets are attached for offline availability; internet is enabled only for the new isolated Python environment installation. `OLLAMA_NO_CLOUD=1` disables remote model inference.

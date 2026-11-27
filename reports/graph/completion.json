@@ -81,8 +81,8 @@
     },
     "report_script": {
       "path": "/root/graph-vs-vector/scripts/report_graph_delivery.py",
-      "sha256": "b6b4f177a554e2006ba13917b6170e2fddfa8a1e481473ecfa4ce34b7bd827ee",
-      "bytes": 31545
+      "sha256": "b007f5448c0a096eecc1530df725e99aca580c10c0354ba982e879fbe6401851",
+      "bytes": 32430
     }
   },
   "corpus": {
@@ -169,11 +169,7 @@
       "present": false,
       "expected_attempts": 200,
       "saved_attempts": 0,
-      "questions": {
-        "path": "/root/graph-vs-vector/data/experiments/graph_local_15000/questions/fold_a.queries.jsonl",
-        "sha256": "88930cb71b7d8e45bb86d17bad2b268b5615eb3708667196410ca1e897747494",
-        "bytes": 22822
-      },
+      "warning": "Optional core outputs are not validated or counted in this paired report.",
       "required_for_current_scope": false
     },
     "fold_b": {
@@ -181,11 +177,7 @@
       "present": false,
       "expected_attempts": 200,
       "saved_attempts": 0,
-      "questions": {
-        "path": "/root/graph-vs-vector/data/experiments/graph_local_15000/questions/fold_b.queries.jsonl",
-        "sha256": "b800e4a57528970ae6fbdd1a4720a81302caa031e1bfcc2d7243a8beda9c7f3a",
-        "bytes": 24283
-      },
+      "warning": "Optional core outputs are not validated or counted in this paired report.",
       "required_for_current_scope": false
     }
   },
@@ -224,7 +216,8 @@
     "No GPU-hour or electricity inference from client latency, memory estimates or hardware labels.",
     "Preliminary/core question duplicates are not independent observations; split costs remain separate.",
     "Corpus includes question-conditioned sources; subset results do not establish benchmark non-contamination.",
-    "Tokens with missing usage are unknown, not free. Request/attempt sums are not concurrent wall time."
+    "Tokens with missing usage are unknown, not free. Request/attempt sums are not concurrent wall time.",
+    "Recovery attempts are a subset of retry attempts; do not add those counters."
   ],
   "source_audit": {
     "passed": true,
@@ -445,6 +438,7 @@
         }
       ],
       "matches_current_attempt_totals": false,
+      "counter_semantics": "attempted_records counts attempt invocations, not distinct chunks; saved_session_request_seconds is attempt wall including validation, not HTTP-only time.",
       "historical_wall_complete": false,
       "limitation": "Extraction was interrupted; saved sessions may cover fewer chunks than current records and omit recovery. Full historical wall time is unavailable."
     }
@@ -504,6 +498,7 @@
         }
       ],
       "matches_current_attempt_totals": true,
+      "counter_semantics": "attempted_records counts attempt invocations, not distinct chunks; saved_session_request_seconds is attempt wall including validation, not HTTP-only time.",
       "historical_wall_complete": null,
       "limitation": "Session counters have no attempt IDs; matching totals are a consistency check, not proof of full history."
     }

@@ -12,7 +12,7 @@ Authority: [accepted scope](specs/2026-11-27-paired-preliminary.md), [execution 
 - Index SHA256:`c4d7a3e84f8ebc05aa6e3ed339dd7ac9954f0a2d17d528dcc82968f9f39a2987`.
 
 ## Execution state
-The graph answers have **not yet been generated**. The exact Ollama0.18.0 release and Qwen2.5:3b digest are verified locally for an offline private Kaggle payload. Kaggle authentication now works for account m1r0tvorxc; quota check showed29.97 GPU hours remaining. No notebook/dataset has been uploaded yet and no T4 result is claimed. The standalone kernel requires actual T4 hardware and preserves final success/error receipts inside its output archive.
+The graph answers have **not yet been generated**. The exact Ollama0.18.0 release and Qwen2.5:3b digest are verified locally for an offline private Kaggle payload. Kaggle authentication now works for account m1r0tvorxc; quota check showed29.97 GPU hours remaining. The input dataset and smoke notebook are private on Kaggle. Dataset revision1 was automatically expanded by Kaggle; revision2 preserves all six exact archives with opaque `.bin` names. The first smoke failed before model inference because the input source was not attached. Corrected smoke notebook version2 is queued for `NvidiaTeslaT4`; no successful T4 result is claimed. The standalone kernel checks actual hardware and preserves final success/error receipts inside its output archive.
 
 The source-audit/cost report is [completion record](../reports/graph/completion.json); its answer-completion flags, not this heading, determine which attempts actually exist. Its routing field is deferred and the original folds are not required for this scope. [Experiment log](../experiments/001-graph-completion.md) is append-only.
 

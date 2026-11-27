@@ -1,0 +1,21 @@
+{
+  "priority": "confirmed_settings_then_integration_smoke_then_104_graph_attempts",
+  "scope": {"development_questions": 12, "preliminary_questions": 40, "systems": ["graph-local", "graph-global"], "expected_attempts": 104},
+  "settings_confirmed_against_delivered_baseline": true,
+  "frozen_experiment_sha256": "3c6340bfa640523840e3962d217711afef428468b73bb4fdde63315836b095a6",
+  "development_queries_sha256": "487b0498c8b5dcc0358492f1df6a3b4628015fee16b08502076428edadba1dc9",
+  "preliminary_queries_sha256": "7ca0f14f1db5fd3ca0d470723ac33b45a83955d3403340ccf3eefc926753a206",
+  "shared_generator": {"model": "Qwen/Qwen2.5-3B-Instruct", "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1", "backend": "ollama", "server_version": "0.18.0", "server_model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b", "quantization": "Q4_K_M", "retrieval_k": 10, "context_token_budget": 2560, "max_input_tokens": 4096, "max_new_tokens": 384, "seed": 42},
+  "prompt_and_decoding": "verbatim equality to baseline configuration/comparison.json verified",
+  "baseline_retokenization": {"contexts_checked": 104, "prompt_counts_equal": true, "tokenizer_and_chat_template_hashes_equal": true},
+  "integration": {"runner": "baseline_rag", "generator": "baseline_rag.generation.SharedGenerator", "software_tests_passed": 100, "gpu_end_to_end_smoke_passed": false, "missing_inputs_or_changes_from_Karina": []},
+  "graph_attempts_saved": 0,
+  "platform_issue": "Resolved: private dataset revision2 now contains exactly six opaque .bin archives plus the manifest, with original names/sizes preserved. No graph inference has occurred.",
+  "private_dataset_revision": 2,
+  "current_smoke": {"kernel": "m1r0tvorxc/graph-vs-vector-t4-smoke-20261127", "version": 2, "status": "QUEUED", "requested_machine_shape": "NvidiaTeslaT4", "server_is_private": true},
+  "failed_smoke": {"kernel": "m1r0tvorxc/graph-vs-vector-t4-smoke-20261127", "version": 1, "reason": "Input dataset was not attached; paired-inputs.json absent. Failure occurred before model inference and before hardware validation."},
+  "next": "Verify corrected private dataset revision/files, run real T4 smoke, then development+preliminary only and deliver all attempts/provenance/costs to Safina.",
+  "learned_router": "deferred",
+  "core_200_run": "not_started_not_authorized_before_readiness_review",
+  "correctness": "not_inferred; independent human grading remains separate"
+}
