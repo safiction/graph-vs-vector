@@ -1,0 +1,13 @@
+{
+  "attempts_checked": 104,
+  "context_counts_match": true,
+  "full_prompt_counts_match": true,
+  "max_context_tokens": 2558,
+  "max_full_prompt_tokens": 2683,
+  "max_completion_tokens": 384,
+  "tokenizer_sha256": "85d1ceae9fd30a7936c899eedc50257787910fc7a6139f82c5d705694c7da944",
+  "chat_template_sha256": "2e2d2512cfe46af53dc1eed45368ecaab26ac4461c480e6b69fe571cf0ceaa75",
+  "hardware": "RTX 5080",
+  "T4_result": false,
+  "correctness": "not assessed"
+}

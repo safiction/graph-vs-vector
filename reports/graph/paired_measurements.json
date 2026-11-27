@@ -1,0 +1,273 @@
+{
+  "scope": "same_12_development_and_40_preliminary_questions",
+  "graph_hardware": "NVIDIA GeForce RTX 5080, not T4",
+  "correctness": "pending independent human labels and team failure/N-A policy",
+  "aggregates": [
+    {
+      "split": "development",
+      "retriever": "bm25",
+      "attempts": 12,
+      "failed": 0,
+      "coverage_applicable": 12,
+      "mean_coverage": 0.8125,
+      "full_coverage_rate": 0.75,
+      "mean_context_tokens": 2354.5,
+      "mean_query_seconds": 2.948310866667119,
+      "prompt_tokens": 29711,
+      "completion_tokens": 1093,
+      "output_limit_hits": 0,
+      "correctness": null
+    },
+    {
+      "split": "development",
+      "retriever": "vector",
+      "attempts": 12,
+      "failed": 0,
+      "coverage_applicable": 12,
+      "mean_coverage": 0.5625,
+      "full_coverage_rate": 0.5,
+      "mean_context_tokens": 2370.3333333333335,
+      "mean_query_seconds": 2.3355438083329623,
+      "prompt_tokens": 29901,
+      "completion_tokens": 1144,
+      "output_limit_hits": 0,
+      "correctness": null
+    },
+    {
+      "split": "development",
+      "retriever": "graph-local",
+      "attempts": 12,
+      "failed": 0,
+      "coverage_applicable": 12,
+      "mean_coverage": 0.125,
+      "full_coverage_rate": 0.08333333333333333,
+      "mean_context_tokens": 2395.75,
+      "mean_query_seconds": 1.7521843655831617,
+      "prompt_tokens": 30205,
+      "completion_tokens": 1476,
+      "output_limit_hits": 0,
+      "correctness": null
+    },
+    {
+      "split": "development",
+      "retriever": "graph-global",
+      "attempts": 12,
+      "failed": 0,
+      "coverage_applicable": 12,
+      "mean_coverage": 0.625,
+      "full_coverage_rate": 0.5833333333333334,
+      "mean_context_tokens": 1749.0,
+      "mean_query_seconds": 1.217184266750337,
+      "prompt_tokens": 22449,
+      "completion_tokens": 1296,
+      "output_limit_hits": 0,
+      "correctness": null
+    },
+    {
+      "split": "preliminary",
+      "retriever": "bm25",
+      "attempts": 40,
+      "failed": 0,
+      "coverage_applicable": 38,
+      "mean_coverage": 0.8289473684210527,
+      "full_coverage_rate": 0.7368421052631579,
+      "mean_context_tokens": 2296.25,
+      "mean_query_seconds": 2.908436460000485,
+      "prompt_tokens": 96858,
+      "completion_tokens": 7432,
+      "output_limit_hits": 5,
+      "correctness": null
+    },
+    {
+      "split": "preliminary",
+      "retriever": "vector",
+      "attempts": 40,
+      "failed": 0,
+      "coverage_applicable": 38,
+      "mean_coverage": 0.7083333333333334,
+      "full_coverage_rate": 0.631578947368421,
+      "mean_context_tokens": 2346.0,
+      "mean_query_seconds": 2.6032612200001495,
+      "prompt_tokens": 98845,
+      "completion_tokens": 6696,
+      "output_limit_hits": 3,
+      "correctness": null
+    },
+    {
+      "split": "preliminary",
+      "retriever": "graph-local",
+      "attempts": 40,
+      "failed": 0,
+      "coverage_applicable": 38,
+      "mean_coverage": 0.5522660818713451,
+      "full_coverage_rate": 0.39473684210526316,
+      "mean_context_tokens": 2383.65,
+      "mean_query_seconds": 2.050845009800105,
+      "prompt_tokens": 100351,
+      "completion_tokens": 6973,
+      "output_limit_hits": 4,
+      "correctness": null
+    },
+    {
+      "split": "preliminary",
+      "retriever": "graph-global",
+      "attempts": 40,
+      "failed": 0,
+      "coverage_applicable": 38,
+      "mean_coverage": 0.7419590643274854,
+      "full_coverage_rate": 0.631578947368421,
+      "mean_context_tokens": 1807.125,
+      "mean_query_seconds": 1.6071593656002279,
+      "prompt_tokens": 77308,
+      "completion_tokens": 6402,
+      "output_limit_hits": 2,
+      "correctness": null
+    }
+  ],
+  "provenance": {
+    "development/bm25": {
+      "run_config_sha256": "d0ca27bf98a11347f9aed8779824018daee6d8a95f259a9de51af4aedae7e009",
+      "predictions_sha256": "abc5ccf5f05f0b249b4a94c824c32b0c0cd2f52577ef242f77425b2be85f66ef",
+      "prediction_path": "data/packages/baseline_results_15000/results/development/bm25.predictions.jsonl",
+      "environment": {
+        "python": "3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]",
+        "platform": "Windows-11-10.0.26300-SP0",
+        "packages": {
+          "numpy": "2.5.2",
+          "torch": "2.10.0+cu128",
+          "transformers": "5.22.1",
+          "tokenizers": "0.23.3",
+          "huggingface-hub": "2.4.0",
+          "safetensors": "0.8.0"
+        }
+      }
+    },
+    "development/vector": {
+      "run_config_sha256": "d0ca27bf98a11347f9aed8779824018daee6d8a95f259a9de51af4aedae7e009",
+      "predictions_sha256": "ebcbbfa4124c8049b723e5d86ec192f2256c4ff2146e8a6a95cb7d797e7d48e5",
+      "prediction_path": "data/packages/baseline_results_15000/results/development/vector.predictions.jsonl",
+      "environment": {
+        "python": "3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]",
+        "platform": "Windows-11-10.0.26300-SP0",
+        "packages": {
+          "numpy": "2.5.2",
+          "torch": "2.10.0+cu128",
+          "transformers": "5.22.1",
+          "tokenizers": "0.23.3",
+          "huggingface-hub": "2.4.0",
+          "safetensors": "0.8.0"
+        }
+      }
+    },
+    "development/graph-local": {
+      "run_config_sha256": "5bdf52383f5f761fe3ecc6ae8af70d1e64e3289aa06bd518d2f8cf94f96a1765",
+      "predictions_sha256": "e968502959a8c3120e49e22b920c99cff96327122e5fa740788b1113e1be9b69",
+      "prediction_path": "data/experiments/graph_local_15000/runs/development/graph-local.predictions.jsonl",
+      "environment": {
+        "python": "3.12.16 (main, Oct 26 2026, 14:08:45) [Clang 23.1.3 ]",
+        "platform": "Linux-6.18.58.1-microsoft-standard-WSL2-x86_64-with-glibc2.43",
+        "packages": {
+          "numpy": "2.5.2",
+          "torch": "2.10.0+cpu",
+          "transformers": "5.22.1",
+          "tokenizers": "0.23.3",
+          "huggingface-hub": "2.4.0",
+          "safetensors": "0.8.0"
+        }
+      }
+    },
+    "development/graph-global": {
+      "run_config_sha256": "5bdf52383f5f761fe3ecc6ae8af70d1e64e3289aa06bd518d2f8cf94f96a1765",
+      "predictions_sha256": "abb6eb603d598e0d430a9aa284e8b87a4381a72a836f888a3212cc26c14518a0",
+      "prediction_path": "data/experiments/graph_local_15000/runs/development/graph-global.predictions.jsonl",
+      "environment": {
+        "python": "3.12.16 (main, Oct 26 2026, 14:08:45) [Clang 23.1.3 ]",
+        "platform": "Linux-6.18.58.1-microsoft-standard-WSL2-x86_64-with-glibc2.43",
+        "packages": {
+          "numpy": "2.5.2",
+          "torch": "2.10.0+cpu",
+          "transformers": "5.22.1",
+          "tokenizers": "0.23.3",
+          "huggingface-hub": "2.4.0",
+          "safetensors": "0.8.0"
+        }
+      }
+    },
+    "preliminary/bm25": {
+      "run_config_sha256": "594071429b18a85ff14262e611bc2c748ba1643a7ebd8648f28fdf96f681ced2",
+      "predictions_sha256": "bd495b55a1b50808aca7c433a0614fc14743e902c5d69f25f6e598b2db64172e",
+      "prediction_path": "data/packages/baseline_results_15000/results/preliminary/bm25.predictions.jsonl",
+      "environment": {
+        "python": "3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]",
+        "platform": "Windows-11-10.0.26300-SP0",
+        "packages": {
+          "numpy": "2.5.2",
+          "torch": "2.10.0+cu128",
+          "transformers": "5.22.1",
+          "tokenizers": "0.23.3",
+          "huggingface-hub": "2.4.0",
+          "safetensors": "0.8.0"
+        }
+      }
+    },
+    "preliminary/vector": {
+      "run_config_sha256": "594071429b18a85ff14262e611bc2c748ba1643a7ebd8648f28fdf96f681ced2",
+      "predictions_sha256": "dbe1742c901a9a627645d5e76d0a4d0b2311b3c3ba456e9fe6d21521911c927f",
+      "prediction_path": "data/packages/baseline_results_15000/results/preliminary/vector.predictions.jsonl",
+      "environment": {
+        "python": "3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]",
+        "platform": "Windows-11-10.0.26300-SP0",
+        "packages": {
+          "numpy": "2.5.2",
+          "torch": "2.10.0+cu128",
+          "transformers": "5.22.1",
+          "tokenizers": "0.23.3",
+          "huggingface-hub": "2.4.0",
+          "safetensors": "0.8.0"
+        }
+      }
+    },
+    "preliminary/graph-local": {
+      "run_config_sha256": "52d33dd850b1cf964bba5abd20f098bea672687214c12e6464361afee0f555c6",
+      "predictions_sha256": "3116d98148e7a5e2046f24a8a7d8097f3fe2695b958f9739239b989557daa3b5",
+      "prediction_path": "data/experiments/graph_local_15000/runs/preliminary/graph-local.predictions.jsonl",
+      "environment": {
+        "python": "3.12.16 (main, Oct 26 2026, 14:08:45) [Clang 23.1.3 ]",
+        "platform": "Linux-6.18.58.1-microsoft-standard-WSL2-x86_64-with-glibc2.43",
+        "packages": {
+          "numpy": "2.5.2",
+          "torch": "2.10.0+cpu",
+          "transformers": "5.22.1",
+          "tokenizers": "0.23.3",
+          "huggingface-hub": "2.4.0",
+          "safetensors": "0.8.0"
+        }
+      }
+    },
+    "preliminary/graph-global": {
+      "run_config_sha256": "52d33dd850b1cf964bba5abd20f098bea672687214c12e6464361afee0f555c6",
+      "predictions_sha256": "d449d6cc0b721cf01de96940419b1d5a88f90c286f1b1741b09987214b63978f",
+      "prediction_path": "data/experiments/graph_local_15000/runs/preliminary/graph-global.predictions.jsonl",
+      "environment": {
+        "python": "3.12.16 (main, Oct 26 2026, 14:08:45) [Clang 23.1.3 ]",
+        "platform": "Linux-6.18.58.1-microsoft-standard-WSL2-x86_64-with-glibc2.43",
+        "packages": {
+          "numpy": "2.5.2",
+          "torch": "2.10.0+cpu",
+          "transformers": "5.22.1",
+          "tokenizers": "0.23.3",
+          "huggingface-hub": "2.4.0",
+          "safetensors": "0.8.0"
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Coverage is not factual correctness.",
+    "Baseline Windows/Python3.12.3 and graph WSL2/Python3.12.16 stacks differ; baseline physical GPU and warm state are not established by saved run_config. Do not attribute raw latency differences solely to retrieval architecture.",
+    "Baseline invocation elapsed receipts cover cached resumptions, not historical full answer-generation time.",
+    "Two preliminary questions per system have N/A document coverage; do not silently assign zero.",
+    "All384-output-limit answers are retained; no selective reruns.",
+    "No full200, optional ablation or learned router was executed."
+  ]
+}

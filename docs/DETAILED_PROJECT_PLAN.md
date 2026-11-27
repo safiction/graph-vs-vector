@@ -1,6 +1,21 @@
 # Project Plan
 
-Updated 12 November 2026. Original split manifests are unchanged; the earlier 52/160 proposal is not adopted.
+Updated 27 November 2026 following staff feedback. Original split manifests are unchanged; the earlier 52/160 proposal is not adopted.
+
+## Immediate priority — one paired preliminary evaluation
+
+This priority supersedes starting routing or the full 200-question run now. Every retriever must answer exactly the same frozen question IDs with the same generator, prompt and context-token budget. Report supporting-document coverage, factual correctness, actual context size, indexing cost and query cost separately. Do not build or claim a learned router until paired correctness data exist.
+
+| Order | Work | Responsible | Done when |
+| --- | --- | --- | --- |
+| 1 | Verify frozen IDs/corpus/generator/prompt/token budget against delivered baseline run | Karina, with Artem | Graph execution settings match the baseline experiment |
+| 2 | Generate graph-local/global for the same 40 preliminary +12 development questions | Artem runs; Karina supports shared generation | 104 graph attempts saved with contexts, provenance, timings, token counts and explicit failures |
+| 3 | Agree failure/N/A aggregation and prepare blinded grading batches | Safina owns; team agrees | Written policy and complete grading batches |
+| 4 | Grade all 160 preliminary answers plus 24 graph development answers; adjudicate | Safina coordinates; everyone grades | Combined labels trace to saved answers; unresolved disagreements cleared |
+| 5 | Export paired preliminary comparison per question/type | Safina owns analysis; Karina and Artem supply measurements | Separate metrics, paired differences and uncertainty |
+| 6 | Review failures and decide readiness for full 200-question run | Whole team | Frozen evaluation protocol and concrete remaining blockers |
+
+Artem's execution spec: [paired preliminary scope](specs/2026-11-27-paired-preliminary.md). A real Kaggle T4 run is authorized by the user; preserve hardware receipts separately from RTX 5080 measurements. Historical weekly deliverables below are not permission to skip this readiness gate.
 
 ## 1. Project scope
 
@@ -20,9 +35,9 @@ Use EnterpriseRAG-Bench with 200 questions, 50 per type. Compare BM25, vector RA
 
 | Owner/component | Completed evidence | Next work |
 | --- | --- | --- |
-| Safina | Corpus/question preparation, coverage/rubric and grading tools; 24 baseline development answers independently graded by Safina and Karina (68 facts each). Four disagreements adjudicated; zero unresolved. Initial agreement 94.12%, kappa 0.880. | Corpus-global development decision, judge calibration if used, graph/preliminary/core grading and paired results. This is completed three-type baseline development grading, not the full midway evaluation. |
+| Safina | Corpus/question preparation, coverage/rubric and grading tools; 24 baseline development answers independently graded by Safina and Karina (68 facts each). Four disagreements adjudicated; zero unresolved. Initial agreement 94.12%, kappa 0.880. | Immediate priority: failure/N/A policy, blinded batches and grading of160 preliminary +24 graph development attempts, adjudication and paired preliminary results. Routing/core readiness is a later team decision. |
 | Karina | Merged BM25/vector indexes and shared generation implementation; 104 delivered answers (24 development, 80 preliminary), final-context coverage/costs. | Support pinned generator deployment and graph integration; supply/rebuild baseline binaries only if further baseline inference is needed. Compact delivery excludes those binaries. |
-| Artem | Complete 15k graph/summaries, saved source audit and 24 development retrieval traces. | Generate 24 development + 80 preliminary graph answers with the shared settings; then route on paired scores. T4 validation and cost consolidation remain. |
+| Artem | Complete 15k graph/summaries and source audit;104 graph answers on user-authorized RTX5080 (24 development +80 preliminary),0 technical failures,6 cap flags, verified frozen parity/budgets; blinded184-answer grading handoff and separate measurements ready. | Support Safina's independent grading, adjudication and paired failure analysis. T4 is no longer a delivery blocker; no successful T4 generator run is claimed. No learned routing or full200 until paired correctness/readiness review. |
 
 ## 3. Team responsibilities
 
