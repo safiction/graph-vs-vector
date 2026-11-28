@@ -75,6 +75,18 @@ GPU/driver, server/model identity, results and deviations in a reproduction
 receipt. Preserve raw logs privately. Preflight/fixture tests alone are not
 full reproduction; cross-hardware word-for-word answer equality is not promised.
 
+For the full repository regression suite on Windows, enable Python UTF-8 mode
+for this shell (including subprocesses); historical graph readers use the
+interpreter's default text encoding:
+
+```powershell
+$env:PYTHONUTF8 = '1'
+data/.venv-baselines/Scripts/python.exe -m unittest discover -s tests -v
+```
+
+Install `requirements-baselines-test.txt` for graph test dependencies. Tests
+requiring OS symlink creation skip when that capability is unavailable.
+
 ## Full evaluation — after team readiness
 
 Complete preliminary grading/adjudication and record team policy/readiness first.
