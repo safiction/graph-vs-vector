@@ -33,6 +33,9 @@ def main():
         return
     if args.command in {'build', 'all'} and index_root(config).resolve() != (root / 'indexes').resolve():
         parser.error('External index_root is read-only; use prepare/run/query, not build/all')
+    if config.get('reference_experiment'):
+        from .final import verify_inputs
+        verify_inputs(config)
     with output_lock(root):
         corpus, frozen, audit = prepare(config)
         if args.command == 'prepare':
