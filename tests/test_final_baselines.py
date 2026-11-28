@@ -6,7 +6,7 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
-from baseline_rag.common import read_json, read_jsonl, write_json, write_jsonl
+from baseline_rag.common import file_digest, read_json, read_jsonl, write_json, write_jsonl
 from baseline_rag.corpus import prepare
 from baseline_rag.final import audit, verify_inputs
 from baseline_rag.generation import SharedGenerator
@@ -37,6 +37,7 @@ class FinalBaselineContracts(unittest.TestCase):
         build_vector(corpus, old / 'indexes/vector', original['embedding'], fixtures.TinyEncoder)
         self.config = {**original, 'output': str(self.root / 'final'),
                        'index_root': str(old / 'indexes'), 'reference_experiment': str(old / 'experiment.json'),
+                       'reference_experiment_sha256': file_digest(old / 'experiment.json'),
                        'question_manifest': str(corpus.root / 'questions/splits.json')}
         prepare(self.config)
         self.adapter = SharedGenerator.__new__(SharedGenerator)
@@ -50,7 +51,6 @@ class FinalBaselineContracts(unittest.TestCase):
         for split in ('fold_a', 'fold_b'):
             queries = read_jsonl(corpus.root / 'questions' / f'{split}.queries.jsonl')
             out = Path(self.config['output']) / 'runs' / split
-            from baseline_rag.common import file_digest
             qpath = Path(self.config['output']) / 'questions' / f'{split}.queries.jsonl'
             write_json(out / 'run_config.json', {'experiment': reference, 'retrievers': ['bm25', 'vector'],
                 'questions_sha256': file_digest(qpath), 'implementation': {'fixture': 'test'},
@@ -130,7 +130,8 @@ class FinalBaselineContracts(unittest.TestCase):
                 self.save_rows(original)
 
     def test_preflight_rejects_settings_index_and_question_tampering(self):
-        for field, value in (('context_token_budget', 99), ('retrieval_k', 3),
+        for field, value in (('context_token_budget', 99), ('retrieval_k', 3), ('seed', 99),
+                             ('reference_experiment_sha256', '0' * 64),
                              ('output', str(self.fixture.output / 'overwrite'))):
             with self.subTest(field=field), self.assertRaises(ValueError):
                 verify_inputs({**self.config, field: value})

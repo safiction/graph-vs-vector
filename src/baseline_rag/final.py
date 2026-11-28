@@ -22,6 +22,8 @@ def verify_inputs(config):
     """Check the original experiment and reusable indexes without writing them."""
     corpus = Corpus(config['bundle'])
     reference_path = Path(config['reference_experiment'])
+    require(file_digest(reference_path) == config['reference_experiment_sha256'],
+            'Delivered reference experiment checksum mismatch')
     reference = read_json(reference_path)
     require(corpus.identity == reference['corpus'], 'Corpus differs from delivered baseline')
     for key in ('embedding', 'generation_settings', 'retrieval_k', 'context_token_budget'):
@@ -37,6 +39,7 @@ def verify_inputs(config):
             bundle_splits['development_ids'] == manifest['development_ids'],
             'Bundle question splits differ from repository manifest')
     selection = read_json(reference_path.parent / 'questions/selection.json')
+    require(config['seed'] == selection['seed'], 'Question selection seed differs from baseline')
     require(selection['development_ids'] == reference['development_ids'] and
             selection['preliminary_question_ids'] == reference['preliminary_question_ids'],
             'Delivered selection differs from reference experiment')

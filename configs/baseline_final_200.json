@@ -44,5 +44,6 @@
   "graph_depth": 1,
   "index_root": "data/baselines/corpus_15000/indexes",
   "reference_experiment": "data/baselines/corpus_15000/experiment.json",
+  "reference_experiment_sha256": "3c6340bfa640523840e3962d217711afef428468b73bb4fdde63315836b095a6",
   "question_manifest": "manifests/questions.json"
 }
