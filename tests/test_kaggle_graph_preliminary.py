@@ -220,6 +220,7 @@ class ExtractionTests(unittest.TestCase):
             kgp.extract_tar_gz(sym, self.root / 'out3')
 
     def test_extract_tar_gz_allows_inroot_symlink_when_permitted(self):
+        self.require_symlinks()
         sym = self.root / 'sym.tar.gz'
         with tarfile.open(sym, 'w:gz') as tf:
             info = tarfile.TarInfo('lib/libfoo.so')
@@ -236,6 +237,7 @@ class ExtractionTests(unittest.TestCase):
             kgp.extract_tar_gz(sym, self.root / 'out4')
 
     def test_inroot_symlink_chain_cannot_escape_during_extraction(self):
+        self.require_symlinks()
         archive = self.root / 'chain.tar.gz'
         with tarfile.open(archive, 'w:gz') as tar:
             for name, target in [('a', '.'), ('a/b', '..')]:
@@ -254,6 +256,15 @@ class ExtractionTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, 'zstd'):
             kgp.require_executable('definitely-not-a-real-zstd-binary', 'install zstd')
 
+    def require_symlinks(self):
+        probe = self.root / 'symlink-capability-probe'
+        try:
+            probe.symlink_to(self.root / 'probe-target')
+        except (OSError, NotImplementedError) as exc:
+            self.skipTest(f'This environment cannot create symlinks: {exc}')
+        else:
+            probe.unlink()
+
 
 class BootstrapTests(unittest.TestCase):
     def test_existing_zstd_needs_no_system_install(self):
@@ -270,7 +281,7 @@ class BootstrapTests(unittest.TestCase):
         with (
             tempfile.TemporaryDirectory() as tmp,
             patch.object(kgp.shutil, 'which', side_effect=[None, '/usr/bin/apt-get', '/usr/bin/zstd']),
-            patch.object(kgp.os, 'geteuid', return_value=0),
+            patch.object(kgp.os, 'geteuid', return_value=0, create=True),
             patch.object(kgp.subprocess, 'run') as run,
         ):
             result = kgp.bootstrap_zstd(Path(tmp))
@@ -285,7 +296,7 @@ class BootstrapTests(unittest.TestCase):
         with (
             tempfile.TemporaryDirectory() as tmp,
             patch.object(kgp.shutil, 'which', side_effect=[None, '/usr/bin/apt-get']),
-            patch.object(kgp.os, 'geteuid', return_value=0),
+            patch.object(kgp.os, 'geteuid', return_value=0, create=True),
             patch.object(kgp.subprocess, 'run', side_effect=kgp.subprocess.CalledProcessError(1, 'apt-get')),
         ):
             with self.assertRaises(kgp.subprocess.CalledProcessError):

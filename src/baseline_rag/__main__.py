@@ -2,7 +2,7 @@
 import argparse
 import json
 from pathlib import Path
-from .common import environment, output_lock, read_json, write_json
+from .common import environment, index_root, output_lock, read_json, write_json
 from .corpus import prepare
 
 
@@ -26,11 +26,16 @@ def main():
     config = read_json(args.config)
     root = Path(config['output'])
     if args.command == 'status':
-        files = [root / 'corpus_audit.json', root / 'indexes/bm25/metadata.json',
-                 root / 'indexes/vector/progress.json', root / 'indexes/vector/metadata.json']
+        files = [root / 'corpus_audit.json', index_root(config) / 'bm25/metadata.json',
+                 index_root(config) / 'vector/progress.json', index_root(config) / 'vector/metadata.json']
         files += sorted((root / 'runs').glob('*/summary.json'))
         print(json.dumps({str(p): read_json(p) for p in files if p.exists()}, indent=2))
         return
+    if args.command in {'build', 'all'} and index_root(config).resolve() != (root / 'indexes').resolve():
+        parser.error('External index_root is read-only; use prepare/run/query, not build/all')
+    if config.get('reference_experiment'):
+        from .final import verify_inputs
+        verify_inputs(config)
     with output_lock(root):
         corpus, frozen, audit = prepare(config)
         if args.command == 'prepare':

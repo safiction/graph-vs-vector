@@ -33,15 +33,21 @@ summaries are retained separately from the subsequent cached invocation. Earlier
 development startup/performance diagnostics are preserved separately and are
 excluded from the frozen preliminary results.
 
-## Handoff work
+## Current handoff — 28 November 2026
 
-1. Artem supplies the complete 15k graph index and summaries to execute paired
-   graph-local/global answers. Both adapters already use this shared generator;
-   sampled or mismatched graph indexes are rejected.
-2. Safina performs fact-level correctness grading and human/judge calibration.
-   Coverage exports are available; coverage is not answer correctness. Output
-   limit flags must remain visible in evaluation.
-3. Restore the one missing original source JSON for a complete raw-bundle audit
-   or graph rebuild. Its verified chunks are present; both baselines indexed
-   every shared chunk. The corpus is conditioned on including the questions'
-   gold documents, and corpus-global answers may not be exhaustive on a subset.
+Artem's matching 104 graph attempts are delivered and verified, using this
+shared generator on RTX 5080. No extra baseline delivery/rerun is required;
+see `docs/ARTEM_STATUS.md`. The original 104 baseline outputs stay immutable.
+
+Safina coordinates independent grading and failure/N/A policy; Karina helps
+grade and adjudicate. The final 200-question baseline run waits for the team
+readiness decision. `docs/FINAL_BASELINES.md` documents the final configuration,
+read-only preflight, 400-attempt audit and saved-output demo. Clean-environment
+baseline reproduction by another teammate remains to be recorded.
+
+The missing original source is available in the graph delivery; restore it only
+if a complete raw-source audit is needed on the original machine. Verified
+chunks and indexes already cover every shared document. Historical
+`implementation.json` is the original run receipt; its graph handoff blockers
+are superseded by the November 27 delivery. The corpus is conditioned on the
+questions' gold documents; corpus-global answers may be incomplete on this subset.

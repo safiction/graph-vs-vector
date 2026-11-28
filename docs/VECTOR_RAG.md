@@ -1,8 +1,8 @@
 # BM25, vector RAG and shared generation on the 15k corpus
 
-## Local delivery integration — 12 November update
+## Local delivery integration — 28 November update
 
-The original paths/reproduction commands below describe Karina's recorded run. This checkout keeps immutable deliveries under `data/packages/`. See [Weekly project plan](DETAILED_PROJECT_PLAN.md). Use `configs/graph_delivery_15000.json` for graph-only generation against those packages with the same recorded generator settings and new outputs. Its preparation passed; inference remains pending. Do not run `all` merely to consume existing graph artifacts. The raw source missing on the original machine exists in the graph delivery here; ordinary Windows access still reports 64 overlong source paths as missing, all found through extended paths. These do not remove verified input chunks.
+The paths/reproduction commands below describe Karina's original run. The paired graph run is now complete: 104 attempts on RTX 5080 used this shared generator with confirmed frozen parity; no integration change or baseline rerun is required. See [Artem's delivery](ARTEM_STATUS.md), [weekly plan](DETAILED_PROJECT_PLAN.md) and [final baseline/reproduction instructions](FINAL_BASELINES.md). Package layouts differ between machines; check paths before running. Do not run `all` just to consume existing artifacts. The raw source missing on the original machine exists in the graph delivery; ordinary Windows access reported 64 overlong source paths, all found through extended paths. These do not remove verified input chunks.
 
 The baselines consume all 45,142 existing chunks in `data/corpus_15000`,
 preserving all 15,000 document IDs. No re-chunking, exclusion or deduplication
@@ -73,6 +73,10 @@ data/.venv-baselines/Scripts/python.exe scripts/report_baselines.py
 ```
 
 Pass `--config path.json` before the subcommand for another configuration.
+Optional `index_root` reads existing indexes independently of the new run's
+`output`. External indexes are read-only to the runner: `build`/`all` are rejected;
+use `prepare`, `run` or `query`. The final config also checks the delivered
+experiment, question hashes and both indexes before execution.
 The default is `configs/baseline_15000.json`. Configuration/code changes cannot
 reuse saved predictions; use a new output directory for another experiment.
 Indexes are checked against both corpus identity and artifact checksums.

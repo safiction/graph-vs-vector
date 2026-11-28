@@ -26,6 +26,11 @@ def read_json(path):
     return json.loads(Path(path).read_text(encoding='utf-8'))
 
 
+def index_root(config):
+    """Allow new runs to read existing indexes without copying or rebuilding."""
+    return Path(config.get('index_root', Path(config['output']) / 'indexes'))
+
+
 def read_jsonl(path):
     with Path(path).open(encoding='utf-8') as stream:
         return [json.loads(line) for line in stream if line.strip()]

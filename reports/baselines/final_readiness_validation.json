@@ -1,0 +1,33 @@
+{
+  "as_of": "2026-11-28",
+  "scope": "Final baseline tooling and Windows regression portability; no final inference or human grading",
+  "full_suite": {
+    "command": "PYTHONUTF8=1 data/.venv-baselines/Scripts/python.exe -m unittest discover -s tests -v",
+    "run": 111,
+    "passed": 109,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2,
+    "skip_reason": "OS symlink creation is unavailable in this Windows environment",
+    "local_log": "data/final_readiness_tests.log"
+  },
+  "follow_up_after_reference_checksum_and_seed_guards": {
+    "command": "data/.venv-baselines/Scripts/python.exe -m unittest discover -s tests -p test_final_baselines.py",
+    "run": 5,
+    "passed": 5,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "real_input_preflight": "passed; original frozen experiment SHA256, 200 evaluation IDs, corpus and existing BM25/vector index checksums verified without writes or inference",
+  "saved_output_demo": {
+    "question_id": "qst_0025",
+    "status": "success",
+    "predictions_sha256": "abc5ccf5f05f0b249b4a94c824c32b0c0cd2f52577ef242f77425b2be85f66ef"
+  },
+  "compileall": "passed",
+  "git_diff_check": "passed",
+  "full_200_inference": "not_started_pending_team_readiness",
+  "independent_grading": "not_performed_by_this_change",
+  "teammate_clean_environment_reproduction": "not_performed_by_this_change"
+}
