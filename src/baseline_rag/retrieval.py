@@ -5,7 +5,7 @@ from pathlib import Path
 import re
 import sqlite3
 import time
-from .common import environment, file_digest, freeze, read_json, write_json
+from .common import environment, file_digest, freeze, index_root, read_json, write_json
 
 
 def evidence(row, score, retriever):
@@ -264,10 +264,12 @@ class VectorRetriever:
 
 
 def load_retriever(name, config, corpus_identity):
-    root = Path(config['output']) / 'indexes'
+    root = index_root(config)
     if name == 'bm25':
         return BM25Retriever(root / 'bm25', corpus_identity)
     if name == 'vector':
+        if read_json(root / 'vector/metadata.json')['embedding'] != config['embedding']:
+            raise ValueError('Vector embedding settings differ from configuration')
         return VectorRetriever(root / 'vector', root / 'bm25', corpus_identity)
     from graph_rag.retrieve import GraphLocalRetriever, GraphGlobalRetriever
     if name == 'graph-local':

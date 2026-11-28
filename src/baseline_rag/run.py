@@ -6,13 +6,13 @@ import re
 import statistics
 import time
 from graph_rag.retrieve import pack_context
-from .common import environment, file_digest, freeze, implementation, output_lock, read_json, read_jsonl, write_json, write_jsonl
+from .common import environment, file_digest, freeze, implementation, index_root, output_lock, read_json, read_jsonl, write_json, write_jsonl
 from .generation import make_adapter
 from .retrieval import load_retriever
 
 
 def _artifact_identity(config, name):
-    root = Path(config['output']) / 'indexes'
+    root = index_root(config)
     if name in {'bm25', 'vector'}:
         paths = [root / name / 'metadata.json']
         if name == 'vector':

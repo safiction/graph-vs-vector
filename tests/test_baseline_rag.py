@@ -115,6 +115,48 @@ class BaselineContracts(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'different corpus'):
             VectorRetriever(self.output / 'indexes/vector', self.output / 'indexes/bm25', {'wrong': 'corpus'}, TinyEncoder)
 
+    def test_new_output_reuses_external_indexes_without_modifying_them(self):
+        from baseline_rag.run import _artifact_identity
+        indexes = self.output / 'indexes'
+        build_bm25(self.corpus, indexes / 'bm25')
+        build_vector(self.corpus, indexes / 'vector', self.embedding, TinyEncoder)
+        before = {p.relative_to(indexes): file_digest(p) for p in indexes.rglob('*') if p.is_file()}
+        config = {**self.config, 'output': str(self.root / 'final'),
+                  'index_root': str(indexes), 'embedding': self.embedding}
+        bm25 = load_retriever('bm25', config, self.corpus.identity)
+        try:
+            self.assertEqual(bm25.retrieve('invoice', 1)[0]['source_document_id'], 'd1')
+        finally:
+            bm25.close()
+        with patch('baseline_rag.retrieval.BGEEncoder', TinyEncoder):
+            # VectorRetriever's default factory is bound at definition time.
+            vector = load_retriever('vector', config, self.corpus.identity)
+            vector.factory = TinyEncoder
+            try:
+                self.assertEqual(vector.retrieve('alpha', 1)[0]['source_document_id'], 'd0')
+            finally:
+                vector.close()
+        self.assertEqual(len(_artifact_identity(config, 'vector')), 2)
+        self.assertTrue(all(Path(p).is_relative_to(indexes) for p in _artifact_identity(config, 'vector')))
+        self.assertFalse(Path(config['output']).exists())
+        self.assertEqual(before, {p.relative_to(indexes): file_digest(p) for p in indexes.rglob('*') if p.is_file()})
+        config['embedding'] = {**self.embedding, 'dimensions': 3}
+        with self.assertRaisesRegex(ValueError, 'embedding settings'):
+            load_retriever('vector', config, self.corpus.identity)
+
+    def test_cli_refuses_build_into_external_indexes(self):
+        import subprocess
+        config_path = self.root / 'external.json'
+        config = {**self.config, 'index_root': str(self.root / 'existing-indexes')}
+        write_json(config_path, config)
+        script = Path(__file__).resolve().parents[1] / 'scripts/run_baselines.py'
+        for command in ('build', 'all'):
+            result = subprocess.run([sys.executable, str(script), '--config', str(config_path), command],
+                                    capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('External index_root is read-only', result.stderr)
+        self.assertFalse(Path(config['index_root']).exists())
+
     def test_embedding_crash_resumes_after_last_complete_batch(self):
         class Interrupted(TinyEncoder):
             def encode(self, texts, query=False):
